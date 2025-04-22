@@ -29,7 +29,7 @@ function ButtonLarge({
 
   return (
     <button
-      className={`flex items-center justify-center w-full max-w-[400px] h-[50px] ${bgColor} rounded-2xl`}
+      className={`flex items-center justify-center w-full max-w-[400px] h-[50px] ${bgColor} rounded-2xl border border-gray-300 gap-[12px] font-medium text-base text-gray-800`}
       onClick={onClick}
       {...rest}
     >
@@ -39,6 +39,7 @@ function ButtonLarge({
           src={imageSrc}
           alt={imageAlt ?? ''}
           width={24}
+          height={24}
         />
       )}
       {children}

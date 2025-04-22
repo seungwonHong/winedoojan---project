@@ -1,0 +1,134 @@
+.buttons {
+  text-align: center;
+  border-radius: 16px;
+}
+
+.blobBtn {
+  --black: #000;
+  --dark: #ffffff;
+  --borderW: 1px;
+  --numOfBlobs: 2;
+
+  display: flex;
+  gap: 12px;
+  width: 400px;
+  height: 50px;
+  z-index: 1;
+  position: relative;
+  padding: 20px 46px;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  color: var(--fontColor);
+  font-size: 16px;
+  font-weight: 500;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  transition: color 0.5s;
+  cursor: pointer;
+  border-radius: 16px;
+  margin-bottom: -24px;
+}
+
+.blobBtn:before {
+  content: '';
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: var(--borderW) solid #cfdbea;
+  border-radius: 16px;
+}
+
+.blobBtn:after {
+  content: '';
+  z-index: -2;
+  position: absolute;
+  left: calc(var(--borderW) * 1.5);
+  top: calc(var(--borderW) * 1.5);
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s 0.2s;
+  border-radius: 16px;
+}
+
+.blobBtn:hover {
+  color: var(--hoverFontColor);
+  border-radius: 16px;
+}
+
+.blobBtn:hover:after {
+  transition: all 0.3s;
+  left: 0;
+  top: 0;
+  border-radius: 16px;
+}
+
+.blobBtn__inner {
+  z-index: -1;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.blobBtn__blobs {
+  position: relative;
+  display: block;
+  height: 100%;
+  filter: url('#goo');
+}
+
+.blobBtn__blob {
+  position: absolute;
+  top: var(--borderW);
+  width: calc(100% / var(--numOfBlobs));
+  height: 100%;
+  background: var(--buttonColor);
+  border-radius: 100%;
+  transform: translate3d(0, 150%, 0) scale(1.7);
+  transition: transform 0.45s;
+}
+
+@supports (filter: url('#goo')) {
+  .blobBtn__blob {
+    transform: translate3d(0, 150%, 0) scale(1.4);
+  }
+}
+
+.blobBtn__blob:nth-child(1) {
+  left: calc(0 * (120% / var(--numOfBlobs)));
+  transition-delay: calc(0 * 0.08s);
+}
+
+.blobBtn__blob:nth-child(2) {
+  left: calc(1 * (120% / var(--numOfBlobs)));
+  transition-delay: calc(1 * 0.08s);
+}
+
+.blobBtn__blob:nth-child(3) {
+  left: calc(2 * (120% / var(--numOfBlobs)));
+  transition-delay: calc(2 * 0.08s);
+}
+
+.blobBtn__blob:nth-child(4) {
+  left: calc(3 * (120% / var(--numOfBlobs)));
+  transition-delay: calc(3 * 0.08s);
+}
+
+.blobBtn:hover .blobBtn__blob {
+  transform: translateZ(0) scale(1.7);
+}
+
+@supports (filter: url('#goo')) {
+  .blobBtn:hover .blobBtn__blob {
+    transform: translateZ(0) scale(1.4);
+  }
+}
