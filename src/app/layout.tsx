@@ -19,9 +19,7 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css"
         />
       </head>
-      <body className="antialiased">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
