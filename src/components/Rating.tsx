@@ -1,4 +1,4 @@
-import ratingStar from "@/public/ic_rating_star.png";
+import ratingStar from "@/public/icons/ic_rating_star.png";
 
 interface RatingProps {
   rating: number;

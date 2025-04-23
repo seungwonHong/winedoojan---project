@@ -1,7 +1,7 @@
-import hamburgerIcon from "@/public/ic_hamburger.png";
+import hamburgerIcon from "@/public/icons/ic_hamburger.png";
 import { Wine } from "@/types/myprofileTypes";
 import Image from "next/image";
-import defaultImg from "@/public/default_profile_img.png";
+import defaultImg from "@/public/images/default_profile_img.png";
 
 interface MyWineCardProps {
   wine: Wine;

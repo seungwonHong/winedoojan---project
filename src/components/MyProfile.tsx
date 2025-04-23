@@ -2,8 +2,8 @@
 
 import { User } from "@/types/myprofileTypes";
 import Image from "next/image";
-import defaultImg from "@/public/default_profile_img.png";
-import editIcon from "@/public/ic_edit.png";
+import defaultImg from "@/public/images/default_profile_img.png";
+import editIcon from "@/public/icons/ic_edit.png";
 import { useState } from "react";
 
 interface MyProfileProps {

@@ -1,6 +1,6 @@
 import Rating from "./Rating";
 import { Review } from "@/types/myprofileTypes";
-import hamburgerIcon from "@/public/ic_hamburger.png";
+import hamburgerIcon from "@/public/icons/ic_hamburger.png";
 
 interface MyReviewCardProps {
   review: Review;
