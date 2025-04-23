@@ -3,9 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
 
-type Props = {};
-
-const ExploreWineButton = (props: Props) => {
+const ExploreWineButton = () => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
