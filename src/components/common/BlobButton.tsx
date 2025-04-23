@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
-import styles from './BlobButton.module.css'; // CSS Module import
+import styles from '../../styles/BlobButton.module.css'; // CSS Module import
 import Image from 'next/image';
 
 interface BlobButtonProps

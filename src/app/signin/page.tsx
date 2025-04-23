@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import images from '../../../public/images/images';
 import icons from '../../../public/icons/icons';
-import Input from '@/components/Input';
+import Input from '@/components/common/Input';
 import Link from 'next/link';
-import BlobButton from '@/components/BlobButton';
+import BlobButton from '@/components/common/BlobButton';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
