@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthState>()(
             const errorData = await res.json();
             return {
               success: false,
-              message: errorData.message || '회원가입에 실패했습니다.',
+              message: errorData.message + ', 회원가입에 실패했습니다.',
             };
           }
 
@@ -77,8 +77,7 @@ export const useAuthStore = create<AuthState>()(
             });
             return {
               success: true,
-              message:
-                data.message || '회원가입이 완료되었습니다. 로그인해주세요.',
+              message: '회원가입이 완료되었습니다. 로그인해주세요.',
             };
           } else {
             return {
@@ -111,7 +110,7 @@ export const useAuthStore = create<AuthState>()(
             const errorData = await response.json();
             return {
               success: false,
-              message: errorData.message || '로그인에 실패했습니다.',
+              message: errorData.message + ' 로그인에 실패했습니다.',
             };
           }
 
