@@ -5,12 +5,16 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: '**', // Allow all hostnames
+        protocol: "https",
+        hostname: "sprint-fe-project.s3.ap-northeast-2.amazonaws.com",
       },
       {
-        protocol: 'https',
-        hostname: '**', // Allow all hostnames
+        protocol: "https",
+        hostname: "diablo.s3.ap-northeast-2.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "diablo-s3.s3.ap-northeast-2.amazonaws.com",
       },
     ],
   },
