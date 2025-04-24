@@ -35,6 +35,67 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       refreshToken: null,
 
+      // register 함수
+      register: async (
+        email: string,
+        nickname: string,
+        password: string,
+        passwordConfirmation: string
+      ) => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              nickname,
+              email,
+              password,
+              passwordConfirmation,
+            }),
+          });
+
+          if (!res.ok) {
+            const errorData = await res.json();
+            return {
+              success: false,
+              message: errorData.message || '회원가입에 실패했습니다.',
+            };
+          }
+
+          const data = await res.json();
+          const { user, accessToken, refreshToken } = data;
+
+          // 회원가입 시 자동 로그인 처리
+          if (accessToken && refreshToken) {
+            set({
+              isAuthenticated: true,
+              accessToken,
+              refreshToken,
+              user,
+            });
+            return {
+              success: true,
+              message:
+                data.message || '회원가입이 완료되었습니다. 로그인해주세요.',
+            };
+          } else {
+            return {
+              success: false,
+              message: '인증 정보를 받지 못했습니다.',
+            };
+          }
+        } catch (error) {
+          console.error('회원가입 에러:', error);
+          return {
+            success: false,
+            message: '회원가입 요청 중 오류가 발생했습니다.',
+          };
+        }
+      },
+
+      // login 함수
       login: async (email: string, password: string) => {
         try {
           // Swagger 문서 로그인 엔드포인트 호출
@@ -81,6 +142,7 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
+      // logout 함수
       logout: () => {
         // 로그아웃 시 인증 정보 초기화
         set({
@@ -91,6 +153,7 @@ export const useAuthStore = create<AuthState>()(
         });
       },
 
+      // accessToken 재발급
       refreshAccessToken: async () => {
         try {
           const currentRefreshToken = get().refreshToken;

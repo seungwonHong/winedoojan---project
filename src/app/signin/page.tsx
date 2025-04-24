@@ -7,6 +7,7 @@ import Link from 'next/link';
 import BlobButton from '@/components/common/BlobButton';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/authStore';
 
 interface FormData {
   email: string;
@@ -19,13 +20,14 @@ interface FormError {
 }
 
 function Signin() {
-  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
   });
   const [errors, setErrors] = useState<FormError>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { login } = useAuthStore();
+  const router = useRouter();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -67,7 +69,6 @@ function Signin() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) {
       return;
     }
@@ -75,16 +76,8 @@ function Signin() {
     try {
       setIsLoading(true);
 
-      // 로그인 API 호출
-      // const response = await fetch('/api/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // });
-
-      const isLoginSuccessful =
-        formData.email === 'test@example.com' &&
-        formData.password === 'password123';
+      const result = await login(formData.email, formData.password);
+      const isLoginSuccessful = result.success;
 
       if (isLoginSuccessful) {
         // 로그인 성공 시 홈 화면으로 이동
@@ -92,7 +85,7 @@ function Signin() {
       } else {
         // 로그인 실패 시 에러 메시지 표시
         setErrors({
-          email: '이메일 혹은 비밀번호를 확인해주세요.',
+          email: result.message,
         });
       }
     } catch (error) {
@@ -111,10 +104,12 @@ function Signin() {
         <div className="flex flex-col justify-center w-[400px] max-md:w-[300px]">
           <div className="flex w-full justify-center mb-16">
             <Image
+              className="w-auto h-auto"
               src={images.logoGarnet}
               alt="logo"
               width={200}
               height={104}
+              priority={true}
             />
           </div>
           <form className="flex flex-col mb-[15px]" onSubmit={handleSubmit}>
@@ -161,7 +156,7 @@ function Signin() {
               imageSrc={icons.kakaoIcon}
               imageAlt="kakao"
             >
-              kakao로 시작하기
+              Kakao로 시작하기
             </BlobButton>
           </div>
           <div className="flex items-center justify-center mt-8 text-base">
