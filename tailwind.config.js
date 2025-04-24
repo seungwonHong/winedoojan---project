@@ -7,6 +7,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        gray: {
+          100: '#F2F4F8',
+          300: '#CFDBEA',
+          500: '#9FACBD',
+          800: '#2D3034',
+        },
         wine: '#722F37',
         claret: '#7F1734',
         maroon: '#800000',
@@ -25,6 +31,9 @@ module.exports = {
         salmon: '#FA8072',
         syrah: '#6A282C',
         pinotnoir: '#653642',
+      },
+      boxShadow: {
+        custom: '0px 2px 20px 0px #0000000A',
       },
     },
   },
