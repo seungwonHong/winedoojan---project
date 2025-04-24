@@ -103,14 +103,16 @@ function Signin() {
       <div className="w-fit h-fit px-12 py-20 mx-auto max-lg:my-20 rounded-2xl border border-gray-300 shadow-custom bg-white">
         <div className="flex flex-col justify-center w-[400px] max-md:w-[300px]">
           <div className="flex w-full justify-center mb-16">
-            <Image
-              className="w-auto h-auto"
-              src={images.logoGarnet}
-              alt="logo"
-              width={200}
-              height={104}
-              priority={true}
-            />
+            <Link href="/">
+              <Image
+                className="w-auto h-auto"
+                src={images.logoGarnet}
+                alt="logo"
+                width={200}
+                height={104}
+                priority={true}
+              />
+            </Link>
           </div>
           <form className="flex flex-col mb-[15px]" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-[25px]">

@@ -193,7 +193,6 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      // refreshToken은 사용자의 로컬 스토리지에 저장
       storage: createJSONStorage(() => localStorage),
     }
   )
