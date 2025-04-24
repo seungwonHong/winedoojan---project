@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface Wine {
   name: string;
@@ -59,11 +60,10 @@ const WineDetailCard = ({ wineId }: { wineId: string }) => {
 
   return (
     <div className="flex w-[343px] h-[190px] rounded-[12px] mt-[29px] border border-[#CFDBEA] relative md:w-[704px] md:h-[260px] md:mt-[62px] xl:w-[1140px]">
-      <img
-        src={wine.image}
-        alt={wine.name}
-        className="object-cover w-[58px] h-[209px] relative bottom-[19px] ml-[20px] z-1 md:w-[84px] md:h-[302px] md:bottom-[42px] md:ml-[60px] xl:w-[58px] xl:h-[209px] xl:top-[50px]"
-      />
+      <div className="object-cover w-[58px] h-[209px] relative bottom-[19px] ml-[20px] z-1 md:w-[84px] md:h-[302px] md:bottom-[42px] md:ml-[60px] xl:w-[58px] xl:h-[209px] xl:top-[50px]">
+        <Image src={wine.image} alt={wine.name} fill className="object-cover" />
+      </div>
+
       <div className="w-[200px] flex flex-col justify-center gap-[15px] ml-[20px] md:ml-[60px] md:gap-[20px] md:w-[300px] xl:w-[400px]">
         <div className="font-[600] text-[20px] text-[#2D3034] md:text-[30px] break-keep ">
           {wine.name}
