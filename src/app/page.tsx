@@ -2,7 +2,7 @@ import Header from "@/components/common/Header";
 import getWine from "@/services/getWine";
 import Image from "next/image";
 import WineMotionList from "@/components/WineMotionList";
-import LandingWineRec from "@/components/\bLandingWineRec";
+import LandingWineRec from "@/components/LandingWineRec";
 import getWineRecommended from "@/services/getWineRecommended";
 import LandingWineFilter from "@/components/LandingWineFilter";
 import LandingReviewSys from "@/components/LandingReviewSys";
