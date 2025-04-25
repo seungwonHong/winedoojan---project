@@ -59,7 +59,7 @@ export default function ProfilePage() {
     <div className="flex flex-col items-center mt-[40px]">
       <Header />
       <div className="w-max flex justify-start m-auto gap-[60px]">
-        <MyProfile user={user} token={accessToken} loadData={loadData} />
+        <MyProfile user={user} token={accessToken} />
         <div>
           <div
             className={`flex gap-[32px] items-center ${
