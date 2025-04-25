@@ -9,17 +9,17 @@ const API_BASE_URL = "https://winereview-api.vercel.app";
 
 // {teamId}/users/me/reviews
 interface FetchReviewsParams {
-  teamId: string;
+  teamId: string | null;
   limit: number;
   cursor?: number;
-  token: string;
+  token: string | null;
 }
 
 interface FetchWinesParams {
   teamId: string;
   limit: number;
   cursor?: number;
-  token: string;
+  token: string | null;
 }
 
 interface fetchUpdateUserParams {
@@ -32,7 +32,7 @@ interface fetchUpdateUserParams {
 interface fetchDeleteWineIdParams {
   teamId: string;
   id: number;
-  token: string;
+  token: string | null;
 }
 
 interface fetchDeleteReviewIdParams {
