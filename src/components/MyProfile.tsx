@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 interface MyProfileProps {
   user: User;
-  token: string;
+  token: string | null;
   loadData: () => void;
 }
 

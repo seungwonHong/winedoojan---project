@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import icons from "../../public/icons/icons";
 import {
   fetchDeleteWineId,
@@ -9,7 +8,7 @@ import {
 interface HamburgerMenuProps {
   teamId: string;
   id: number;
-  token: string;
+  token: string | null;
   tab: string;
   openId: number | null;
   setOpenId: (id: number | null) => void;
@@ -42,10 +41,8 @@ export default function HamburgerMenu({
 
   const handleOpenSelect = () => {
     if (isOpen) {
-      console.log("닫혔음", openId, id);
       setOpenId(null);
     } else {
-      console.log("햄버거 버튼이 열렸음", openId, id);
       setOpenId(id);
     }
   };
