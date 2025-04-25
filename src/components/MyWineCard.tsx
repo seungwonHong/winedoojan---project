@@ -6,7 +6,7 @@ import HamburgerMenu from "./HamburgerMenu";
 interface MyWineCardProps {
   wine: Wine;
   teamId: string;
-  token: string;
+  token: string | null;
   tab: string;
   openId: number | null;
   setOpenId: (id: number | null) => void;

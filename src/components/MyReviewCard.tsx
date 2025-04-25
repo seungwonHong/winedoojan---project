@@ -6,7 +6,7 @@ import { getTimeAgo } from "@/utils/getTimeAgo";
 interface MyReviewCardProps {
   review: Review;
   teamId: string;
-  token: string;
+  token: string | null;
   onDeleteSuccess: () => void;
   tab: string;
   openId: number | null;
