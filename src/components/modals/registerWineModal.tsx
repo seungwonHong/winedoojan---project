@@ -29,13 +29,6 @@ export default function RegisterWineModal({ onClose }: Props) {
       alert('모든 항목을 입력해주세요.');
       return;
     }
-
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (!accessToken) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
   
     const data = {
       name,
@@ -46,11 +39,10 @@ export default function RegisterWineModal({ onClose }: Props) {
     };
   
     try {
-      const response = await fetch('/api/proxy', {
+      const response = await fetch('https://winereview-api.vercel.app/14-2/wines', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(data),
       });

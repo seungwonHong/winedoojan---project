@@ -50,6 +50,15 @@ export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
   };
 
   const handleSubmit = async () => {
+    if (
+      reviewData.rating === 0 ||
+      reviewData.content.trim() === '' ||
+      reviewData.flavors.length === 0
+    ) {
+      alert('별점, 후기, 향을 모두 입력해주세요.');
+      return;
+    }
+    
     const dataToSend = {
       rating: reviewData.rating,
       lightBold: reviewData.lightBold,
