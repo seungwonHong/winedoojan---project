@@ -4,6 +4,7 @@
 
 import React, { useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression'; // 이미지 압축 라이브러리
+import ModalButton from '@/components/common/ModalButton';
 
 type Props = {
   onClose: () => void;
@@ -111,7 +112,6 @@ export default function RegisterWineModal({ onClose }: Props) {
 
   const labelClass = 'block text-base font-medium mb-4';
   const inputClass = 'w-full h-12 border border-gray-300 rounded-2xl px-5 py-2 mb-8 placeholder-gray-500';
-  const buttonClass = 'h-[54px] px-4 py-2 rounded-xl text-base font-bold';
 
   return (
     <div 
@@ -207,18 +207,12 @@ export default function RegisterWineModal({ onClose }: Props) {
         </div>
 
         <div className="flex justify-end gap-4 mt-8">
-          <button
-            className={`${buttonClass} w-[108px] bg-[#F3E7E6] text-garnet`}
-            onClick={onClose}
-          >
+          <ModalButton width = "w-[108px]" bgColor="bg-[#F3E7E6]" textColor="text-garnet" onClick={onClose}>
             취소
-          </button>
-          <button
-            className={`${buttonClass} w-[294px] bg-garnet text-white`}
-            onClick={handleSubmit}
-          >
+          </ModalButton>
+          <ModalButton width = "w-[294px]" onClick={handleSubmit}>
             와인 등록하기
-          </button>
+          </ModalButton>
         </div>
       </div>
     </div>

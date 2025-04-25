@@ -3,6 +3,7 @@
 'use client';
 
 import React from 'react';
+import ModalButton from '@/components/common/ModalButton';
 
 type Props = {
   onClose: () => void;
@@ -50,19 +51,13 @@ export default function DeleteConfirmModal({ onClose, onConfirm, id, type }: Pro
         </h2>
 
         <div className="flex justify-end gap-4 mt-10 mb-6">
-          <button
-            className="w-[154px] h-[54px] px-4 py-2 bg-[#F3E7E6] text-garnet text-base font-bold rounded-xl"
-            onClick={onClose}
-          >
+          <ModalButton bgColor="bg-[#F3E7E6]" textColor="text-garnet" onClick={onClose}>
             취소
-          </button>
+          </ModalButton>
 
-          <button
-            className="w-[154px] h-[54px] px-4 py-2 bg-garnet text-white text-base font-bold rounded-xl"
-            onClick={() => handleDelete(id, type)} // onConfirm에 id와 type 전달
-          >
+          <ModalButton onClick={() => handleDelete(id, type)}>
             삭제하기
-          </button>
+          </ModalButton>
         </div>
       </div>
     </div>
