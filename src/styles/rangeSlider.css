@@ -1,0 +1,24 @@
+/* styles/rangeSlider.css */
+input[type="range"].wine-slider {
+  appearance: none;
+  background-color: #F2F4F8; /* gray-100 */
+  border: 1px solid #CFDBEA; /* gray-300 */
+  border-radius: 10px;
+}
+  
+input[type="range"].wine-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: #830e00;
+  border-radius: 10px;
+  cursor: pointer;
+}
+  
+input[type="range"].wine-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background-color: #830e00;
+  border-radius: 10x;
+  cursor: pointer;
+}  
