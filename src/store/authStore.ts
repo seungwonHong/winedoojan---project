@@ -110,7 +110,8 @@ export const useAuthStore = create<AuthState>()(
             const errorData = await response.json();
             return {
               success: false,
-              message: errorData.message + ' 로그인에 실패했습니다.',
+              message:
+                errorData.message + ' 이메일 혹은 비밀번호를 확인해주세요..',
             };
           }
 
