@@ -1,12 +1,27 @@
 import Rating from "./Rating";
 import { Review } from "@/types/myprofileTypes";
-import hamburgerIcon from "@/public/icons/ic_hamburger.png";
+import icons from "../../public/icons/icons";
+import HamburgerMenu from "./HamburgerMenu";
 
 interface MyReviewCardProps {
   review: Review;
+  teamId: string;
+  token: string;
+  onDeleteSuccess: () => void;
+  tab: string;
+  openId: number | null;
+  setOpenId: (id: number | null) => void;
 }
 
-export default function MyReviewCard({ review }: MyReviewCardProps) {
+export default function MyReviewCard({
+  review,
+  teamId,
+  token,
+  onDeleteSuccess,
+  openId,
+  setOpenId,
+  tab,
+}: MyReviewCardProps) {
   // 시간 계산 로직
   const now = new Date();
   const updateTime = new Date(review.updatedAt);
@@ -36,11 +51,18 @@ export default function MyReviewCard({ review }: MyReviewCardProps) {
       <div className="flex items-center mb-[20px] gap-[15px]">
         <Rating rating={review.rating} />
         <div className="text-[#9facbd]">{timeAgo}</div>
-        <img
-          src={hamburgerIcon.src}
-          alt="더보기버튼"
-          className="ml-auto size-[26px]"
-        />
+
+        <div className="ml-auto">
+          <HamburgerMenu
+            teamId={teamId}
+            id={review.id}
+            token={token}
+            tab={tab}
+            onDeleteSuccess={onDeleteSuccess}
+            openId={openId}
+            setOpenId={setOpenId}
+          />
+        </div>
       </div>
       <div className="text-[#9facbd] font-medium mb-[10px]">
         {review.wine.name}

@@ -26,6 +26,19 @@ interface fetchUpdateUserParams {
   teamId: string;
   image: string;
   nickname: string;
+  token: string;
+}
+
+interface fetchDeleteWineIdParams {
+  teamId: string;
+  id: number;
+  token: string;
+}
+
+interface fetchDeleteReviewIdParams {
+  teamId: string;
+  id: number;
+  token: string;
 }
 
 export async function fetchReviews({
@@ -101,14 +114,57 @@ export async function fetchUpdateUser({
   teamId,
   image,
   nickname,
+  token,
 }: fetchUpdateUserParams): Promise<UpdateUserResponse> {
   const url = new URL(`${API_BASE_URL}/${teamId}/users/me`);
   const res = await fetch(url, {
     method: "PATCH",
     headers: {
       "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ image, nickname }),
   });
+  return await res.json();
+}
+
+// {teamId}/wines/{id}
+export async function fetchDeleteWineId({
+  teamId,
+  id,
+  token,
+}: fetchDeleteWineIdParams) {
+  const url = new URL(`${API_BASE_URL}/${teamId}/wines/${id}`);
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`${res.status}`);
+  }
+
+  return await res.json();
+}
+
+// {teamId}/reviews/id
+export async function fetchDeleteReviewId({
+  teamId,
+  id,
+  token,
+}: fetchDeleteReviewIdParams) {
+  const url = new URL(`${API_BASE_URL}/${teamId}/reviews/${id}`);
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`${res.status}`);
+  }
   return await res.json();
 }
