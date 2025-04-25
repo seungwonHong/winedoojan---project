@@ -51,6 +51,7 @@ export interface UpdateUserResponse {
   createdAt: string;
   teamId: string;
   nickname: string;
+  url: string;
   id: number;
 }
 

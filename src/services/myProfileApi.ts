@@ -220,3 +220,43 @@ export async function fetchDeleteReviewId({
   }
   return await res.json();
 }
+
+// {teamId}/images/upload
+export async function fetchUploadImage(
+  teamId: string,
+  token: string | null,
+  file: File
+) {
+  const url = new URL(`${API_BASE_URL}/${teamId}/images/upload`);
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  let res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+  if (res.status === 401) {
+    const refreshed = await useAuthStore.getState().refreshAccessToken();
+    if (!refreshed) throw new Error("AccessToken 갱신 실패");
+
+    const newToken = useAuthStore.getState().accessToken;
+
+    res = await fetch(url.toString(), {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${newToken}`,
+      },
+      body: formData,
+    });
+  }
+
+  if (!res.ok) {
+    throw new Error(`이미지 업로드 실패: ${res.status}`);
+  }
+
+  return await res.json();
+}
