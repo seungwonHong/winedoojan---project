@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import MyReviewCard from "@/components/MyReviewCard";
-import { fetchReviews, fetchLogin, fetchWines } from "../lib/api";
-import { ReviewsResponse, WinesResponse } from "@/types/myprofileTypes";
-import MyProfile from "@/components/MyProfile";
-import { useEffect, useState } from "react";
-import MyWineCard from "@/components/MyWineCard";
+import MyReviewCard from '@/components/MyReviewCard';
+import { fetchReviews, fetchLogin, fetchWines } from '../lib/api';
+import { ReviewsResponse, WinesResponse } from '@/types/myprofileTypes';
+import MyProfile from '@/components/MyProfile';
+import { useEffect, useState } from 'react';
+import MyWineCard from '@/components/MyWineCard';
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const [reviewsData, setReviewsData] = useState<ReviewsResponse | null>(null);
   const [winesData, SetWinesData] = useState<WinesResponse | null>(null);
-  const [tab, setTab] = useState<"reviews" | "wines">("reviews");
+  const [tab, setTab] = useState<'reviews' | 'wines'>('reviews');
   const [error, setError] = useState<string | null>(null);
   const limit = 100;
-  const teamId = "14-2";
+  const teamId = '14-2';
 
   useEffect(() => {
     const loadData = async () => {
@@ -55,34 +55,34 @@ export default function ProfilePage() {
       <div>
         <div
           className={`flex gap-[32px] items-center ${
-            tab === "reviews" ? "mb-[22px]" : "mb-[64px]"
+            tab === 'reviews' ? 'mb-[22px]' : 'mb-[64px]'
           }`}
         >
           <button
-            onClick={() => setTab("reviews")}
+            onClick={() => setTab('reviews')}
             className={`w-max h-[32px] font-bold text-xl ${
-              tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
+              tab === 'reviews' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
             }`}
           >
             내가 쓴 후기
           </button>
           <button
-            onClick={() => setTab("wines")}
+            onClick={() => setTab('wines')}
             className={`w-max h-[32px] font-bold text-xl ${
-              tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
+              tab === 'wines' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
             }`}
           >
             내가 등록한 와인
           </button>
           <div className="ml-auto text-sm text-garnet">
             총&nbsp;
-            {tab === "reviews" ? reviewsData.totalCount : winesData.totalCount}
+            {tab === 'reviews' ? reviewsData.totalCount : winesData.totalCount}
             개
           </div>
         </div>
         <div>
           <div>
-            {tab === "reviews"
+            {tab === 'reviews'
               ? reviewsData.list.map((review) => (
                   <MyReviewCard key={review.id} review={review} />
                 ))
