@@ -107,11 +107,10 @@ export const useAuthStore = create<AuthState>()(
           });
 
           if (!response.ok) {
-            const errorData = await response.json();
+            // const errorData = await response.json();
             return {
               success: false,
-              message:
-                errorData.message + ' 이메일 혹은 비밀번호를 확인해주세요..',
+              message: '이메일 혹은 비밀번호를 확인해주세요.',
             };
           }
 
