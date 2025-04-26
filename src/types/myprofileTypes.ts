@@ -2,6 +2,7 @@ export interface User {
   id: number;
   nickname: string;
   image: string;
+  teamId: string;
 }
 
 export interface Wine {
