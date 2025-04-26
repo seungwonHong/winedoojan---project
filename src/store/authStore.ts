@@ -22,10 +22,16 @@ interface AuthState {
   ) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   refreshAccessToken: () => Promise<boolean>;
+  // kakao 로그인
+  kakaoLogin: () => void;
+  handleKakaoCallback: (
+    code: string
+  ) => Promise<{ success: boolean; message?: string }>;
 }
 
 // API 기본 설정
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const KAKAO_API = process.env.NEXT_PUBLIC_KAKAO_API;
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -188,6 +194,61 @@ export const useAuthStore = create<AuthState>()(
           // 토큰 갱신 실패 시 로그아웃
           get().logout();
           return false;
+        }
+      },
+      // kakao 로그인
+      kakaoLogin: () => {
+        const kakaoKey = KAKAO_API; // 카카오 개발자 API
+        const redirectUri = 'http://localhost:3000/oauth/signup/kakao'; // 카카오 개발자 콘솔에 등록한 URI
+        const responseType = 'code';
+        const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoKey}&redirect_uri=${redirectUri}&response_type=${responseType}`;
+        window.location.href = kakaoAuthUrl;
+      },
+      handleKakaoCallback: async (code: string) => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/signin/KAKAO`, {
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              token: code,
+              redirectUri: 'http://localhost:3000/oauth/kakao',
+              state: '',
+            }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            return {
+              success: false,
+              message: errorData.message + ' 카카오 로그인에 실패했습니다.',
+            };
+          }
+
+          const data = await response.json();
+          const { user, accessToken, refreshToken } = data;
+
+          if (accessToken && refreshToken) {
+            set({
+              isAuthenticated: true,
+              accessToken,
+              refreshToken,
+              user,
+            });
+            return { success: true };
+          } else {
+            return {
+              success: false,
+              message: '인증 정보를 받지 못했습니다.',
+            };
+          }
+        } catch (error) {
+          console.log('카카오 로그인 에러:', error);
+          return {
+            success: false,
+            message: '카카오 로그인 처리 중 오류가 발생했습니다.',
+          };
         }
       },
     }),
