@@ -5,7 +5,7 @@ import icons from '../../../public/icons/icons';
 import Input from '@/components/common/Input';
 import Link from 'next/link';
 import BlobButton from '@/components/common/BlobButton';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 
@@ -26,7 +26,7 @@ function Signin() {
   });
   const [errors, setErrors] = useState<FormError>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { login } = useAuthStore();
+  const { login, kakaoLogin, user } = useAuthStore();
   const router = useRouter();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +98,12 @@ function Signin() {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [router, user]);
+
   return (
     <div className="flex items-center w-full min-h-screen bg-gray-100">
       <div className="w-fit h-fit px-12 py-20 mx-auto max-lg:my-20 rounded-2xl border border-gray-300 shadow-custom bg-white">
@@ -157,6 +163,7 @@ function Signin() {
               hoverFontColor="#000"
               imageSrc={icons.kakaoIcon}
               imageAlt="kakao"
+              onClick={kakaoLogin}
             >
               Kakao로 시작하기
             </BlobButton>
