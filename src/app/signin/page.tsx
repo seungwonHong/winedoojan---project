@@ -99,6 +99,7 @@ function Signin() {
   };
 
   useEffect(() => {
+    // 이미 로그인이 되어있으면 홈페이지로 이동
     if (user) {
       router.push('/');
     }
