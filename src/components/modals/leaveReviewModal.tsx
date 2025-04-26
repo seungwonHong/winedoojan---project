@@ -103,6 +103,7 @@ export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
           <h2 className="text-2xl text-gray-800 font-bold">리뷰 등록</h2>
         </div>
 
+        {/* 와인 아이콘 + 와인이름 + 별점 */}
         <div className="flex items-center my-6 gap-3">
           <img src="/images/wine.svg" alt="와인 아이콘" className="bg-gray-100 w-12 h-12 rounded-xl p-1" />
           <div>
@@ -132,6 +133,7 @@ export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
           </div>
         </div>
 
+        {/* 후기 작성 */}
         <textarea
           className="w-full h-[120px] border border-gray-300 rounded-2xl px-5 py-3 mb-10 placeholder-gray-500 resize-none"
           placeholder="후기를 작성해주세요."
@@ -141,6 +143,7 @@ export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
           }
         />
 
+        {/* 맛 선택 range */}
         <div className="mb-10">
           <label className="block text-xl text-gray-800 font-bold mb-6">와인의 맛은 어땠나요?</label>
           <ReviewSlider label="바디감" value={reviewData.lightBold} onChange={(val) => handleSliderChange('lightBold', val)} leftLabel="가벼워요" rightLabel="진해요" />
@@ -149,6 +152,7 @@ export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
           <ReviewSlider label="산미" value={reviewData.softAcidic} onChange={(val) => handleSliderChange('softAcidic', val)} leftLabel="안셔요" rightLabel="많이셔요" />
         </div>
 
+        {/* 향 선택 버튼(중복 가능) */}
         <div className="mb-12">
           <label className="block text-xl text-gray-800 font-bold mb-6">기억에 남는 향이 있나요?</label>
           <div className="flex flex-wrap gap-[10px]">
