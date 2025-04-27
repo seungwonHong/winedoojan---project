@@ -43,7 +43,7 @@ export default function DeleteConfirmModal({ onClose, onConfirm, id, type }: Pro
       onClick={onClose}
     >
       <div 
-        className="w-[353px] h-[182px] bg-white rounded-2xl px-4 shadow-lg flex flex-col"
+        className="w-full max-w-[353px] h-[182px] bg-white rounded-2xl px-4 shadow-lg flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl font-bold text-center text-gray-800 mt-8">
