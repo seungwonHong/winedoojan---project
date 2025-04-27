@@ -5,6 +5,7 @@ import ic_hamburger from "../../../public/icons/ic_hamburger.png";
 import ic_heart from "../../../public/icons/ic_heart.png";
 import ic_garnet_heart from "../../../public/icons/ic_garnet_heart.png";
 import ic_star from "../../../public/icons/ic_rating_star.png";
+import { getTimeAgo } from "@/utils/getTimeAgo";
 import { useEffect, useState } from "react";
 
 const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
@@ -125,24 +126,3 @@ interface ReviewHeader {
     aroma: string[];
   };
 }
-
-const getTimeAgo = (dateString: string): string => {
-  const createdAt = new Date(dateString);
-  const now = new Date();
-  const diffMs = now.getTime() - createdAt.getTime();
-  const diffSec = Math.floor(diffMs / 1000);
-  const diffMin = Math.floor(diffSec / 60);
-  const diffHr = Math.floor(diffMin / 60);
-  const diffDay = Math.floor(diffHr / 24);
-
-  if (diffSec < 60) return "방금 전";
-  if (diffMin < 60) return `${diffMin}분 전`;
-  if (diffHr < 24) return `${diffHr}시간 전`;
-  if (diffDay < 7) return `${diffDay}일 전`;
-
-  return createdAt.toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
