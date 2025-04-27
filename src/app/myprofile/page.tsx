@@ -10,6 +10,8 @@ import images from "../../../public/images/images";
 import BlobButton from "@/components/common/BlobButton";
 import Header from "@/components/common/Header";
 import { useAuthStore } from "@/store/authStore";
+import LeaveReviewModal from "@/components/modals/leaveReviewModal";
+import RegisterWineModal from "@/components/modals/registerWineModal";
 
 export default function ProfilePage() {
   const user = useAuthStore((state) => state.user);
@@ -18,6 +20,8 @@ export default function ProfilePage() {
   const [winesData, SetWinesData] = useState<WinesResponse | null>(null);
   const [tab, setTab] = useState<"reviews" | "wines">("reviews");
   const [openId, setOpenId] = useState<number | null>(null);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isWineModalOpen, setIsWineModalOpen] = useState(false);
   const limit = 100;
 
   // console.log(user?.teamId, reviewsData, winesData);
@@ -106,6 +110,11 @@ export default function ProfilePage() {
                   children={
                     tab === "reviews" ? "리뷰등록하러가기" : "와인등록하러가기"
                   }
+                  onClick={
+                    tab === "reviews"
+                      ? () => setIsReviewModalOpen(true)
+                      : () => setIsWineModalOpen(true)
+                  }
                 />
               </div>
             ) : null}
@@ -139,6 +148,18 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+      {isReviewModalOpen && (
+        <LeaveReviewModal
+          onClose={() => setIsReviewModalOpen(false)}
+          wineName="임시 와인 이름"
+          wineImage=""
+          wineId={1}
+        />
+      )}
+
+      {isWineModalOpen && (
+        <RegisterWineModal onClose={() => setIsReviewModalOpen(false)} />
+      )}
     </div>
   );
 }
