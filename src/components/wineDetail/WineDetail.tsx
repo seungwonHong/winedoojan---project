@@ -25,11 +25,3 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
 };
 
 export default WineDetail;
-
-interface Wine {
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  reviews: any[];
-}
