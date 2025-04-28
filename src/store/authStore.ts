@@ -7,6 +7,7 @@ import {
   handleKakaoCallbackRequest,
 } from "@/services/auth"; // 분리된 API 함수 import
 
+
 interface User {
   id: number;
   email: string;
@@ -80,7 +81,7 @@ export const useAuthStore = create<AuthState>()(
           set({ accessToken: result.data.accessToken });
           return true;
         } else {
-          console.error("토큰 갱신 에러:", result.error);
+          console.error('토큰 갱신 에러:', result.error);
           // 토큰 갱신 실패 시 로그아웃
           get().logout();
           return false;
