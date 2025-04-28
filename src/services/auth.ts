@@ -1,4 +1,6 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const KAKAO_API = process.env.NEXT_PUBLIC_KAKAO_API;
 
 export const loginRequest = async (email: string, password: string) => {
   try {
@@ -56,8 +58,7 @@ export const refreshTokenRequest = async (refreshToken: string | null) => {
 };
 
 export const kakaoLoginRequest = () => {
-  const KAKAO_API = process.env.NEXT_PUBLIC_KAKAO_API;
-  const redirectUri = 'http://localhost:3000/oauth/signup/kakao'; // 카카오 개발자 콘솔에 등록한 URI
+  const redirectUri = `${BASE_URL}/oauth/signup/kakao`; // 카카오 개발자 콘솔에 등록한 URI
   const responseType = 'code';
   const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_API}&redirect_uri=${redirectUri}&response_type=${responseType}`;
   window.location.href = kakaoAuthUrl;
@@ -72,7 +73,7 @@ export const handleKakaoCallbackRequest = async (code: string) => {
       },
       body: JSON.stringify({
         token: code,
-        redirectUri: 'http://localhost:3000/oauth/signup/kakao',
+        redirectUri: `${BASE_URL}/oauth/signup/kakao`,
         state: '',
       }),
     });
