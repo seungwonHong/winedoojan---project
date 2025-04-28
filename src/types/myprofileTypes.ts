@@ -1,7 +1,7 @@
 export interface User {
   id: number;
   nickname: string;
-  image: string;
+  image: string | null;
   teamId: string;
 }
 
@@ -51,6 +51,7 @@ export interface UpdateUserResponse {
   createdAt: string;
   teamId: string;
   nickname: string;
+  url: string;
   id: number;
 }
 

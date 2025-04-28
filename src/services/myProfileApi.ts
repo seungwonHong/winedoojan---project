@@ -4,6 +4,7 @@ import {
   WinesResponse,
   UpdateUserResponse,
 } from "@/types/myprofileTypes";
+import { useAuthStore } from "@/store/authStore";
 
 const API_BASE_URL = "https://winereview-api.vercel.app";
 
@@ -24,9 +25,9 @@ interface FetchWinesParams {
 
 interface fetchUpdateUserParams {
   teamId: string;
-  image: string;
+  image: string | null;
   nickname: string;
-  token: string;
+  token: string | null;
 }
 
 interface fetchDeleteWineIdParams {
@@ -38,8 +39,10 @@ interface fetchDeleteWineIdParams {
 interface fetchDeleteReviewIdParams {
   teamId: string;
   id: number;
-  token: string;
+  token: string | null;
 }
+
+//추상화해보기
 
 export async function fetchReviews({
   teamId,
@@ -51,7 +54,7 @@ export async function fetchReviews({
   url.searchParams.append("limit", limit.toString());
   if (cursor) url.searchParams.append("cursor", cursor.toString());
 
-  const res = await fetch(url.toString(), {
+  let res = await fetch(url.toString(), {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -59,6 +62,22 @@ export async function fetchReviews({
     },
   });
 
+  if (res.status === 401) {
+    const refreshed = await useAuthStore.getState().refreshAccessToken();
+    if (!refreshed) {
+      throw new Error("AccessToken 갱신 실패");
+    }
+
+    const newToken = useAuthStore.getState().accessToken;
+
+    res = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${newToken}`,
+      },
+    });
+  }
   if (!res.ok) {
     const errorData: ErrorResponse = await res.json();
     throw new Error(errorData.message);
@@ -78,34 +97,35 @@ export async function fetchWines({
   url.searchParams.append("limit", limit.toString());
   if (cursor) url.searchParams.append("cursor", cursor.toString());
 
-  const res = await fetch(url, {
+  let res = await fetch(url, {
     method: "GET",
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (res.status === 401) {
+    const refreshed = await useAuthStore.getState().refreshAccessToken();
+    if (!refreshed) {
+      throw new Error("AccessToken 갱신 실패");
+    }
+
+    const newToken = useAuthStore.getState().accessToken;
+
+    res = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${newToken}`,
+      },
+    });
+  }
   if (!res.ok) {
     const errorData: ErrorResponse = await res.json();
     throw new Error(errorData.message);
   }
 
-  return await res.json();
-}
-
-// 로그인(임시)
-export async function fetchLogin(teamId: string) {
-  const url = new URL(`${API_BASE_URL}/${teamId}/auth/signIn`);
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({ email: "example@email.com", password: "password" }),
-  });
-  if (!res.ok) {
-    throw new Error(`${res.status}`);
-  }
   return await res.json();
 }
 
@@ -117,7 +137,7 @@ export async function fetchUpdateUser({
   token,
 }: fetchUpdateUserParams): Promise<UpdateUserResponse> {
   const url = new URL(`${API_BASE_URL}/${teamId}/users/me`);
-  const res = await fetch(url, {
+  let res = await fetch(url, {
     method: "PATCH",
     headers: {
       "Content-type": "application/json",
@@ -125,6 +145,22 @@ export async function fetchUpdateUser({
     },
     body: JSON.stringify({ image, nickname }),
   });
+  if (res.status === 401) {
+    const refreshed = await useAuthStore.getState().refreshAccessToken();
+    if (!refreshed) {
+      throw new Error("AccessToken 갱신실패");
+    }
+    const newToken = useAuthStore.getState().accessToken;
+
+    res = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${newToken}`,
+      },
+      body: JSON.stringify({ image, nickname }),
+    });
+  }
   return await res.json();
 }
 
@@ -135,13 +171,29 @@ export async function fetchDeleteWineId({
   token,
 }: fetchDeleteWineIdParams) {
   const url = new URL(`${API_BASE_URL}/${teamId}/wines/${id}`);
-  const res = await fetch(url, {
+  let res = await fetch(url, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
+  if (res.status === 401) {
+    const refreshed = await useAuthStore.getState().refreshAccessToken();
+    if (!refreshed) {
+      throw new Error("AccessToken 갱신실패");
+    }
+    const newToken = useAuthStore.getState().accessToken;
+
+    res = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${newToken}`,
+      },
+    });
+  }
+
   if (!res.ok) {
     throw new Error(`${res.status}`);
   }
@@ -166,5 +218,45 @@ export async function fetchDeleteReviewId({
   if (!res.ok) {
     throw new Error(`${res.status}`);
   }
+  return await res.json();
+}
+
+// {teamId}/images/upload
+export async function fetchUploadImage(
+  teamId: string,
+  token: string | null,
+  file: File
+) {
+  const url = new URL(`${API_BASE_URL}/${teamId}/images/upload`);
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  let res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+  if (res.status === 401) {
+    const refreshed = await useAuthStore.getState().refreshAccessToken();
+    if (!refreshed) throw new Error("AccessToken 갱신 실패");
+
+    const newToken = useAuthStore.getState().accessToken;
+
+    res = await fetch(url.toString(), {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${newToken}`,
+      },
+      body: formData,
+    });
+  }
+
+  if (!res.ok) {
+    throw new Error(`이미지 업로드 실패: ${res.status}`);
+  }
+
   return await res.json();
 }

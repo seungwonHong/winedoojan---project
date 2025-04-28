@@ -1,53 +1,55 @@
 "use client";
 
 import MyReviewCard from "@/components/MyReviewCard";
-import {
-  fetchReviews,
-  fetchLogin,
-  fetchWines,
-} from "../../services/myProfileApi";
-import { ReviewsResponse, WinesResponse, User } from "@/types/myprofileTypes";
+import { fetchReviews, fetchWines } from "../../services/myProfileApi";
+import { ReviewsResponse, WinesResponse } from "@/types/myprofileTypes";
 import MyProfile from "@/components/MyProfile";
 import { useEffect, useState } from "react";
 import MyWineCard from "@/components/MyWineCard";
 import images from "../../../public/images/images";
 import BlobButton from "@/components/common/BlobButton";
 import Header from "@/components/common/Header";
+import { useAuthStore } from "@/store/authStore";
+import LeaveReviewModal from "@/components/modals/leaveReviewModal";
+import RegisterWineModal from "@/components/modals/registerWineModal";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<User | null>(null);
+  const user = useAuthStore((state) => state.user);
+  const accessToken = useAuthStore((state) => state.accessToken);
   const [reviewsData, setReviewsData] = useState<ReviewsResponse | null>(null);
   const [winesData, SetWinesData] = useState<WinesResponse | null>(null);
   const [tab, setTab] = useState<"reviews" | "wines">("reviews");
-  const [token, setToken] = useState("");
   const [openId, setOpenId] = useState<number | null>(null);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isWineModalOpen, setIsWineModalOpen] = useState(false);
   const limit = 100;
-  const teamId = "14-2";
+
+  // console.log(user?.teamId, reviewsData, winesData);
 
   // 분리필요
   const loadData = async () => {
-    const loginData = await fetchLogin(teamId);
-    setUser(loginData.user);
-    setToken(loginData.accessToken);
+    if (!user || !accessToken) return;
 
     const reviewData = await fetchReviews({
-      teamId: loginData.user.teamId,
+      teamId: user.teamId,
       limit,
-      token: loginData.accessToken,
+      token: accessToken,
     });
     setReviewsData(reviewData);
 
     const wineData = await fetchWines({
-      teamId: loginData.user.teamId,
+      teamId: user.teamId,
       limit,
-      token: loginData.accessToken,
+      token: accessToken,
     });
     SetWinesData(wineData);
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (user && accessToken) {
+      loadData();
+    }
+  }, [user, accessToken]);
 
   if (!user || !reviewsData || !winesData) {
     return (
@@ -61,7 +63,7 @@ export default function ProfilePage() {
     <div className="flex flex-col items-center mt-[40px]">
       <Header />
       <div className="w-max flex justify-start m-auto gap-[60px]">
-        <MyProfile user={user} token={token} loadData={loadData} />
+        <MyProfile user={user} token={accessToken} />
         <div>
           <div
             className={`flex gap-[32px] items-center ${
@@ -108,6 +110,11 @@ export default function ProfilePage() {
                   children={
                     tab === "reviews" ? "리뷰등록하러가기" : "와인등록하러가기"
                   }
+                  onClick={
+                    tab === "reviews"
+                      ? () => setIsReviewModalOpen(true)
+                      : () => setIsWineModalOpen(true)
+                  }
                 />
               </div>
             ) : null}
@@ -118,7 +125,7 @@ export default function ProfilePage() {
                       key={review.id}
                       review={review}
                       teamId={user.teamId}
-                      token={token}
+                      token={accessToken}
                       onDeleteSuccess={loadData}
                       tab={tab}
                       openId={openId}
@@ -130,7 +137,7 @@ export default function ProfilePage() {
                       key={wine.id}
                       wine={wine}
                       teamId={user.teamId}
-                      token={token}
+                      token={accessToken}
                       onDeleteSuccess={loadData}
                       tab={tab}
                       openId={openId}
@@ -141,6 +148,18 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+      {isReviewModalOpen && (
+        <LeaveReviewModal
+          onClose={() => setIsReviewModalOpen(false)}
+          wineName="임시 와인 이름"
+          wineImage=""
+          wineId={1}
+        />
+      )}
+
+      {isWineModalOpen && (
+        <RegisterWineModal onClose={() => setIsReviewModalOpen(false)} />
+      )}
     </div>
   );
 }
