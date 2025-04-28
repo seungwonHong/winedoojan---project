@@ -67,7 +67,6 @@ const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
             onClick={handleClickMenu}
           >
             <Image src={ic_hamburger} alt="ic_hamburger" fill sizes="30px" />
-
             {isMenuOpen && (
               <div className="z-20 absolute right-0 top-[35px] bg-white border border-gray-300 rounded-[16px] w-[126px] h-[104px] flex flex-col items-center justify-center">
                 <div

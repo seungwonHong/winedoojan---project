@@ -9,6 +9,7 @@ import { Wine } from "@/types/wineDetailTypes";
 
 const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const totalReviews = Object.values(wine.avgRatings).reduce(
     (acc, cur) => acc + cur,
     0
@@ -53,6 +54,7 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
           </ModalButton>
         </div>
       </div>
+
       {isModalOpen && (
         <LeaveReviewModal
           wineImage="a"
@@ -61,6 +63,7 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
           onClose={() => setIsModalOpen(false)}
         />
       )}
+
       {/* 점수별 퍼센트 바 */}
       <div className="mt-[24px] space-y-[8px] lg:mt-[10px]">
         {Object.entries(wine.avgRatings)

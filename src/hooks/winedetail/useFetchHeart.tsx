@@ -4,6 +4,7 @@ import { useAuthStore } from "@/store/authStore";
 
 const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
   const [isLike, setIsLike] = useState(false);
+
   const [isProcessing, setIsProcessing] = useState(false);
 
   const refreshAccessToken = useAuthStore((state) => state.refreshAccessToken);
@@ -20,7 +21,9 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
 
     if (!token) {
       console.error("토큰 없음");
+
       setIsProcessing(false);
+
       return;
     }
 
