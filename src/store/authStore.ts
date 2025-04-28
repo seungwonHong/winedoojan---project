@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface User {
   id: number;
@@ -44,9 +44,9 @@ export const useAuthStore = create<AuthState>()(
       ) => {
         try {
           const res = await fetch(`${API_BASE_URL}/auth/register`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               nickname,
@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthState>()(
             const errorData = await res.json();
             return {
               success: false,
-              message: errorData.message + ', 회원가입에 실패했습니다.',
+              message: errorData.message + ", 회원가입에 실패했습니다.",
             };
           }
 
@@ -77,19 +77,19 @@ export const useAuthStore = create<AuthState>()(
             });
             return {
               success: true,
-              message: '회원가입이 완료되었습니다. 로그인해주세요.',
+              message: "회원가입이 완료되었습니다. 로그인해주세요.",
             };
           } else {
             return {
               success: false,
-              message: '인증 정보를 받지 못했습니다.',
+              message: "인증 정보를 받지 못했습니다.",
             };
           }
         } catch (error) {
-          console.error('회원가입 에러:', error);
+          console.error("회원가입 에러:", error);
           return {
             success: false,
-            message: '회원가입 요청 중 오류가 발생했습니다.',
+            message: "회원가입 요청 중 오류가 발생했습니다.",
           };
         }
       },
@@ -99,9 +99,9 @@ export const useAuthStore = create<AuthState>()(
         try {
           // Swagger 문서 로그인 엔드포인트 호출
           const response = await fetch(`${API_BASE_URL}/auth/signin`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ email, password }),
           });
@@ -110,7 +110,7 @@ export const useAuthStore = create<AuthState>()(
             // const errorData = await response.json();
             return {
               success: false,
-              message: '이메일 혹은 비밀번호를 확인해주세요.',
+              message: "이메일 혹은 비밀번호를 확인해주세요.",
             };
           }
 
@@ -129,14 +129,14 @@ export const useAuthStore = create<AuthState>()(
           } else {
             return {
               success: false,
-              message: '인증 정보를 받지 못했습니다.',
+              message: "인증 정보를 받지 못했습니다.",
             };
           }
         } catch (error) {
-          console.error('로그인 에러:', error);
+          console.error("로그인 에러:", error);
           return {
             success: false,
-            message: '로그인 요청 중 오류가 발생했습니다.',
+            message: "로그인 요청 중 오류가 발생했습니다.",
           };
         }
       },
@@ -163,15 +163,15 @@ export const useAuthStore = create<AuthState>()(
 
           // 토큰 갱신 엔드포인트 호출
           const response = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ refreshToken: currentRefreshToken }),
           });
 
           if (!response.ok) {
-            throw new Error('토큰 갱신 실패');
+            throw new Error("토큰 갱신 실패");
           }
 
           const data = await response.json();
@@ -183,7 +183,7 @@ export const useAuthStore = create<AuthState>()(
 
           return true;
         } catch (error) {
-          console.error('토큰 갱신 에러:', error);
+          console.error("토큰 갱신 에러:", error);
 
           // 토큰 갱신 실패 시 로그아웃
           get().logout();
@@ -192,7 +192,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
     }
   )

@@ -1,8 +1,9 @@
 "use client";
 
-import useFetchWine from "@/hooks/useFetchWine";
+import useFetchWine from "@/hooks/winedetail/useFetchWine";
 
 import WineDetailCard from "./WineDetailCard";
+import WineDetailRatingCard from "./WineDetailRatingCard";
 import WineDetailReviewCardList from "./WineDetailReviewCardList";
 
 const WineDetail = ({ wineId }: { wineId: string }) => {
@@ -15,9 +16,13 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
   return (
     <div>
       <WineDetailCard wine={wine} />
+
       <div className="lg:w-[800px]">
         <div className="hidden lg:block mt-[60px] text-[20px] text-[#2D3034] font-[700]">
           리뷰 목록
+        </div>
+        <div className="lg:relative lg:w-[280px]">
+          <WineDetailRatingCard wine={wine} />
         </div>
         <WineDetailReviewCardList wine={wine} />
       </div>

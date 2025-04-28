@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/store/authStore";
 import { useState, useEffect } from "react";
 
-import { Wine } from "../types/wineDetailTypes";
+import { Wine } from "../../types/wineDetailTypes";
 
 const useFetchWine = (wineId: string) => {
   const [wine, setWine] = useState<Wine | null>(null);
@@ -12,7 +12,7 @@ const useFetchWine = (wineId: string) => {
   useEffect(() => {
     const fetchWine = async () => {
       try {
-        let token = localStorage.getItem("accessToken");
+        let token = useAuthStore.getState().accessToken;
         if (!token) {
           throw new Error("Access token이 없습니다.");
         }

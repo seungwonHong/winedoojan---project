@@ -1,5 +1,3 @@
-"use client";
-
 import WineDetailReviewCard from "./WineDetailReviewCard";
 
 import { Wine } from "@/types/wineDetailTypes";

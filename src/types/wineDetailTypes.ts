@@ -4,6 +4,9 @@ export interface Wine {
   image: string;
   price: number;
   reviews: any[];
+  reviewCount: number;
+  avgRating: number;
+  avgRatings: { 1: number; 2: number; 3: number; 4: number; 5: number };
 }
 
 export interface Review {

@@ -5,6 +5,10 @@ import Image from "next/image";
 
 import { getTimeAgo } from "@/utils/getTimeAgo";
 
+import useFetchHeart from "@/hooks/winedetail/useFetchHeart";
+
+import LeaveReviewModal from "../modals/leaveReviewModal";
+
 import default_profile_img from "../../../public/images/default_profile_img.png";
 import ic_hamburger from "../../../public/icons/ic_hamburger.png";
 import ic_heart from "../../../public/icons/ic_heart.png";
@@ -14,46 +18,11 @@ import ic_star from "../../../public/icons/ic_rating_star.png";
 import { ReviewHeader } from "@/types/wineDetailTypes";
 
 const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
-  const [isLike, setIsLike] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsLike(item.isLiked);
-  }, [item.isLiked]);
-
-  const handleClickLike = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      console.error("토큰 없음");
-      return;
-    }
-
-    const method = isLike ? "DELETE" : "POST";
-    try {
-      const res = await fetch(
-        `https://winereview-api.vercel.app/14-2/reviews/${item.id}/like`,
-        {
-          method,
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (res.status === 204) {
-        setIsLike((prev) => !prev); // 요청 성공했을 때만 토글
-      } else {
-        const error = await res.json();
-        console.error("좋아요 실패:", error.message);
-      }
-    } catch (err) {
-      console.error("좋아요 요청 중 에러:", err);
-    }
-  };
+  const { isLike, handleClickLike } = useFetchHeart(item.id, item.isLiked);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClickMenu = () => {
-    setIsOpen((prev) => !prev);
+    setIsMenuOpen((prev) => !prev);
   };
 
   const handleClickPatch = () => {
@@ -98,7 +67,7 @@ const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
             onClick={handleClickMenu}
           >
             <Image src={ic_hamburger} alt="ic_hamburger" fill sizes="30px" />
-            {isOpen && (
+            {isMenuOpen && (
               <div className="z-10 absolute right-0 top-[35px] bg-white border border-gray-300 rounded-[16px] w-[126px] h-[104px] flex flex-col items-center justify-center">
                 <div
                   className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
