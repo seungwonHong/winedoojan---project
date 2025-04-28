@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 
 import WineDetailReviewHeader from "./WineDetailReviewHeader";
 import WineTasteSlider from "./WineTasteSlider";
+
 import ic_top from "../../../public/icons/ic_top.png";
 import ic_bottom from "../../../public/icons/ic_bottom.png";
-import { useState } from "react";
+
+import { Review } from "@/types/wineDetailTypes";
 
 const WineDetailReviewCard = ({ item }: { item: Review }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -66,20 +69,3 @@ const WineDetailReviewCard = ({ item }: { item: Review }) => {
 };
 
 export default WineDetailReviewCard;
-
-interface Review {
-  id: number;
-  isLiked: boolean;
-  rating: number;
-  content: string;
-  createdAt: string;
-  lightBold: number;
-  smoothTannic: number;
-  drySweet: number;
-  softAcidic: number;
-  user: {
-    nickname: string;
-    image: string | null;
-  };
-  aroma: string[];
-}

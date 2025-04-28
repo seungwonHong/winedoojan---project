@@ -1,8 +1,9 @@
 "use client";
 
+import useFetchWine from "@/hooks/useFetchWine";
+
 import WineDetailCard from "./WineDetailCard";
 import WineDetailReviewCardList from "./WineDetailReviewCardList";
-import useFetchWine from "@/hooks/useFetchWine";
 
 const WineDetail = ({ wineId }: { wineId: string }) => {
   const { wine, loading, error } = useFetchWine(wineId);

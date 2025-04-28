@@ -1,12 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
+
+import { getTimeAgo } from "@/utils/getTimeAgo";
 
 import default_profile_img from "../../../public/images/default_profile_img.png";
 import ic_hamburger from "../../../public/icons/ic_hamburger.png";
 import ic_heart from "../../../public/icons/ic_heart.png";
 import ic_garnet_heart from "../../../public/icons/ic_garnet_heart.png";
 import ic_star from "../../../public/icons/ic_rating_star.png";
-import { getTimeAgo } from "@/utils/getTimeAgo";
-import { useEffect, useState } from "react";
+
+import { ReviewHeader } from "@/types/wineDetailTypes";
 
 const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
   const [isLike, setIsLike] = useState(false);
@@ -137,17 +142,3 @@ const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
 };
 
 export default WineDetailReviewHeader;
-
-interface ReviewHeader {
-  item: {
-    id: number;
-    isLiked: boolean;
-    rating: number;
-    createdAt: string;
-    user: {
-      image: string | null;
-      nickname: string;
-    };
-    aroma: string[];
-  };
-}

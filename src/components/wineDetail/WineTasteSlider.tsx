@@ -1,9 +1,13 @@
+"use client";
+
+import { tastingNotes } from "@/types/wineDetailTypes";
+
 const WineTasteSlider = ({
   value,
   flavorKeyword,
   minLabel,
   maxLabel,
-}: Review) => {
+}: tastingNotes) => {
   return (
     <div className="flex items-center gap-[8px] w-full mt-[16px] mb-[12px]">
       <div className="w-[60px] text-center py-[6px] px-[12px] bg-[#F4F6FA] text-[#9FACBD] text-[12px] font-semibold rounded-[12px]">
@@ -27,10 +31,3 @@ const WineTasteSlider = ({
 };
 
 export default WineTasteSlider;
-
-interface Review {
-  value: number;
-  flavorKeyword: string;
-  minLabel: string;
-  maxLabel: string;
-}

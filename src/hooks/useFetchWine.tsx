@@ -1,6 +1,8 @@
 import { useAuthStore } from "@/store/authStore";
 import { useState, useEffect } from "react";
 
+import { Wine } from "../types/wineDetailTypes";
+
 const useFetchWine = (wineId: string) => {
   const [wine, setWine] = useState<Wine | null>(null);
   const [loading, setLoading] = useState(true);
@@ -63,11 +65,3 @@ const useFetchWine = (wineId: string) => {
 };
 
 export default useFetchWine;
-
-interface Wine {
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  reviews: any[];
-}

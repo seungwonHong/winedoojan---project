@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+
+import { Wine } from "@/types/wineDetailTypes";
 
 const WineDetailCard = ({ wine }: { wine: Wine }) => {
   return (
@@ -32,11 +36,3 @@ const WineDetailCard = ({ wine }: { wine: Wine }) => {
 };
 
 export default WineDetailCard;
-
-interface Wine {
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  reviews: any[];
-}
