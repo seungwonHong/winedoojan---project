@@ -48,7 +48,8 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
           <ModalButton
             onClick={() => setIsModalOpen(true)}
             fontSize="text-[14px] md:text-[16px]"
-            className="w-[100px] h-[40px] md:w-[113px] md:h-[42px]"
+            width="w-[100px] md:w-[113px]"
+            height="h-[40px] md:h-[42px]"
           >
             리뷰 남기기
           </ModalButton>
