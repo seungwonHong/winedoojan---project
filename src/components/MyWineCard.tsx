@@ -1,22 +1,36 @@
-import hamburgerIcon from "@/public/icons/ic_hamburger.png";
 import { Wine } from "@/types/myprofileTypes";
 import Image from "next/image";
-import defaultImg from "@/public/images/default_profile_img.png";
+import images from "../../public/images/images";
+import HamburgerMenu from "./HamburgerMenu";
 
 interface MyWineCardProps {
   wine: Wine;
+  teamId: string;
+  token: string | null;
+  tab: string;
+  openId: number | null;
+  setOpenId: (id: number | null) => void;
+  onDeleteSuccess: () => void;
 }
 
-export default function MyWineCard({ wine }: MyWineCardProps) {
+export default function MyWineCard({
+  teamId,
+  wine,
+  token,
+  tab,
+  openId,
+  setOpenId,
+  onDeleteSuccess,
+}: MyWineCardProps) {
   if (wine.image === "string") {
-    wine.image = defaultImg.src;
+    wine.image = images.defaultProfile;
   }
 
   return (
     <div className="flex gap-[40px] pt-[30px] w-[800px] h-[228px] border border-[#cfdbea] rounded-[16px] px-[40px] bg-white shadow-sm mb-[62px] items-end">
       <div className="overflow-hidden">
         <Image
-          src={wine.image || defaultImg}
+          src={wine.image || images.defaultProfile}
           alt="와인이미지"
           width={76}
           height={270}
@@ -39,10 +53,14 @@ export default function MyWineCard({ wine }: MyWineCardProps) {
 
       {/* 햄버거 아이콘 */}
       <div className="h-full ml-auto">
-        <img
-          src={hamburgerIcon.src}
-          alt="더보기 버튼"
-          className="size-[26px]"
+        <HamburgerMenu
+          id={wine.id}
+          teamId={teamId}
+          token={token}
+          onDeleteSuccess={onDeleteSuccess}
+          tab={tab}
+          openId={openId}
+          setOpenId={setOpenId}
         />
       </div>
     </div>
