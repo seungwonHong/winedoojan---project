@@ -33,7 +33,7 @@ export default function WineMotionList({ wines }: Props) {
         const offset = index - centerIndex;
         return (
           <motion.div
-            className="absolute lg:top-[20px] md:top-[85px] top-[110px]"
+            className="absolute lg:top-[120px] md:top-[85px] top-[110px]"
             key={wine.id}
             initial={{ x: 0, y: 0 }}
             animate={{

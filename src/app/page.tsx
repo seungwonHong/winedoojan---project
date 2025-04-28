@@ -33,7 +33,7 @@ export default async function Home() {
         </div>
 
         <div className="flex flex-row items-end justify-center">
-          <WineMotionList wines={wines} />
+          <WineMotionList wines={wines.list} />
         </div>
       </div>
 
