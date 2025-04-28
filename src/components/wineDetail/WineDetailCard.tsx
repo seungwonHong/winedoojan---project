@@ -7,14 +7,11 @@ import { Wine } from "@/types/wineDetailTypes";
 const WineDetailCard = ({ wine }: { wine: Wine }) => {
   return (
     <div className="flex w-[343px] h-[190px] rounded-[12px] mt-[29px] border border-[#CFDBEA] relative md:w-[704px] md:h-[260px] md:mt-[62px] lg:w-[1140px]">
-      <div className="object-cover w-[58px] h-[209px] relative bottom-[19px] ml-[20px] z-1 md:w-[84px] md:h-[302px] md:bottom-[42px] md:ml-[60px] lg:w-[58px] lg:h-[209px] lg:top-[50px]">
-        <Image
+      <div className="">
+        <img
           src={wine.image}
           alt={wine.name}
-          fill
-          sizes="(min-width: 1024px) 58px, (min-width: 768px) 84px, 58px"
-          priority
-          className="object-cover"
+          className="relative object-cover w-[58px] h-[209px] bottom-[19px] ml-[20px] z-1 md:w-[84px] md:h-[302px] md:bottom-[42px] md:ml-[60px] lg:w-[58px] lg:h-[209px] lg:top-[50px]"
         />
       </div>
 

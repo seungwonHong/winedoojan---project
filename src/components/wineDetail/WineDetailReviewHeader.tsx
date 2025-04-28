@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
+
+import { FaStar } from "react-icons/fa";
 
 import { getTimeAgo } from "@/utils/getTimeAgo";
 
@@ -13,7 +15,6 @@ import default_profile_img from "../../../public/images/default_profile_img.png"
 import ic_hamburger from "../../../public/icons/ic_hamburger.png";
 import ic_heart from "../../../public/icons/ic_heart.png";
 import ic_garnet_heart from "../../../public/icons/ic_garnet_heart.png";
-import ic_star from "../../../public/icons/ic_rating_star.png";
 
 import { ReviewHeader } from "@/types/wineDetailTypes";
 
@@ -99,7 +100,7 @@ const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
       <div className="flex justify-end relative bottom-[38px] md:bottom-[42px]">
         <div className="flex justify-center items-center text-[18px] font-[700] text-[#830E00] bg-[#ffe9e6] w-[60px] h-[36px] rounded-[12px] md:w-[80px] md:h-[42px] ">
           <div className="flex justify-center items-center relative w-[16px] h-[16px] md:w-[20px] md:h-[20px]">
-            <Image src={ic_star} fill alt="ic_star" sizes="20px" />
+            <FaStar className="text-[#830E00] w-[16px] h-[16px]" />
           </div>
           <div className="text-center relative top-[2px] left-[3px]">
             {item.rating.toFixed(1)}
