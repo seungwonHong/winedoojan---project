@@ -1,5 +1,7 @@
 import WineDetailReviewCard from "./WineDetailReviewCard";
 
+import { Wine } from "@/types/wineDetailTypes";
+
 const WineDetailReviewCardList = ({ wine }: { wine: Wine }) => {
   return (
     <>
@@ -11,11 +13,3 @@ const WineDetailReviewCardList = ({ wine }: { wine: Wine }) => {
 };
 
 export default WineDetailReviewCardList;
-
-interface Wine {
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  reviews: any[];
-}

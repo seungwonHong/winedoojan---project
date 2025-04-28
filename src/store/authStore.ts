@@ -1,11 +1,12 @@
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import {
   loginRequest,
   refreshTokenRequest,
   kakaoLoginRequest,
   handleKakaoCallbackRequest,
-} from '@/services/auth'; // 분리된 API 함수 import
+} from "@/services/auth"; // 분리된 API 함수 import
+
 
 interface User {
   id: number;
@@ -107,7 +108,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
     }
   )
