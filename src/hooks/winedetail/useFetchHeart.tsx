@@ -4,6 +4,8 @@ import { useAuthStore } from "@/store/authStore";
 
 const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
   const [isLike, setIsLike] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const refreshAccessToken = useAuthStore((state) => state.refreshAccessToken);
 
   useEffect(() => {
@@ -11,10 +13,14 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
   }, [initialIsLiked]);
 
   const handleClickLike = async () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     let token = useAuthStore.getState().accessToken;
 
     if (!token) {
       console.error("토큰 없음");
+      setIsProcessing(false);
       return;
     }
 
@@ -58,6 +64,8 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
       }
     } catch (err) {
       console.error("좋아요 요청 중 에러:", err);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
