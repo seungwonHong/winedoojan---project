@@ -27,7 +27,7 @@ const WineDetailCard = ({ wine }: { wine: Wine }) => {
             {wine.region}
           </div>
           <div className="w-[86px] h-[36px] flex justify-center items-center rounded-[10px] font-[700] text-[14px] text-[#830E00] bg-[#ffe9e6] md:text-[18px] md:w-[114px] md:h-[37px]">
-            ₩ {wine.price}
+            ₩ {Number(wine.price).toLocaleString()}
           </div>
         </div>
       </div>
