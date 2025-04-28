@@ -1,10 +1,14 @@
-import ModalButton from "../common/ModalButton";
+import { useState } from "react";
 
 import { FaStar, FaRegStar } from "react-icons/fa";
+
+import ModalButton from "../common/ModalButton";
+import LeaveReviewModal from "../modals/leaveReviewModal";
 
 import { Wine } from "@/types/wineDetailTypes";
 
 const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const totalReviews = Object.values(wine.avgRatings).reduce(
     (acc, cur) => acc + cur,
     0
@@ -15,7 +19,7 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
     <div className="mt-[40px] md:flex md:justify-between md:w-[576px] md:mx-auto md:items-center lg:inline-block lg:w-[280px] lg:m-0 lg:absolute lg:top-[-40px] lg:left-[850px]">
       <div className="flex justify-between md:flex-col md:gap-[20px] lg:flex-row">
         <div className="flex gap-[16px]">
-          <div className="text-[36px] text-[#2D3034] font-[800] lg:text-[54px]">
+          <div className="text-[36px] text-[#2D3034] font-[800] md:text-[54px]">
             {wine.avgRating}
           </div>
           <div className="flex flex-col gap-[5px] justify-center">
@@ -41,7 +45,7 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
         </div>
         <div className="lg:hidden">
           <ModalButton
-            onClick={() => console.log("click")}
+            onClick={() => setIsModalOpen(true)}
             fontSize="text-[14px] md:text-[16px]"
             className="w-[100px] h-[40px] md:w-[113px] md:h-[42px]"
           >
@@ -49,6 +53,14 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
           </ModalButton>
         </div>
       </div>
+      {isModalOpen && (
+        <LeaveReviewModal
+          wineImage="a"
+          wineName={wine.name}
+          wineId={wine.id}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       {/* 점수별 퍼센트 바 */}
       <div className="mt-[24px] space-y-[8px] lg:mt-[10px]">
         {Object.entries(wine.avgRatings)
@@ -74,7 +86,7 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
       </div>
       <div className="hidden lg:block mt-[30px]">
         <ModalButton
-          onClick={() => console.log("click")}
+          onClick={() => setIsModalOpen(true)}
           fontSize="text-[14px] md:text-[16px]"
           className="w-[100px] h-[40px] md:w-[113px] md:h-[42px]"
         >
