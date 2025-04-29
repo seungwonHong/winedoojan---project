@@ -37,6 +37,12 @@ module.exports = {
         custom: '0px 2px 20px 0px #0000000A',
       },
     },
+    screens: {
+      sm: '425px',
+      md: '768px',
+      lg: '1200px',
+      xl: '1280px',
+    },
   },
   plugins: [],
 };
