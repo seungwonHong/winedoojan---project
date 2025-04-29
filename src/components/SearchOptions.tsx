@@ -3,13 +3,17 @@ import searchStore from "@/store/searchStore";
 import React, { useState } from "react";
 
 const SearchOptions = () => {
-  const { setType, setMinPrice, setMaxPrice, setRating } = searchStore();
+  const {
+    setType,
+    setMinPrice,
+    setMaxPrice,
+    setRating,
+    buttonClick,
+    setButtonClick,
+    checkBoxClick,
+    setCheckBoxClick,
+  } = searchStore();
 
-  const [buttonClick, setButtonClick] = useState({
-    red: false,
-    white: false,
-    sparkling: false,
-  });
   const backgroundColor = {
     red: buttonClick.red ? "bg-[#800020]" : "bg-[#FFFFFF]",
     white: buttonClick.white ? "bg-[#800020]" : "bg-[#FFFFFF]",
@@ -43,14 +47,6 @@ const SearchOptions = () => {
     }
     setType(type);
   };
-
-  const [checkBoxClick, setCheckBoxClick] = useState({
-    all: false,
-    "4.5": false,
-    "4": false,
-    "3.5": false,
-    "3": false,
-  });
 
   const handleCheck = (rate: "all" | "4.5" | "4" | "3.5" | "3") => {
     if (rate === "all" && checkBoxClick.all === false) {
@@ -147,7 +143,7 @@ const SearchOptions = () => {
   };
 
   return (
-    <div className="w-[284px] h-[628px] flex flex-col">
+    <div className="w-[284px] h-[518px] flex flex-col">
       <span className="text-[20px] text-[#2D3034] font-bold">WINE TYPES</span>
 
       <div className="flex flex-row mt-[12px]">
@@ -243,7 +239,7 @@ const SearchOptions = () => {
       <div className="flex flex-row mt-[10px]">
         <div
           onClick={() => handleCheck("3.5")}
-          className="w-[20px] h-[20px] border-[1px] border-[#CFDBEA] bg-[#F2F4F8] rounded-md mr-[5px] cursor-pointer"
+          className="flex flex-row items-center justify-center w-[20px] h-[20px] border-[1px] border-[#CFDBEA] bg-[#F2F4F8] rounded-md mr-[5px] cursor-pointer"
         >
           {checkBoxClick["3.5"] ? (
             <div className="w-[10px] h-[10px] bg-[#800020] rounded-[3px]"></div>
@@ -258,7 +254,7 @@ const SearchOptions = () => {
       <div className="flex flex-row mt-[10px]">
         <div
           onClick={() => handleCheck("3")}
-          className="w-[20px] h-[20px] border-[1px] border-[#CFDBEA] bg-[#F2F4F8] rounded-md mr-[5px] cursor-pointer"
+          className="flex flex-row items-center justify-center w-[20px] h-[20px] border-[1px] border-[#CFDBEA] bg-[#F2F4F8] rounded-md mr-[5px] cursor-pointer"
         >
           {checkBoxClick["3"] ? (
             <div className="w-[10px] h-[10px] bg-[#800020] rounded-[3px]"></div>

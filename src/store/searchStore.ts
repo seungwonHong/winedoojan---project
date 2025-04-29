@@ -18,6 +18,26 @@ interface Options {
   setName: (name: string | undefined) => void;
   nextCursor: number | undefined;
   setNextCursor: (nextCursor: number | undefined) => void;
+  buttonClick: { red: boolean; white: boolean; sparkling: boolean };
+  setButtonClick: (buttonClick: {
+    red: boolean;
+    white: boolean;
+    sparkling: boolean;
+  }) => void;
+  checkBoxClick: {
+    all: boolean;
+    "4.5": boolean;
+    "4": boolean;
+    "3.5": boolean;
+    "3": boolean;
+  };
+  setCheckBoxClick: (checkBoxClick: {
+    all: boolean;
+    "4.5": boolean;
+    "4": boolean;
+    "3.5": boolean;
+    "3": boolean;
+  }) => void;
 }
 
 const searchStore = create<Options>((set) => ({
@@ -29,6 +49,14 @@ const searchStore = create<Options>((set) => ({
   allWines: [],
   name: undefined,
   nextCursor: undefined,
+  buttonClick: { red: false, white: false, sparkling: false },
+  checkBoxClick: {
+    all: false,
+    "4.5": false,
+    "4": false,
+    "3.5": false,
+    "3": false,
+  },
   setKeyword: (keyword) => set({ keyword }),
   setType: (type) => set({ type }),
   setMinPrice: (minPrice) => set({ minPrice }),
@@ -37,6 +65,8 @@ const searchStore = create<Options>((set) => ({
   setAllWines: (allWines) => set({ allWines }),
   setName: (name) => set({ name }),
   setNextCursor: (nextCursor) => set({ nextCursor }),
+  setButtonClick: (buttonClick) => set({ buttonClick }),
+  setCheckBoxClick: (checkBoxClick) => set({ checkBoxClick }),
 }));
 
 export default searchStore;

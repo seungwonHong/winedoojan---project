@@ -47,7 +47,7 @@ const SearchWine = (props: Props) => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          className=" border-[1px] border-[#CFDBEA]  lg:w-[800px] lg:h-[48px] md:w-[600px] md:h-[48px] w-[300px] h-[38px] pl-[55px] pr-[20px] py-[11px] lg:text-[16px] md:text-[16px] text-[14px] lg:font-normal md:font-normal font-medium rounded-[50px]"
+          className=" border-[1px] border-[#CFDBEA] lg:w-[800px] lg:h-[48px] md:w-[600px] md:h-[48px] w-[300px] h-[38px] pl-[55px] pr-[20px] py-[11px] lg:text-[16px] md:text-[16px] text-[14px] lg:font-normal md:font-normal font-medium rounded-[50px]"
           placeholder="와인을 검색해 보세요"
           onChange={(e) => setName(e.target.value)}
         />
