@@ -16,8 +16,11 @@ interface fetchGetParams extends fetchParams {
   cursor?: number | null;
 }
 
-interface fetchUpdateUserParams extends fetchParams {
+interface fetchUpdateImgParams extends fetchParams {
   image: string | null;
+}
+
+interface fetchUpdateNicknameParams extends fetchParams {
   nickname: string;
 }
 
@@ -49,13 +52,20 @@ export async function fetchWines({
 }
 
 // {teamId}/users/me
-export async function fetchUpdateUser({
+export async function fetchUpdateImg({
   teamId,
   image,
+  token,
+}: fetchUpdateImgParams): Promise<UpdateUserResponse> {
+  return patch(`/${teamId}/users/me`, { image }, token);
+}
+
+export async function fetchUpdateNickname({
+  teamId,
   nickname,
   token,
-}: fetchUpdateUserParams): Promise<UpdateUserResponse> {
-  return patch(`/${teamId}/users/me`, { image, nickname }, token);
+}: fetchUpdateNicknameParams): Promise<UpdateUserResponse> {
+  return patch(`/${teamId}/users/me`, { nickname }, token);
 }
 
 // {teamId}/wines/{id}
