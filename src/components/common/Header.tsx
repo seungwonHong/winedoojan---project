@@ -6,15 +6,27 @@ import images from '../../../public/images/images';
 import { useAuthStore } from '@/store/authStore';
 
 const Header = () => {
-  const { user, logout } = useAuthStore();
+  const { user, logout, getMe, isAuthenticated } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    const fetchUserData = async () => {
       setIsLoading(true);
-    }
-    setIsLoading(false);
-  }, [user]);
+
+      // 인증된 상태일 때만 사용자 정보 요청
+      if (isAuthenticated) {
+        try {
+          await getMe();
+        } catch (error) {
+          console.error('사용자 정보 로딩 실패:', error);
+        }
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchUserData();
+  }, [getMe, isAuthenticated]); // isAuthenticated가 변경될 때마다 사용자 정보 갱신
 
   const handleLogout = (): void => {
     logout();
@@ -35,13 +47,14 @@ const Header = () => {
       {isLoading ? (
         <div className="w-[40px] h-[40px] max-md:w-5 max-md:h-5 bg-gray-700 rounded-full animate-pulse" />
       ) : user ? (
-        <div className="flex items-center">
+        <div className="relative flex items-center rounded-full w-[40px] h-[40px] max-md:w-6 max-md:h-6 cursor-pointer overflow-hidden">
           <Image
-            className="max-md:w-6 max-md:h-6 cursor-pointer"
+            className="w-auto h-auto"
             src={user.image || images.defaultProfile}
             alt="user"
-            width={40}
-            height={40}
+            objectFit="cover"
+            fill
+            sizes="40"
           />
         </div>
       ) : (

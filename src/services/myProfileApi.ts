@@ -3,10 +3,10 @@ import {
   ReviewsResponse,
   WinesResponse,
   UpdateUserResponse,
-} from "@/types/myprofileTypes";
-import { useAuthStore } from "@/store/authStore";
+} from '@/types/myprofileTypes';
+import { useAuthStore } from '@/store/authStore';
 
-const API_BASE_URL = "https://winereview-api.vercel.app";
+const API_BASE_URL = 'https://winereview-api.vercel.app';
 
 // {teamId}/users/me/reviews
 interface FetchReviewsParams {
@@ -51,13 +51,13 @@ export async function fetchReviews({
   token,
 }: FetchReviewsParams): Promise<ReviewsResponse> {
   const url = new URL(`${API_BASE_URL}/${teamId}/users/me/reviews`);
-  url.searchParams.append("limit", limit.toString());
-  if (cursor) url.searchParams.append("cursor", cursor.toString());
+  url.searchParams.append('limit', limit.toString());
+  if (cursor) url.searchParams.append('cursor', cursor.toString());
 
   let res = await fetch(url.toString(), {
-    method: "GET",
+    method: 'GET',
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     },
   });
@@ -65,15 +65,15 @@ export async function fetchReviews({
   if (res.status === 401) {
     const refreshed = await useAuthStore.getState().refreshAccessToken();
     if (!refreshed) {
-      throw new Error("AccessToken 갱신 실패");
+      throw new Error('AccessToken 갱신 실패');
     }
 
     const newToken = useAuthStore.getState().accessToken;
 
     res = await fetch(url.toString(), {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
         Authorization: `Bearer ${newToken}`,
       },
     });
@@ -94,13 +94,13 @@ export async function fetchWines({
   token,
 }: FetchWinesParams): Promise<WinesResponse> {
   const url = new URL(`${API_BASE_URL}/${teamId}/users/me/wines`);
-  url.searchParams.append("limit", limit.toString());
-  if (cursor) url.searchParams.append("cursor", cursor.toString());
+  url.searchParams.append('limit', limit.toString());
+  if (cursor) url.searchParams.append('cursor', cursor.toString());
 
   let res = await fetch(url, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     },
   });
@@ -108,15 +108,15 @@ export async function fetchWines({
   if (res.status === 401) {
     const refreshed = await useAuthStore.getState().refreshAccessToken();
     if (!refreshed) {
-      throw new Error("AccessToken 갱신 실패");
+      throw new Error('AccessToken 갱신 실패');
     }
 
     const newToken = useAuthStore.getState().accessToken;
 
     res = await fetch(url, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
         Authorization: `Bearer ${newToken}`,
       },
     });
@@ -137,10 +137,11 @@ export async function fetchUpdateUser({
   token,
 }: fetchUpdateUserParams): Promise<UpdateUserResponse> {
   const url = new URL(`${API_BASE_URL}/${teamId}/users/me`);
+  console.log('accesstoken', token);
   let res = await fetch(url, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ image, nickname }),
@@ -148,14 +149,14 @@ export async function fetchUpdateUser({
   if (res.status === 401) {
     const refreshed = await useAuthStore.getState().refreshAccessToken();
     if (!refreshed) {
-      throw new Error("AccessToken 갱신실패");
+      throw new Error('AccessToken 갱신실패');
     }
     const newToken = useAuthStore.getState().accessToken;
 
     res = await fetch(url, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
         Authorization: `Bearer ${newToken}`,
       },
       body: JSON.stringify({ image, nickname }),
@@ -172,23 +173,23 @@ export async function fetchDeleteWineId({
 }: fetchDeleteWineIdParams) {
   const url = new URL(`${API_BASE_URL}/${teamId}/wines/${id}`);
   let res = await fetch(url, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     },
   });
   if (res.status === 401) {
     const refreshed = await useAuthStore.getState().refreshAccessToken();
     if (!refreshed) {
-      throw new Error("AccessToken 갱신실패");
+      throw new Error('AccessToken 갱신실패');
     }
     const newToken = useAuthStore.getState().accessToken;
 
     res = await fetch(url, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
         Authorization: `Bearer ${newToken}`,
       },
     });
@@ -209,9 +210,9 @@ export async function fetchDeleteReviewId({
 }: fetchDeleteReviewIdParams) {
   const url = new URL(`${API_BASE_URL}/${teamId}/reviews/${id}`);
   const res = await fetch(url, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     },
   });
@@ -230,10 +231,10 @@ export async function fetchUploadImage(
   const url = new URL(`${API_BASE_URL}/${teamId}/images/upload`);
 
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append('image', file);
 
   let res = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -241,12 +242,12 @@ export async function fetchUploadImage(
   });
   if (res.status === 401) {
     const refreshed = await useAuthStore.getState().refreshAccessToken();
-    if (!refreshed) throw new Error("AccessToken 갱신 실패");
+    if (!refreshed) throw new Error('AccessToken 갱신 실패');
 
     const newToken = useAuthStore.getState().accessToken;
 
     res = await fetch(url.toString(), {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${newToken}`,
       },
