@@ -45,7 +45,7 @@ export default async function getWine({
   maxPrice,
   rating,
   name,
-}: Props): Promise<WineResponse['list']> {
+}: Props): Promise<WineResponse> {
   const params = new URLSearchParams();
   if (limit !== undefined) params.append("limit", String(limit));
   if (cursor !== undefined) params.append("cursor", String(cursor));
@@ -54,6 +54,7 @@ export default async function getWine({
   if (maxPrice !== undefined) params.append("maxPrice", String(maxPrice));
   if (rating !== undefined) params.append("rating", String(rating));
   if (name !== undefined) params.append("name", name);
+  console.log(params);
 
   const response = await fetch(
     `https://winereview-api.vercel.app/14-2/wines?${params.toString()}`,
@@ -63,7 +64,7 @@ export default async function getWine({
     }
   );
   const data = (await response.json()) as WineResponse;
-  const wines = data.list;
+  const wines = data;
 
   return wines;
 }
