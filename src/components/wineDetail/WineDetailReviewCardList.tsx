@@ -1,14 +1,14 @@
 import WineDetailReviewCard from "./WineDetailReviewCard";
 
-import { Wine } from "@/types/wineDetailTypes";
+import { Review } from "@/types/wineDetailTypes";
 
-const WineDetailReviewCardList = ({ wine }: { wine: Wine }) => {
+const WineDetailReviewCardList = ({ reviews }: { reviews: Review[] }) => {
   return (
-    <>
-      {wine.reviews.map((item) => (
+    <div className="mb-[300px]">
+      {reviews.map((item) => (
         <WineDetailReviewCard key={item.id} item={item} />
       ))}
-    </>
+    </div>
   );
 };
 
