@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useState } from "react";
+=======
+import { useState, useRef, useEffect } from "react";
+>>>>>>> d71f241 (리뷰 필터 기능 구현)
 import { Review } from "@/types/wineDetailTypes";
 import { FiFilter } from "react-icons/fi";
 

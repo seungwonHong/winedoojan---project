@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 
 import WineDetailReviewHeader from "./WineDetailReviewHeader";
 import WineTasteSlider from "./WineTasteSlider";
-
 import ic_top from "../../../public/icons/ic_top.png";
 import ic_bottom from "../../../public/icons/ic_bottom.png";
 
 import { Review } from "@/types/wineDetailTypes";
 import { Wine } from "@/types/wineDetailTypes";
+
+import { useState } from "react";
 
 const WineDetailReviewCard = ({
   item,
@@ -30,7 +30,7 @@ const WineDetailReviewCard = ({
     <div>
       <div
         key={item.id}
-        className="border border-[#CFDBEA] mt-[20px] rounded-[12px] md:rounded-[16px] py-[16px] px-[20px] md:py-[32px] md:px-[40px] lg:py-[16px] md:mt-[36px] lg:mt-[22px] "
+        className="border border-[#CFDBEA] mt-[20px] rounded-[12px] md:rounded-[16px] py-[16px] px-[20px] md:py-[32px] md:px-[40px] lg:py-[16px] "
       >
         <WineDetailReviewHeader
           key={item.id}

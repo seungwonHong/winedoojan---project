@@ -1,7 +1,8 @@
 import WineDetailReviewCard from "./WineDetailReviewCard";
 
-import { Wine } from "@/types/wineDetailTypes";
+import { Review } from "@/types/wineDetailTypes";
 
+<<<<<<< HEAD
 const WineDetailReviewCardList = ({
   wine,
   refetch,
@@ -15,8 +16,15 @@ const WineDetailReviewCardList = ({
           wine={wine}
           refetch={refetch}
         />
+=======
+const WineDetailReviewCardList = ({ reviews }: { reviews: Review[] }) => {
+  return (
+    <div className="mb-[300px]">
+      {reviews.map((item) => (
+        <WineDetailReviewCard key={item.id} item={item} />
+>>>>>>> d71f241 (리뷰 필터 기능 구현)
       ))}
-    </>
+    </div>
   );
 };
 
