@@ -9,29 +9,40 @@ import ReviewSlider from '@/components/common/ReviewSlider';
 
 type Props = {
   onClose: () => void;
+  accessToken: string;
   wineName: string;
-  wineImage: string;
   wineId: number;
-};
+  mode: 'create' | 'edit';
+  existingReviewData?: {
+    id: number;
+    rating: number;
+    content: string;
+    flavors: string[];
+    lightBold: number;
+    smoothTannic: number;
+    drySweet: number;
+    softAcidic: number;
+  };
+}
 
-export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
+const FLAVORS = [
+  '체리', '베리', '오크', '바닐라', '후추', '제빵', '풀', '사과',
+  '복숭아', '시트러스', '트로피컬', '미네랄', '꽃', '담뱃잎',
+  '흙', '초콜릿', '스파이스', '카라멜', '가죽',
+];
+
+export default function ReviewModal({ onClose, accessToken, wineName, wineId, mode, existingReviewData, }: Props) {
   const [reviewData, setReviewData] = useState({
-    rating: 0,
-    content: '',
-    flavors: [] as string[],
-    lightBold: 5,
-    smoothTannic: 5,
-    drySweet: 5,
-    softAcidic: 5,
+    rating: existingReviewData?.rating || 0,
+    content: existingReviewData?.content || '',
+    flavors: existingReviewData?.flavors || [],
+    lightBold: existingReviewData?.lightBold || 5,
+    smoothTannic: existingReviewData?.smoothTannic || 5,
+    drySweet: existingReviewData?.drySweet || 5,
+    softAcidic: existingReviewData?.softAcidic || 5,
   });
 
   const [hoverRating, setHoverRating] = useState(0);
-
-  const FLAVORS = [
-    '체리', '베리', '오크', '바닐라', '후추', '제빵', '풀', '사과',
-    '복숭아', '시트러스', '트로피컬', '미네랄', '꽃', '담뱃잎',
-    '흙', '초콜릿', '스파이스', '카라멜', '가죽',
-  ];
 
   const handleFlavorSelect = (flavor: string) => {
     setReviewData(prev => ({
@@ -70,23 +81,34 @@ export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
       wineId,
     };
 
+    const url =
+      mode === 'create'
+        ? 'https://winereview-api.vercel.app/14-2/reviews'
+        : `https://winereview-api.vercel.app/14-2/reviews/${existingReviewData?.id}`;
+
+    const method = mode === 'create' ? 'POST' : 'PATCH';
+
     try {
-      const response = await fetch('https://winereview-api.vercel.app/14-2/reviews', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(dataToSend),
       });
 
-      if (response.ok) {
-        alert('리뷰가 등록되었습니다!');
-        onClose();
-      } else {
-        console.error('Failed to submit review');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`${mode === 'create' ? '리뷰 등록' : '리뷰 수정'} 실패:`, errorText);
+        alert(`${mode === 'create' ? '리뷰 등록' : '리뷰 수정'} 중 오류가 발생했습니다.`);
       }
+
+      alert(`${mode === 'create' ? '리뷰가 등록' : '리뷰가 수정'}되었습니다!`);
+      onClose();
     } catch (error) {
-      console.error('Error submitting review', error);
+      console.error('리뷰 제출 중 오류', error);
+      alert('리뷰 등록 중 네트워크 오류가 발생했습니다.');
     }
   };
 
@@ -100,7 +122,9 @@ export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl text-gray-800 font-bold">리뷰 등록</h2>
+          <h2 className="text-2xl text-gray-800 font-bold">
+            {mode === 'create' ? '리뷰 등록' : '리뷰 수정'}
+          </h2>
         </div>
 
         {/* 와인 아이콘 + 와인이름 + 별점 */}
@@ -184,7 +208,7 @@ export default function LeaveReviewModal({ onClose, wineName, wineId }: Props) {
             취소
           </ModalButton>
           <ModalButton width="w-[362px]" onClick={handleSubmit}>
-            리뷰 남기기
+            {mode === 'create' ? '리뷰 남기기' : '리뷰 수정하기'}
           </ModalButton>
         </div>
       </div>
