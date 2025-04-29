@@ -93,10 +93,10 @@ const WineCardBig = ({ wine }: Props) => {
 
       <div className="border-[1px] border-[#CFDBEA]"></div>
 
-      <span className="lg:text-[16px] lg:mx-[60px] md:mx-[30px] md:mt-[19px] lg:mt-[19.5px] md:text-[16px] text-[14px] text-[#2D3034] font-semibold">
+      <span className="lg:text-[16px] lg:mx-[60px] md:mx-[30px] mx-[10px] mt-[10px] md:mt-[19px] lg:mt-[19.5px] md:text-[16px] text-[14px] text-[#2D3034] font-semibold">
         최신후기
       </span>
-      <span className="lg:mx-[60px] md:mx-[30px] lg:mt-[3px] md:mt-[10px] lg:text-[16px] md:text-[16px] text-[14px] text-[#9FACBD] font-normal overflow-hidden text-ellipsis">
+      <span className="lg:mx-[60px] md:mx-[30px] mx-[10px] lg:mt-[3px] md:mt-[10px] lg:text-[16px] md:text-[16px] text-[14px] text-[#9FACBD] font-normal overflow-hidden text-ellipsis">
         {wine.recentReview?.content}
       </span>
     </motion.div>
