@@ -13,6 +13,7 @@ import { useAuthStore } from "@/store/authStore";
 import RegisterWineModal from "@/components/modals/registerWineModal";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
+import WineCardBigSkeleton from "@/components/WineCardBigSkeleton";
 import clsx from "clsx";
 
 export default function ProfilePage() {
@@ -30,6 +31,7 @@ export default function ProfilePage() {
   });
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isWineModalOpen, setIsWineModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { ref, inView } = useInView();
   const limit = 3;
 
@@ -66,7 +68,14 @@ export default function ProfilePage() {
   };
 
   const loadData = async (tab: "reviews" | "wines", isLoadMore = false) => {
+    // skeleton ui 보여주기
+    if (!isLoadMore) setIsLoading(true);
     await getList(tab, isLoadMore);
+    if (!isLoadMore) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+    }
   };
 
   // 초기 로딩
@@ -96,7 +105,7 @@ export default function ProfilePage() {
     }
   }, [isReviewModalOpen]);
 
-  if (!user) {
+  if (!user || !accessToken) {
     return (
       <div className="flex justify-center items-center h-screen">
         로딩 중...
@@ -120,7 +129,7 @@ export default function ProfilePage() {
 
       <div
         className={clsx(
-          "flex justify-start gap-[30px] md:gap-[40px] lg:gap-[60px] flex-col mx-auto w-[343px]",
+          "flex justify-start gap-[30px] md:gap-[40px] lg:gap-[60px] flex-col mx-auto w-[343px] mt-[20px] lg:mt-[37px]",
           "lg:flex-row lg:w-[1140px] md:w-[704px]"
         )}
       >
@@ -174,8 +183,13 @@ export default function ProfilePage() {
 
           {/* 목록 */}
           <div>
-            {(tab === "reviews" && myProfileData.reviews.length === 0) ||
-            (tab === "wines" && myProfileData.wines.length === 0) ? (
+            {isLoading ? (
+              <>
+                <WineCardBigSkeleton />
+                <WineCardBigSkeleton />
+              </>
+            ) : (tab === "reviews" && myProfileData.reviews.length === 0) ||
+              (tab === "wines" && myProfileData.wines.length === 0) ? (
               <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center">
                 <img
                   src={images.empty}
