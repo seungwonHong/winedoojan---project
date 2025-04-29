@@ -1,10 +1,14 @@
-'use client';
+"use client";
 import { User } from "@/types/myprofileTypes";
 import Image from "next/image";
 import images from "../../public/images/images";
 import icons from "../../public/icons/icons";
 import { useState } from "react";
-import { fetchUpdateUser, fetchUploadImage } from "@/services/myProfileApi";
+import {
+  fetchUpdateNickname,
+  fetchUpdateImg,
+  fetchUploadImage,
+} from "@/services/myProfileApi";
 import Input from "./common/Input";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,12 +22,6 @@ interface MyProfileProps {
   token: string | null;
 }
 
-const profileContainer = clsx(
-  "border border-[#cfdbea] mx-auto rounded-[16px] shadow-[0_2px_20px_0_rgba(0_0_0_/_0.04)]",
-  "md:w-[704px] md:h-[247px]",
-  "lg:w-[280px] lg:h-[530px]"
-);
-
 export default function MyProfile({ user, token }: MyProfileProps) {
   const [nickname, setNickname] = useState(user.nickname);
   const [img, setImg] = useState(user.image);
@@ -35,22 +33,21 @@ export default function MyProfile({ user, token }: MyProfileProps) {
   // 닉네임 수정
   const handleNicknameUpdate = async () => {
     if (nickname.trim().length < 1) {
-      toast.warning('닉네임을 입력해주세요!');
+      toast.warning("닉네임을 입력해주세요!");
       setNickname(user.nickname);
       return;
     }
     try {
-      await fetchUpdateUser({
+      await fetchUpdateNickname({
         teamId: user.teamId,
-        image: user.image,
         nickname,
         token,
       });
 
-      toast.success('닉네임이 변경되었습니다!');
+      toast.success("닉네임이 변경되었습니다!");
       setIsEditNick(false);
     } catch (err) {
-      console.error('닉네임 업데이트 실패:', err);
+      console.error("닉네임 업데이트 실패:", err);
     }
   };
 
@@ -63,17 +60,16 @@ export default function MyProfile({ user, token }: MyProfileProps) {
   // 기본이미지로 변경
   const handleResetImage = async () => {
     try {
-      const data = await fetchUpdateUser({
+      const data = await fetchUpdateImg({
         teamId: user.teamId,
         image:
-          'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1/1745594933907/default_profile_img.png',
-        nickname,
+          "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1/1745594933907/default_profile_img.png",
         token,
       });
       setImg(data.image);
       setIsModalOpen(false);
     } catch (err) {
-      console.error('기본 이미지로 변경 실패:', err);
+      console.error("기본 이미지로 변경 실패:", err);
     }
   };
 
@@ -87,15 +83,16 @@ export default function MyProfile({ user, token }: MyProfileProps) {
         token,
         file: imgFile,
       });
-      const data = await fetchUpdateUser({
+      console.log("업로드된 이미지 URL:", uploaded.url);
+      console.log("닉네임:", nickname);
+      const data = await fetchUpdateImg({
         teamId: user.teamId,
         image: uploaded.url,
-        nickname,
         token,
       });
       setImg(data.image);
       setIsModalOpen(false);
-      toast.success('프로필 이미지가 변경되었습니다!');
+      toast.success("프로필 이미지가 변경되었습니다!");
     } catch (err) {
       console.error(err);
     }
@@ -109,14 +106,30 @@ export default function MyProfile({ user, token }: MyProfileProps) {
   };
 
   return (
-    <div className={profileContainer}>
-      <div className="px-[20px] py-[39px] flex lg:flex-col items-center gap-[32px] md:flex-row">
+    <div
+      className={clsx(
+        "border border-[#cfdbea] mx-auto rounded-[16px] shadow-[0_2px_20px_0_rgba(0_0_0_/_0.04)] w-[343px] h-[241px]",
+        "md:w-[704px] md:h-[247px]",
+        "lg:w-[280px] lg:h-[530px]"
+      )}
+    >
+      <div
+        className={clsx(
+          "py-[39px] flex flex-row gap-[16px] p-[20px]",
+          "lg:flex-col lg:px-[20px]",
+          "md:px-[40px] md:items-start"
+        )}
+      >
         {/* 프로필 이미지 */}
         <div className="relative group">
           <img
             src={img ?? images.defaultProfile}
             alt="유저 프로필 이미지"
-            className="rounded-full border border-[#cfdbea] object-cover lg:h-[164px] lg:w-[164px] md:w-[80px] md:h-[80px]"
+            className={clsx(
+              "rounded-full border border-[#cfdbea] object-cover size-[60px]",
+              "lg:size-[164px]",
+              "md:size-[80px]"
+            )}
           />
           <div
             onClick={() => setIsModalOpen(true)}
@@ -172,31 +185,37 @@ export default function MyProfile({ user, token }: MyProfileProps) {
         </Dialog>
         {/* 닉네임 수정 */}
         {isEditNick ? (
-          <div className="flex flex-col gap-[12px]">
-            <Input
+          <div
+            className={clsx(
+              "flex flex-col gap-[12px] w-[205px]",
+              "lg:w-[240px]",
+              "md:flex-row md:w-max md:items-center"
+            )}
+          >
+            <input
+              className="w-fill h-12 rounded-2xl px-[20px] py-[14px] border border-gray-300 focus:outline-none"
               name="nickname"
               type="text"
-              label=""
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
             />
             <div className="flex justify-end gap-[8px]">
               <button
                 onClick={() => setIsEditNick(false)}
-                className="text-garnet bg-palepink px-[13px] py-[8px] rounded-[12px] font-medium"
+                className="text-garnet bg-palepink px-[13px] py-[8px] rounded-[12px] font-medium md:h-12 md:mt-[10px]"
               >
                 취소
               </button>
               <button
                 onClick={handleNicknameUpdate}
-                className="text-white bg-garnet px-[13px] py-[8px] rounded-[12px] font-medium"
+                className="text-white bg-garnet px-[13px] py-[8px] rounded-[12px] font-medium md:h-12 md:mt-[10px]"
               >
                 변경하기
               </button>
             </div>
           </div>
         ) : (
-          <div className="flex items-end justify-center gap-[8px]">
+          <div className="flex items-center justify-center gap-[8px] md:pt-[7px]">
             <div className="font-bold text-2xl">{nickname}</div>
             <img
               src={icons.editProfile}
