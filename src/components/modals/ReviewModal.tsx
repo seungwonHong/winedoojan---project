@@ -12,7 +12,7 @@ type Props = {
   accessToken: string;
   wineName: string;
   wineId: number;
-  mode: 'create' | 'edit';
+  mode: 'create' | 'edit'; // post | patch
   existingReviewData?: {
     id: number;
     rating: number;
@@ -31,15 +31,21 @@ const FLAVORS = [
   '흙', '초콜릿', '스파이스', '카라멜', '가죽',
 ];
 
-export default function ReviewModal({ onClose, accessToken, wineName, wineId, mode, existingReviewData, }: Props) {
+export default function ReviewModal({ onClose,
+  accessToken,
+  wineName,
+  wineId,
+  mode,
+  existingReviewData,
+}: Props) {
   const [reviewData, setReviewData] = useState({
-    rating: existingReviewData?.rating || 0,
-    content: existingReviewData?.content || '',
-    flavors: existingReviewData?.flavors || [],
-    lightBold: existingReviewData?.lightBold || 5,
-    smoothTannic: existingReviewData?.smoothTannic || 5,
-    drySweet: existingReviewData?.drySweet || 5,
-    softAcidic: existingReviewData?.softAcidic || 5,
+    rating: existingReviewData?.rating ?? 0,
+    content: existingReviewData?.content ?? '',
+    flavors: existingReviewData?.flavors ?? [],
+    lightBold: existingReviewData?.lightBold ?? 5,
+    smoothTannic: existingReviewData?.smoothTannic ?? 5,
+    drySweet: existingReviewData?.drySweet ?? 5,
+    softAcidic: existingReviewData?.softAcidic ?? 5,
   });
 
   const [hoverRating, setHoverRating] = useState(0);
@@ -69,7 +75,7 @@ export default function ReviewModal({ onClose, accessToken, wineName, wineId, mo
       alert('별점, 후기, 향을 모두 입력해주세요.');
       return;
     }
-    
+
     const dataToSend = {
       rating: reviewData.rating,
       lightBold: reviewData.lightBold,
@@ -88,20 +94,49 @@ export default function ReviewModal({ onClose, accessToken, wineName, wineId, mo
 
     const method = mode === 'create' ? 'POST' : 'PATCH';
 
-    try {
-      const response = await fetch(url, {
+    async function sendRequest(currentAccessToken: string) {
+      return fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${currentAccessToken}`,
         },
         body: JSON.stringify(dataToSend),
       });
+    }
+
+    try {
+      let response = await sendRequest(accessToken);
+
+      if (response.status === 401) {
+        const refreshResponse = await fetch('https://winereview-api.vercel.app/14-2/auth/refresh', {
+          method: 'POST',
+          credentials: 'include',
+        });
+
+        if (!refreshResponse.ok) {
+          alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+          onClose();
+          return;
+        }
+
+        const refreshData = await refreshResponse.json();
+        const newAccessToken = refreshData.accessToken;
+
+        if (!newAccessToken) {
+          alert('새 토큰을 받지 못했습니다. 다시 로그인해주세요.');
+          onClose();
+          return;
+        }
+
+        response = await sendRequest(newAccessToken);
+      }
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`${mode === 'create' ? '리뷰 등록' : '리뷰 수정'} 실패:`, errorText);
         alert(`${mode === 'create' ? '리뷰 등록' : '리뷰 수정'} 중 오류가 발생했습니다.`);
+        return;
       }
 
       alert(`${mode === 'create' ? '리뷰가 등록' : '리뷰가 수정'}되었습니다!`);

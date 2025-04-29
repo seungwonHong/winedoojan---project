@@ -5,11 +5,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import imageCompression from 'browser-image-compression';
 import ModalButton from '@/components/common/ModalButton';
+import DropdownSelect from '@/components/common/DropdownSelect';
 
 type Props = {
   onClose: () => void;
   accessToken: string;
-  mode: 'create' | 'edit';
+  mode: 'create' | 'edit'; // post | patch
   wineData?: {
     id: number;
     name: string;
@@ -21,7 +22,7 @@ type Props = {
 };
 
 const WINE_TYPES = ['Red', 'White', 'Sparkling'] as const;
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const COMPRESSION_OPTIONS = {
   maxSizeMB: 0.5,
   maxWidthOrHeight: 600,
@@ -35,7 +36,6 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
   const [price, setPrice] = useState('');
   const [selectedOption, setSelectedOption] = useState<(typeof WINE_TYPES)[number]>('Red');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // 수정 모드일 때 초기값 세팅
   useEffect(() => {
@@ -45,6 +45,12 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
       setPrice(wineData.price.toString());
       setSelectedOption(wineData.type);
       setImagePreview(wineData.image);
+    } else {
+      setName('');
+      setRegion('');
+      setPrice('');
+      setSelectedOption('Red');
+      setImagePreview(null);
     }
   }, [mode, wineData]);
 
@@ -53,15 +59,6 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setter(e.target.value);
     };
-
-  const handleToggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
-
-  const handleSelectOption = (option: (typeof WINE_TYPES)[number]) => {
-    setSelectedOption(option);
-    setIsDropdownOpen(false);
-  };
 
   const handleImageClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -73,7 +70,7 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
     if (!file) return;
 
     if (file.size > MAX_FILE_SIZE) {
-      alert('파일 크기가 너무 큽니다. 10MB 이하의 파일을 업로드하세요.');
+      alert('파일 크기가 너무 큽니다. 5MB 이하의 파일을 업로드하세요.');
       return;
     }
 
@@ -112,7 +109,7 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
         : `https://winereview-api.vercel.app/14-2/wines/${wineData?.id}`;
 
     const method = mode === 'create' ? 'POST' : 'PATCH';
-
+    
     try {
       const response = await fetch(url, {
         method,
@@ -181,33 +178,11 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
         />
 
         <label className={labelClass}>타입</label>
-        <div className="relative mb-8">
-          <div
-            className="w-full h-12 border border-gray-300 rounded-2xl px-5 py-3 pr-10 cursor-pointer"
-            onClick={handleToggleDropdown}
-          >
-            {selectedOption}
-            <img
-              src="/images/dropdown.svg"
-              alt="드롭다운 세모 아이콘"
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
-            />
-          </div>
-
-          {isDropdownOpen && (
-            <ul className="absolute left-0 right-0 mt-2 bg-white border border-gray-300 rounded-2xl z-10">
-              {WINE_TYPES.map((type) => (
-                <li
-                  key={type}
-                  onClick={() => handleSelectOption(type)}
-                  className="m-[6px] px-4 py-2 bg-white rounded-2xl hover:bg-[#F3E7E6] hover:text-garnet cursor-pointer"
-                >
-                  {type}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <DropdownSelect
+          options={WINE_TYPES}
+          selected={selectedOption}
+          onSelect={setSelectedOption}
+        />
 
         <label className={labelClass}>와인 사진</label>
         <div
