@@ -8,11 +8,12 @@ import ModalButton from '@/components/common/ModalButton';
 type Props = {
   onClose: () => void;
   onConfirm: (id: string, type: 'wine' | 'review') => void;
+  accessToken: string;
   id: string;
   type: 'wine' | 'review';
 };
 
-export default function DeleteConfirmModal({ onClose, onConfirm, id, type }: Props) {
+export default function DeletemModal({ onClose, onConfirm, accessToken, id, type }: Props) {
   const handleDelete = async (id: string, type: 'wine' | 'review') => {
     const endpoint = type === 'wine'
       ? `https://winereview-api.vercel.app/14-2/wines/${id}`
@@ -21,6 +22,9 @@ export default function DeleteConfirmModal({ onClose, onConfirm, id, type }: Pro
     try {
       const response = await fetch(endpoint, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
 
       if (!response.ok) {
@@ -30,10 +34,10 @@ export default function DeleteConfirmModal({ onClose, onConfirm, id, type }: Pro
 
       alert('삭제가 완료되었습니다.');
       onConfirm(id, type); // 삭제 후 부모 컴포넌트에서 상태 업데이트 처리
-      onClose(); // 모달 닫기
+      onClose();
     } catch (error) {
       console.error('삭제 중 오류 발생:', error);
-      alert('삭제 중 오류가 발생했습니다.');
+      alert('삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
