@@ -136,7 +136,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <>
+    <div className="w-max mx-auto">
       <Header />
 
       <div
@@ -172,7 +172,11 @@ export default function ProfilePage() {
           >
             <button
               onClick={() => setTab("reviews")}
+<<<<<<< HEAD
               className={`w-max h-8 font-bold text-lg lg:text-xl ${
+=======
+              className={`w-max h-[32px] font-bold text-lg md:text-xl  ${
+>>>>>>> d2cba0e (feat : ui 수정)
                 tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
 >>>>>>> 9f4f955 (feat: 반응형 디자인 구현)
               }`}
@@ -181,12 +185,17 @@ export default function ProfilePage() {
             </button>
             <button
 <<<<<<< HEAD
+<<<<<<< HEAD
               onClick={() => setTab('wines')}
               className={`w-max h-[32px] font-bold text-xl ${
                 tab === 'wines' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
 =======
               onClick={() => setTab("wines")}
               className={`w-max h-8 font-bold text-lg lg:text-xl ${
+=======
+              onClick={() => setTab("wines")}
+              className={`w-max h-[32px] font-bold text-lg md:text-xl ${
+>>>>>>> d2cba0e (feat : ui 수정)
                 tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
 >>>>>>> 9f4f955 (feat: 반응형 디자인 구현)
               }`}
@@ -265,6 +274,6 @@ export default function ProfilePage() {
       {isWineModalOpen && (
         <RegisterWineModal onClose={() => setIsWineModalOpen(false)} />
       )}
-    </>
+    </div>
   );
 }
