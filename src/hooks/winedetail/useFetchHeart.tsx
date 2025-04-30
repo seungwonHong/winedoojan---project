@@ -15,17 +15,17 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
     if (isProcessing) return;
     setIsProcessing(true);
 
-    const wasLiked = isLike; // ✅ 클릭 전 상태 백업
-    const nextLiked = !wasLiked; // ✅ optimistic 상태로 UI 먼저 반영
-    const method = wasLiked ? "DELETE" : "POST"; // ✅ 요청 방식 결정
+    const wasLiked = isLike;
+    const nextLiked = !wasLiked;
+    const method = wasLiked ? "DELETE" : "POST";
 
-    setIsLike(nextLiked); // 낙관적 업데이트
+    setIsLike(nextLiked);
 
     let token = useAuthStore.getState().accessToken;
     if (!token) {
       console.error("토큰 없음");
       setIsProcessing(false);
-      setIsLike(wasLiked); // 롤백
+      setIsLike(wasLiked);
       return;
     }
 
@@ -60,7 +60,6 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
         }
       }
 
-      // ❌ 실패한 경우 롤백
       if (!res.ok) {
         try {
           const error = await res.json();
@@ -68,11 +67,11 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
         } catch {
           console.error("좋아요 실패: 응답 파싱 오류");
         }
-        setIsLike(wasLiked); // 상태 되돌리기
+        setIsLike(wasLiked);
       }
     } catch (err) {
       console.error("좋아요 요청 중 에러:", err);
-      setIsLike(wasLiked); // 상태 되돌리기
+      setIsLike(wasLiked);
     } finally {
       setIsProcessing(false);
     }
