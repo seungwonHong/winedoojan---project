@@ -25,11 +25,28 @@ type Props = {
   };
 }
 
-const FLAVORS = [
-  '체리', '베리', '오크', '바닐라', '후추', '제빵', '풀', '사과',
-  '복숭아', '시트러스', '트로피컬', '미네랄', '꽃', '담뱃잎',
-  '흙', '초콜릿', '스파이스', '카라멜', '가죽',
-];
+const FLAVOR_MAP: Record<string, string> = {
+  '체리': 'CHERRY',
+  '베리': 'BERRY',
+  '오크': 'OAK',
+  '바닐라': 'VANILLA',
+  '후추': 'PEPPER',
+  '제빵': 'BAKING',
+  '풀': 'GRASS',
+  '사과': 'APPLE',
+  '복숭아': 'PEACH',
+  '시트러스': 'CITRUS',
+  '트로피컬': 'TROPICAL',
+  '미네랄': 'MINERAL',
+  '꽃': 'FLOWER',
+  '담뱃잎': 'TOBACCO',
+  '흙': 'EARTH',
+  '초콜릿': 'CHOCOLATE',
+  '스파이스': 'SPICE',
+  '카라멜': 'CARAMEL',
+  '가죽': 'LEATHER',
+};
+const FLAVORS = Object.keys(FLAVOR_MAP);
 
 export default function ReviewModal({ onClose,
   accessToken,
@@ -82,7 +99,7 @@ export default function ReviewModal({ onClose,
       smoothTannic: reviewData.smoothTannic,
       drySweet: reviewData.drySweet,
       softAcidic: reviewData.softAcidic,
-      aroma: reviewData.flavors,
+      aroma: reviewData.flavors.map(flavor => FLAVOR_MAP[flavor]),
       content: reviewData.content,
       wineId,
     };
