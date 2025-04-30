@@ -80,7 +80,7 @@ export async function del(url: string, token?: string | null) {
   return await res.json();
 }
 
-export async function patch(url: string, data: {}, token?: string | null) {
+export async function patch(url: string, data: any, token?: string | null) {
   const newUrl = new URL(API_BASE_URL + url);
   let res = await fetch(newUrl, {
     method: "PATCH",
@@ -88,7 +88,7 @@ export async function patch(url: string, data: {}, token?: string | null) {
       "Content-type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ data }),
+    body: JSON.stringify(data),
   });
   if (res.status === 401) {
     const newToken = await handle401(res);
@@ -99,7 +99,7 @@ export async function patch(url: string, data: {}, token?: string | null) {
         "Content-type": "application/json",
         Authorization: `Bearer ${newToken}`,
       },
-      body: JSON.stringify({ data }),
+      body: JSON.stringify(data),
     });
   }
   return await res.json();
@@ -117,7 +117,7 @@ export async function post(url: string, data: any, token?: string | null) {
   if (res.status === 401) {
     const newToken = await handle401(res);
 
-    res = await fetch(newUrl, {
+    res = await fetch(newUrl.toString(), {
       method: "POST",
       headers: {
         Authorization: `Bearer ${newToken}`,

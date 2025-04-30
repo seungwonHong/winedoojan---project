@@ -25,7 +25,7 @@ interface HamburgerMenuProps {
 }
 
 const HamburgerMenuDiv = clsx(
-  'w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer'
+  "w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-mistyrose hover:text-burgundy cursor-pointer"
 );
 
 export default function HamburgerMenu({
