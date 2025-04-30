@@ -16,7 +16,6 @@ import { Wine } from "@/types/wineDetailTypes";
 const WineDetail = ({ wineId }: { wineId: string }) => {
   const { wine, loading, error, refetch } = useFetchWine(wineId);
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
-  console.log(wine);
 
   useEffect(() => {
     if (wine) {
