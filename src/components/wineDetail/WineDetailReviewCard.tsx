@@ -11,7 +11,6 @@ import ic_bottom from "../../../public/icons/ic_bottom.png";
 
 import { Review } from "@/types/wineDetailTypes";
 import { Wine } from "@/types/wineDetailTypes";
-import { Review } from "@/types/wineDetailTypes";
 
 const WineDetailReviewCard = ({
   item,
@@ -84,20 +83,3 @@ const WineDetailReviewCard = ({
 };
 
 export default WineDetailReviewCard;
-
-interface Review {
-  id: number;
-  isLiked: boolean;
-  rating: number;
-  content: string;
-  createdAt: string;
-  lightBold: number;
-  smoothTannic: number;
-  drySweet: number;
-  softAcidic: number;
-  user: {
-    nickname: string;
-    image: string | null;
-  };
-  aroma: string[];
-}

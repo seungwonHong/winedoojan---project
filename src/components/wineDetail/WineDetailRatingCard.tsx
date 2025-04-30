@@ -6,7 +6,7 @@ import ModalButton from "../common/ModalButton";
 import ReviewModal from "../modals/ReviewModal";
 import { useAuthStore } from "@/store/authStore";
 
-import { Wine } from "@/types/wineDetailTypes";
+import { WineDetailReviewCardListProps } from "@/types/wineDetailTypes";
 
 const WineDetailRatingCard = ({
   wine,
@@ -116,8 +116,3 @@ const WineDetailRatingCard = ({
 };
 
 export default WineDetailRatingCard;
-
-interface WineDetailReviewCardListProps {
-  wine: Wine;
-  refetch: () => Promise<void>; // ✅ 추가
-}

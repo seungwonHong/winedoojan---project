@@ -1,6 +1,6 @@
 import WineDetailReviewCard from "./WineDetailReviewCard";
 
-import { Review } from "@/types/wineDetailTypes";
+import { WineDetailReviewCardListProps } from "@/types/wineDetailTypes";
 
 const WineDetailReviewCardList = ({
   wine,
@@ -21,8 +21,3 @@ const WineDetailReviewCardList = ({
 };
 
 export default WineDetailReviewCardList;
-
-interface WineDetailReviewCardListProps {
-  wine: Wine;
-  refetch: () => Promise<void>; // ✅ 추가
-}

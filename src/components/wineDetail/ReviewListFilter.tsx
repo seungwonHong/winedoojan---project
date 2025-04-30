@@ -1,15 +1,10 @@
-
 import { useState } from "react";
 
-import { Review } from "@/types/wineDetailTypes";
 import { FiFilter } from "react-icons/fi";
 
-type Props = {
-  reviews: Review[];
-  onSort: (reviews: Review[]) => void;
-};
+import { ReviewListFilterProps } from "@/types/wineDetailTypes";
 
-const ReviewListFilter = ({ reviews, onSort }: Props) => {
+const ReviewListFilter = ({ reviews, onSort }: ReviewListFilterProps) => {
   const [sortOption, setSortOption] = useState<
     "latest" | "highRating" | "lowRating"
   >("latest");

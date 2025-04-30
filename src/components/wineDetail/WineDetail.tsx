@@ -11,8 +11,6 @@ import ReviewListFilter from "./ReviewListFilter";
 
 import { Review } from "@/types/wineDetailTypes";
 
-import { Wine } from "@/types/wineDetailTypes";
-
 const WineDetail = ({ wineId }: { wineId: string }) => {
   const { wine, loading, error, refetch } = useFetchWine(wineId);
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
@@ -45,7 +43,10 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
         <div className="lg:relative lg:w-[280px]">
           <WineDetailRatingCard wine={wine} refetch={refetch} />
         </div>
-        <WineDetailReviewCardList wine={wine} refetch={refetch} />
+        <WineDetailReviewCardList
+          wine={{ ...wine, reviews: filteredReviews }}
+          refetch={refetch}
+        />
       </div>
     </div>
   );

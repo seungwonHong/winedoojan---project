@@ -47,3 +47,18 @@ export interface ReviewHeader {
     aroma: string[];
   };
 }
+
+export interface WineDetailReviewCardListProps {
+  wine: Wine;
+  refetch: () => Promise<void>;
+}
+
+export interface ReviewListFilterProps {
+  reviews: Review[];
+  onSort: (reviews: Review[]) => void;
+}
+
+export interface WineDetailReviewCardListProps {
+  wine: Wine;
+  refetch: () => Promise<void>;
+}
