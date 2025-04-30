@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import MyReviewCard from "@/components/MyReviewCard";
 import { fetchReviews, fetchWines } from "../../services/myProfileApi";
@@ -151,53 +151,22 @@ export default function ProfilePage() {
         <div>
           {/* 탭 */}
           <div
-<<<<<<< HEAD
-<<<<<<< HEAD
             className={`flex gap-[32px] items-center ${
-              tab === 'reviews' ? 'mb-[22px]' : 'mb-[64px]'
-            }`}
-          >
-            <button
-              onClick={() => setTab('reviews')}
-              className={`w-max h-[32px] font-bold text-xl ${
-                tab === 'reviews' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
-=======
-            className={`flex gap-[16px] items-center lg:gap-[32px] ${
               tab === "reviews" ? "mb-[22px]" : "mb-[64px]"
-=======
-            className={`flex gap-4 items-center lg:gap-8 ${
-              tab === "reviews" ? "mb-6" : "mb-16"
->>>>>>> 8d699e3 (refactor : skeleton ui 변경)
             }`}
           >
             <button
               onClick={() => setTab("reviews")}
-<<<<<<< HEAD
-              className={`w-max h-8 font-bold text-lg lg:text-xl ${
-=======
               className={`w-max h-[32px] font-bold text-lg md:text-xl  ${
->>>>>>> d2cba0e (feat : ui 수정)
                 tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
->>>>>>> 9f4f955 (feat: 반응형 디자인 구현)
               }`}
             >
               내가 쓴 후기
             </button>
             <button
-<<<<<<< HEAD
-<<<<<<< HEAD
-              onClick={() => setTab('wines')}
-              className={`w-max h-[32px] font-bold text-xl ${
-                tab === 'wines' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
-=======
-              onClick={() => setTab("wines")}
-              className={`w-max h-8 font-bold text-lg lg:text-xl ${
-=======
               onClick={() => setTab("wines")}
               className={`w-max h-[32px] font-bold text-lg md:text-xl ${
->>>>>>> d2cba0e (feat : ui 수정)
                 tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
->>>>>>> 9f4f955 (feat: 반응형 디자인 구현)
               }`}
             >
               내가 등록한 와인
@@ -227,11 +196,11 @@ export default function ProfilePage() {
                   className="size-[180px]"
                 />
                 <div className="font-bold text-2xl text-[#2D3034]">
-                  등록된 {tab === 'reviews' ? '리뷰가' : '와인이'} 없어요
+                  등록된 {tab === "reviews" ? "리뷰가" : "와인이"} 없어요
                 </div>
                 <BlobButton
                   children={
-                    tab === 'reviews' ? '리뷰등록하러가기' : '와인등록하러가기'
+                    tab === "reviews" ? "리뷰등록하러가기" : "와인등록하러가기"
                   }
                   onClick={() => {
                     if (tab === "reviews") {

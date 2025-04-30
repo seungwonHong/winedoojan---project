@@ -1,6 +1,6 @@
 import WineDetailReviewCard from "./WineDetailReviewCard";
 
-import { Wine } from "@/types/wineDetailTypes";
+import { Review } from "@/types/wineDetailTypes";
 
 const WineDetailReviewCardList = ({
   wine,

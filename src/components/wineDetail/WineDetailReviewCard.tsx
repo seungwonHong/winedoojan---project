@@ -84,3 +84,20 @@ const WineDetailReviewCard = ({
 };
 
 export default WineDetailReviewCard;
+
+interface Review {
+  id: number;
+  isLiked: boolean;
+  rating: number;
+  content: string;
+  createdAt: string;
+  lightBold: number;
+  smoothTannic: number;
+  drySweet: number;
+  softAcidic: number;
+  user: {
+    nickname: string;
+    image: string | null;
+  };
+  aroma: string[];
+}
