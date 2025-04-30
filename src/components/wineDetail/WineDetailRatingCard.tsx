@@ -3,12 +3,14 @@ import { useState } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
 import ModalButton from "../common/ModalButton";
-import LeaveReviewModal from "../modals/leaveReviewModal";
+import ReviewModal from "../modals/ReviewModal";
+import { useAuthStore } from "@/store/authStore";
 
 import { Wine } from "@/types/wineDetailTypes";
 
 const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  let token = useAuthStore.getState().accessToken;
 
   const totalReviews = Object.values(wine.avgRatings).reduce(
     (acc, cur) => acc + cur,
@@ -58,10 +60,11 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
       </div>
 
       {isModalOpen && (
-        <LeaveReviewModal
-          wineImage="a"
+        <ReviewModal
+          accessToken={token as string}
           wineName={wine.name}
           wineId={wine.id}
+          mode={"create"}
           onClose={() => setIsModalOpen(false)}
         />
       )}
