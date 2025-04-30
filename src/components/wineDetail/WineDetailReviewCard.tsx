@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import Image from "next/image";
 
 import WineDetailReviewHeader from "./WineDetailReviewHeader";
@@ -9,8 +11,6 @@ import ic_bottom from "../../../public/icons/ic_bottom.png";
 
 import { Review } from "@/types/wineDetailTypes";
 import { Wine } from "@/types/wineDetailTypes";
-
-import { useState } from "react";
 
 const WineDetailReviewCard = ({
   item,
