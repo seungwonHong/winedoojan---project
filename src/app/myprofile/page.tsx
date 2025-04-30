@@ -13,6 +13,7 @@ import { useAuthStore } from "@/store/authStore";
 import RegisterWineModal from "@/components/modals/registerWineModal";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
+import clsx from "clsx";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -20,114 +21,72 @@ export default function ProfilePage() {
   const accessToken = useAuthStore((state) => state.accessToken);
   const [tab, setTab] = useState<"reviews" | "wines">("reviews");
   const [openId, setOpenId] = useState<number | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [reviewCursor, setReviewCursor] = useState<number | null>(null);
-  const [wines, setWines] = useState<Wine[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(0);
-  const [wineCursor, setWineCursor] = useState<number | null>(null);
+  const [myProfileData, setMyProfileData] = useState({
+    reviews: [] as Review[],
+    reviewCursor: null as number | null,
+    wines: [] as Wine[],
+    wineCursor: null as number | null,
+    totalCount: 0,
+  });
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isWineModalOpen, setIsWineModalOpen] = useState(false);
   const { ref, inView } = useInView();
   const limit = 3;
 
-  // 리뷰 초기 로딩
-  const loadReview = async () => {
+  const getList = async (tab: "reviews" | "wines", isLoadMore = false) => {
     if (!user || !accessToken) return;
 
-    try {
-      const res = await fetchReviews({
-        teamId: user.teamId,
-        limit,
-        token: accessToken,
-      });
-      setReviews(res.list);
-      setReviewCursor(res.nextCursor ?? null);
-      setTotalCount(res.totalCount);
-    } catch (error) {
-      console.error("리뷰 초기 로딩 실패", error);
-    }
+    const cursorKey = tab === "reviews" ? "reviewCursor" : "wineCursor";
+    const cursor = isLoadMore ? myProfileData[cursorKey] : undefined;
+    const listKey = tab;
+
+    if (isLoadMore && cursor === null) return;
+
+    const res =
+      tab === "reviews"
+        ? await fetchReviews({
+            teamId: user.teamId,
+            limit,
+            token: accessToken,
+            cursor,
+          })
+        : await fetchWines({
+            teamId: user.teamId,
+            limit,
+            token: accessToken,
+            cursor,
+          });
+
+    setMyProfileData((prev) => ({
+      ...prev,
+      [listKey]: isLoadMore ? [...prev[listKey], ...res.list] : res.list,
+      [cursorKey]: res.nextCursor ?? null,
+      totalCount: res.totalCount,
+    }));
   };
 
-  // 리뷰 추가 로딩
-  const loadMoreReview = async () => {
-    if (!user || !accessToken || reviewCursor === null) return;
-
-    try {
-      const res = await fetchReviews({
-        teamId: user.teamId,
-        limit,
-        cursor: reviewCursor,
-        token: accessToken,
-      });
-      setReviews((prev) => [...prev, ...res.list]);
-      setReviewCursor(res.nextCursor ?? null);
-      setTotalCount(res.totalCount);
-    } catch (error) {
-      console.error("리뷰 추가 로딩 실패", error);
-    }
-  };
-
-  // 와인 초기 로딩
-  const loadWine = async () => {
-    if (!user || !accessToken) return;
-
-    try {
-      const res = await fetchWines({
-        teamId: user.teamId,
-        limit,
-        token: accessToken,
-      });
-      setWines(res.list);
-      setWineCursor(res.nextCursor ?? null);
-      setTotalCount(res.totalCount);
-    } catch (error) {
-      console.error("와인 초기 로딩 실패", error);
-    }
-  };
-
-  // 와인 추가 로딩
-  const loadMoreWine = async () => {
-    if (!user || !accessToken || wineCursor === null) return;
-
-    try {
-      const res = await fetchWines({
-        teamId: user.teamId,
-        limit,
-        cursor: wineCursor,
-        token: accessToken,
-      });
-      setWines((prev) => [...prev, ...res.list]);
-      setWineCursor(res.nextCursor ?? null);
-      setTotalCount(res.totalCount);
-    } catch (error) {
-      console.error("와인 추가 로딩 실패", error);
-    }
+  const loadData = async (tab: "reviews" | "wines", isLoadMore = false) => {
+    await getList(tab, isLoadMore);
   };
 
   // 초기 로딩
   useEffect(() => {
     if (user && accessToken) {
-      if (tab === "reviews") {
-        setReviews([]);
-        setReviewCursor(null);
-        loadReview();
-      } else {
-        setWines([]);
-        setWineCursor(null);
-        loadWine();
-      }
+      setMyProfileData((prev) => ({
+        ...prev,
+        reviews: [],
+        reviewCursor: null,
+        wines: [],
+        wineCursor: null,
+        totalCount: 0,
+      }));
+      loadData(tab);
     }
   }, [user, accessToken, tab]);
 
   // 스크롤 시 추가 로딩
   useEffect(() => {
-    if (inView) {
-      if (tab === "reviews") {
-        loadMoreReview();
-      } else {
-        loadMoreWine();
-      }
-    }
+    loadData(tab, true);
   }, [inView, tab]);
 
   // 등록된 리뷰 없을 때 버튼 클릭 함수
@@ -149,22 +108,28 @@ export default function ProfilePage() {
   const commonCardProps = {
     teamId: user.teamId,
     token: accessToken,
-    onDeleteSuccess: tab === "reviews" ? loadReview : loadWine,
+    onDeleteSuccess: () => loadData(tab),
     tab,
     openId,
     setOpenId,
   };
 
   return (
-    <div className="flex flex-col items-center mt-[40px]">
+    <>
       <Header />
 
-      <div className="w-max flex justify-start m-auto gap-[60px] lg:flex-row md:flex-col">
+      <div
+        className={clsx(
+          "flex justify-start gap-[30px] md:gap-[40px] lg:gap-[60px] flex-col mx-auto w-[343px]",
+          "lg:flex-row lg:w-[1140px] md:w-[704px]"
+        )}
+      >
         <MyProfile user={user} token={accessToken} />
 
-        <div>
+        <div className="">
           {/* 탭 */}
           <div
+<<<<<<< HEAD
             className={`flex gap-[32px] items-center ${
               tab === 'reviews' ? 'mb-[22px]' : 'mb-[64px]'
             }`}
@@ -173,32 +138,48 @@ export default function ProfilePage() {
               onClick={() => setTab('reviews')}
               className={`w-max h-[32px] font-bold text-xl ${
                 tab === 'reviews' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
+=======
+            className={`flex gap-[16px] items-center lg:gap-[32px] ${
+              tab === "reviews" ? "mb-[22px]" : "mb-[64px]"
+            }`}
+          >
+            <button
+              onClick={() => setTab("reviews")}
+              className={`w-max h-[32px] font-bold text-lg lg:text-xl ${
+                tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
+>>>>>>> 9f4f955 (feat: 반응형 디자인 구현)
               }`}
             >
               내가 쓴 후기
             </button>
             <button
+<<<<<<< HEAD
               onClick={() => setTab('wines')}
               className={`w-max h-[32px] font-bold text-xl ${
                 tab === 'wines' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
+=======
+              onClick={() => setTab("wines")}
+              className={`w-max h-[32px] font-bold text-lg lg:text-xl ${
+                tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
+>>>>>>> 9f4f955 (feat: 반응형 디자인 구현)
               }`}
             >
               내가 등록한 와인
             </button>
 
-            <div className="ml-auto text-sm text-garnet">
-              총&nbsp;{totalCount}개
+            <div className="ml-auto text-sm text-burgundy">
+              총&nbsp;{myProfileData.totalCount}개
             </div>
           </div>
 
           {/* 목록 */}
           <div>
-            {(tab === "reviews" && reviews.length === 0) ||
-            (tab === "wines" && wines.length === 0) ? (
-              <div className="w-[800px] h-[530px] flex flex-col gap-[30px] items-center justify-center">
+            {(tab === "reviews" && myProfileData.reviews.length === 0) ||
+            (tab === "wines" && myProfileData.wines.length === 0) ? (
+              <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center">
                 <img
                   src={images.empty}
-                  alt="등록된 없음"
+                  alt="등록된 목록 없음"
                   className="size-[180px]"
                 />
                 <div className="font-bold text-2xl text-[#2D3034]">
@@ -220,7 +201,7 @@ export default function ProfilePage() {
             ) : (
               <>
                 {tab === "reviews"
-                  ? reviews.map((review) => (
+                  ? myProfileData.reviews.map((review) => (
                       <MyReviewCard
                         key={review.id}
                         id={review.id}
@@ -228,7 +209,7 @@ export default function ProfilePage() {
                         {...commonCardProps}
                       />
                     ))
-                  : wines.map((wine) => (
+                  : myProfileData.wines.map((wine) => (
                       <MyWineCard
                         key={wine.id}
                         id={wine.id}
@@ -248,6 +229,6 @@ export default function ProfilePage() {
       {isWineModalOpen && (
         <RegisterWineModal onClose={() => setIsWineModalOpen(false)} />
       )}
-    </div>
+    </>
   );
 }

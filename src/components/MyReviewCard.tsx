@@ -19,9 +19,13 @@ export default function MyReviewCard({ ...props }: MyReviewCardProps) {
   const timeAgo = getTimeAgo(props.review.updatedAt);
 
   return (
-    <MyProfileCard pt="pt-[24px]" mb="mb-[8px]" className="flex-col pb-[30px]">
+    <MyProfileCard
+      pt="pt-[24px]"
+      mb="mb-[8px]"
+      className="flex-col pb-[30px] text-[14px] md:text-[16px]"
+    >
       {/* 평점, 작성 시간 */}
-      <div className="flex items-center mb-[20px] gap-[15px]">
+      <div className="flex items-center mb-[17px] lg:mb-[20px] gap-[15px]">
         <Rating rating={props.review.rating} />
         <div className="text-[#9facbd]">{timeAgo}</div>
 
