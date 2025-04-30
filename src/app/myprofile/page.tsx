@@ -113,7 +113,7 @@ export default function ProfilePage() {
   // 등록된 리뷰 없을 때 버튼 클릭 함수
   useEffect(() => {
     if (isReviewModalOpen) {
-      router.push("/wines");
+      router.push('/wines');
     }
   }, [isReviewModalOpen]);
 
@@ -203,7 +203,7 @@ export default function ProfilePage() {
                     tab === "reviews" ? "리뷰등록하러가기" : "와인등록하러가기"
                   }
                   onClick={() => {
-                    if (tab === "reviews") {
+                    if (tab === 'reviews') {
                       setIsReviewModalOpen(true);
                     } else {
                       setIsWineModalOpen(true);

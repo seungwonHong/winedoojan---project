@@ -1,16 +1,16 @@
-"use client";
-import icons from "../../public/icons/icons";
+'use client';
+import icons from '../../public/icons/icons';
 import {
   fetchDeleteWineId,
   fetchDeleteReviewId,
-} from "@/services/myProfileApi";
-import { useState } from "react";
-import LeaveReviewModal from "./modals/leaveReviewModal";
-import { Dialog } from "@headlessui/react";
-import ModalButton from "./common/ModalButton";
-import clsx from "clsx";
-import { Review, Wine } from "@/types/myprofileTypes";
-import RegisterWineModal from "./modals/registerWineModal";
+} from '@/services/myProfileApi';
+import { useState } from 'react';
+import LeaveReviewModal from './modals/ReviewModal';
+import { Dialog } from '@headlessui/react';
+import ModalButton from './common/ModalButton';
+import clsx from 'clsx';
+import { Review, Wine } from '@/types/myprofileTypes';
+import RegisterWineModal from './modals/WineModal';
 
 interface HamburgerMenuProps {
   teamId: string | null;
@@ -48,14 +48,14 @@ export default function HamburgerMenu({
   // 리뷰/와인 삭제하기
   const handleDelete = async () => {
     try {
-      if (tab === "wines") {
+      if (tab === 'wines') {
         await fetchDeleteWineId({ teamId, id, token });
       } else {
         await fetchDeleteReviewId({ teamId, id, token });
       }
       onDeleteSuccess();
     } catch (err) {
-      console.error("삭제 실패:", err);
+      console.error('삭제 실패:', err);
     }
     setIsDelModalOpen(false);
   };
@@ -91,12 +91,12 @@ export default function HamburgerMenu({
       )}
       {/* 수정하기 모달 */}
       {isEditModalOpen &&
-        (tab === "reviews" ? (
+        (tab === 'reviews' ? (
           <LeaveReviewModal
             onClose={() => setIsEditModalOpen(false)}
-            wineName={review?.wine.name ?? ""}
+            wineName={review?.wine.name ?? ''}
             wineId={id}
-            wineImage={review?.wine.image ?? ""}
+            wineImage={review?.wine.image ?? ''}
           />
         ) : (
           <RegisterWineModal onClose={() => setIsEditModalOpen(false)} />

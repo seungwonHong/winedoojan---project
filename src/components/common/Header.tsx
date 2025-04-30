@@ -47,15 +47,17 @@ const Header = () => {
       {isLoading ? (
         <div className="w-[40px] h-[40px] max-md:w-5 max-md:h-5 bg-gray-700 rounded-full animate-pulse" />
       ) : user ? (
-        <div className="relative flex items-center rounded-full w-[40px] h-[40px] max-md:w-6 max-md:h-6 cursor-pointer overflow-hidden">
-          <Image
-            className="w-auto h-auto"
-            src={user.image || images.defaultProfile}
-            alt="user"
-            objectFit="cover"
-            fill
-            sizes="40"
-          />
+        <div className="rounded-full border-2">
+          <div className="relative flex items-center rounded-full w-[40px] h-[40px] max-md:w-6 max-md:h-6 cursor-pointer overflow-hidden">
+            <Image
+              className="w-auto h-auto"
+              src={user.image || images.defaultProfile}
+              alt="user"
+              objectFit="cover"
+              fill
+              sizes="40"
+            />
+          </div>
         </div>
       ) : (
         <div className="flex items-center">

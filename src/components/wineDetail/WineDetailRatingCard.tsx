@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 import ModalButton from "../common/ModalButton";
 import ReviewModal from "../modals/ReviewModal";
