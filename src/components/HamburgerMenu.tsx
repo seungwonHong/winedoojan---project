@@ -5,12 +5,12 @@ import {
   fetchDeleteReviewId,
 } from "@/services/myProfileApi";
 import { useState } from "react";
-import LeaveReviewModal from "./modals/leaveReviewModal";
+// import LeaveReviewModal from "./modals/leaveReviewModal";
 import { Dialog } from "@headlessui/react";
 import ModalButton from "./common/ModalButton";
 import clsx from "clsx";
 import { Review, Wine } from "@/types/myprofileTypes";
-import RegisterWineModal from "./modals/registerWineModal";
+// import RegisterWineModal from "./modals/registerWineModal";
 
 interface HamburgerMenuProps {
   teamId: string | null;
@@ -90,7 +90,7 @@ export default function HamburgerMenu({
         </div>
       )}
       {/* 수정하기 모달 */}
-      {isEditModalOpen &&
+      {/* {isEditModalOpen &&
         (tab === "reviews" ? (
           <LeaveReviewModal
             onClose={() => setIsEditModalOpen(false)}
@@ -100,7 +100,7 @@ export default function HamburgerMenu({
           />
         ) : (
           <RegisterWineModal onClose={() => setIsEditModalOpen(false)} />
-        ))}
+        ))} */}
 
       <Dialog open={isDelModalOpen} onClose={() => setIsDelModalOpen(false)}>
         <div

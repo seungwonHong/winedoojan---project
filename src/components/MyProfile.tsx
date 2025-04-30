@@ -3,7 +3,7 @@ import { User } from "@/types/myprofileTypes";
 import Image from "next/image";
 import images from "../../public/images/images";
 import icons from "../../public/icons/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   fetchUpdateNickname,
   fetchUpdateImg,
@@ -16,6 +16,7 @@ import DropZoneImageUploader from "./common/DropZoneImgUploader";
 import { Dialog } from "@headlessui/react";
 import ModalButton from "./common/ModalButton";
 import clsx from "clsx";
+import { useAuthStore } from "@/store/authStore";
 
 interface MyProfileProps {
   user: User;
@@ -29,6 +30,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const { getMe } = useAuthStore();
 
   // 닉네임 수정
   const handleNicknameUpdate = async () => {
@@ -46,6 +48,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
 
       toast.success("닉네임이 변경되었습니다!");
       setIsEditNick(false);
+      await getMe();
     } catch (err) {
       console.error("닉네임 업데이트 실패:", err);
     }
@@ -68,6 +71,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
       });
       setImg(data.image);
       setIsModalOpen(false);
+      await getMe();
     } catch (err) {
       console.error("기본 이미지로 변경 실패:", err);
     }
@@ -92,6 +96,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
       });
       setImg(data.image);
       setIsModalOpen(false);
+      await getMe();
       toast.success("프로필 이미지가 변경되었습니다!");
     } catch (err) {
       console.error(err);
@@ -104,6 +109,18 @@ export default function MyProfile({ user, token }: MyProfileProps) {
     setPreview(null);
     setImgFile(null);
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        await getMe();
+      } catch (error) {
+        console.error("사용자 정보 로딩 실패:", error);
+      }
+    };
+    fetchUserData();
+    console.log(fetchUserData);
+  }, []);
 
   return (
     <div

@@ -10,9 +10,9 @@ import images from "../../../public/images/images";
 import BlobButton from "@/components/common/BlobButton";
 import Header from "@/components/common/Header";
 import { useAuthStore } from "@/store/authStore";
-import RegisterWineModal from "@/components/modals/registerWineModal";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
 import clsx from "clsx";
 
 const MyCardSkeleton = () => (
@@ -119,7 +119,14 @@ export default function ProfilePage() {
 
   if (!user || !accessToken) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
+        <Image
+          className="max-md:w-28"
+          src={images.wineGif}
+          alt="404 error"
+          width={200}
+          height={100}
+        />
         로딩 중...
       </div>
     );
@@ -240,9 +247,9 @@ export default function ProfilePage() {
         </div>
       </div>
       {/* 등록된 와인이 없을 경우 */}
-      {isWineModalOpen && (
-        <RegisterWineModal onClose={() => setIsWineModalOpen(false)} />
-      )}
+      {/* {isWineModalOpen && (
+        <WineModal onClose={() => setIsWineModalOpen(false)} />
+      )} */}
     </div>
   );
 }
