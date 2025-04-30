@@ -31,10 +31,17 @@ module.exports = {
         salmon: '#FA8072',
         syrah: '#6A282C',
         pinotnoir: '#653642',
+        mistyrose: '#FFE1E1',
       },
       boxShadow: {
         custom: '0px 2px 20px 0px #0000000A',
       },
+    },
+    screens: {
+      sm: '425px',
+      md: '768px',
+      lg: '1200px',
+      xl: '1280px',
     },
   },
   plugins: [],

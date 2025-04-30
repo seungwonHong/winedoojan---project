@@ -2,10 +2,12 @@ import { Wine } from "@/types/myprofileTypes";
 import Image from "next/image";
 import images from "../../public/images/images";
 import HamburgerMenu from "./HamburgerMenu";
+import { MyProfileCard } from "./MyProfileCard";
 
 interface MyWineCardProps {
+  id: number;
   wine: Wine;
-  teamId: string;
+  teamId: string | null;
   token: string | null;
   tab: string;
   openId: number | null;
@@ -13,56 +15,43 @@ interface MyWineCardProps {
   onDeleteSuccess: () => void;
 }
 
-export default function MyWineCard({
-  teamId,
-  wine,
-  token,
-  tab,
-  openId,
-  setOpenId,
-  onDeleteSuccess,
-}: MyWineCardProps) {
-  if (wine.image === "string") {
-    wine.image = images.defaultProfile;
-  }
-
+export default function MyWineCard({ ...props }: MyWineCardProps) {
   return (
-    <div className="flex gap-[40px] pt-[30px] w-[800px] h-[228px] border border-[#cfdbea] rounded-[16px] px-[40px] bg-white shadow-sm mb-[62px] items-end">
-      <div className="overflow-hidden">
+    <MyProfileCard
+      pt="pt-[20px] md:pt-[30px]"
+      mb="mb-[37px] md:mb-[62px]"
+      className="gap-[20px] md:gap-[40px] h-[164px] md:h-[228px] items-end"
+    >
+      {/* 와인 이미지 */}
+      <div className="w-[53px] h-[203px] md:w-[76px] md:h-[300px] overflow-hidden">
         <Image
-          src={wine.image || images.defaultProfile}
+          src={props.wine.image || images.defaultProfile}
           alt="와인이미지"
           width={76}
           height={270}
-          className="w-[76px] h-[300px] translate-y-[24px] object-cover"
+          className="w-full h-full translate-y-[13px] md:translate-y-[24px] object-cover"
         />
       </div>
 
       {/* 텍스트 정보 */}
-      <div className=" flex flex-col items-start h-full ">
-        <div className="text-[#2D3034] font-bold text-[30px] mb-[20px]">
-          {wine.name}
+      <div className=" flex flex-col items-start pb-[16px] h-full">
+        <div className="text-[#2D3034] font-bold text-[20px] md:text-[30px] mb-[15px] md:mb-[20px]">
+          {props.wine.name}
         </div>
-        <div className="text-[#9facbd] text-sm mb-[13px]">{wine.region}</div>
-        <div className="flex items-center bg-palepink text-garnet px-[15px] py-[6px] rounded-[12px] w-max">
+        <div className="text-[#9facbd] text-sm mb-[4px] md:mb-[13px]">
+          {props.wine.region}
+        </div>
+        <div className="flex items-center bg-mistyrose text-burgundy px-[10px] py-[6px] md:px-[15px] lg:py-[6px] rounded-[12px] w-max">
           <div className="font-bold text-md">
-            ₩ {wine.price.toLocaleString()}
+            ₩ {props.wine.price.toLocaleString()}
           </div>
         </div>
       </div>
 
-      {/* 햄버거 아이콘 */}
+      {/* 햄버거 메뉴 */}
       <div className="h-full ml-auto">
-        <HamburgerMenu
-          id={wine.id}
-          teamId={teamId}
-          token={token}
-          onDeleteSuccess={onDeleteSuccess}
-          tab={tab}
-          openId={openId}
-          setOpenId={setOpenId}
-        />
+        <HamburgerMenu {...props} />
       </div>
-    </div>
+    </MyProfileCard>
   );
 }

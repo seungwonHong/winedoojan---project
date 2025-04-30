@@ -2,10 +2,12 @@ import Rating from "./Rating";
 import { Review } from "@/types/myprofileTypes";
 import HamburgerMenu from "./HamburgerMenu";
 import { getTimeAgo } from "@/utils/getTimeAgo";
+import { MyProfileCard } from "./MyProfileCard";
 
 interface MyReviewCardProps {
+  id: number;
   review: Review;
-  teamId: string;
+  teamId: string | null;
   token: string | null;
   onDeleteSuccess: () => void;
   tab: string;
@@ -13,40 +15,30 @@ interface MyReviewCardProps {
   setOpenId: (id: number | null) => void;
 }
 
-export default function MyReviewCard({
-  review,
-  teamId,
-  token,
-  onDeleteSuccess,
-  openId,
-  setOpenId,
-  tab,
-}: MyReviewCardProps) {
-  // 시간 계산 로직
-  const timeAgo = getTimeAgo(review.updatedAt);
+export default function MyReviewCard({ ...props }: MyReviewCardProps) {
+  const timeAgo = getTimeAgo(props.review.updatedAt);
 
   return (
-    <div className="w-[800px] border border-[#cfdbea] rounded-[16px] pt-[24px] pr-[40px] pb-[30px] pl-[40px] mb-[8px]">
-      <div className="flex items-center mb-[20px] gap-[15px]">
-        <Rating rating={review.rating} />
+    <MyProfileCard
+      pt="pt-[24px]"
+      mb="mb-[8px]"
+      className="flex-col pb-[30px] text-[14px] md:text-[16px]"
+    >
+      {/* 평점, 작성 시간 */}
+      <div className="flex items-center mb-[17px] lg:mb-[20px] gap-[15px]">
+        <Rating rating={props.review.rating} />
         <div className="text-[#9facbd]">{timeAgo}</div>
 
         <div className="ml-auto">
-          <HamburgerMenu
-            teamId={teamId}
-            id={review.id}
-            token={token}
-            tab={tab}
-            onDeleteSuccess={onDeleteSuccess}
-            openId={openId}
-            setOpenId={setOpenId}
-          />
+          <HamburgerMenu {...props} />
         </div>
       </div>
+      {/* 와인 이름 */}
       <div className="text-[#9facbd] font-medium mb-[10px]">
-        {review.wine.name}
+        {props.review.wine.name}
       </div>
-      <div className="text-[#2D3034]">{review.content}</div>
-    </div>
+      {/* 후기 내용 */}
+      <div className="text-[#2D3034]">{props.review.content}</div>
+    </MyProfileCard>
   );
 }
