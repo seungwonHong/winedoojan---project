@@ -151,13 +151,13 @@ export default function ProfilePage() {
         <div>
           {/* 탭 */}
           <div
-            className={`flex gap-4 items-center lg:gap-8 ${
-              tab === "reviews" ? "mb-6" : "mb-16"
+            className={`flex gap-[32px] items-center ${
+              tab === "reviews" ? "mb-[22px]" : "mb-[64px]"
             }`}
           >
             <button
               onClick={() => setTab("reviews")}
-              className={`w-max h-8 font-bold text-lg lg:text-xl ${
+              className={`w-max h-[32px] font-bold text-xl ${
                 tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
               }`}
             >
@@ -165,7 +165,7 @@ export default function ProfilePage() {
             </button>
             <button
               onClick={() => setTab("wines")}
-              className={`w-max h-8 font-bold text-lg lg:text-xl ${
+              className={`w-max h-[32px] font-bold text-xl ${
                 tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
               }`}
             >

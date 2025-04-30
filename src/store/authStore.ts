@@ -1,12 +1,12 @@
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import {
   loginRequest,
   refreshTokenRequest,
   kakaoLoginRequest,
   handleKakaoCallbackRequest,
-} from "@/services/auth"; // 분리된 API 함수 import
-
+  fetchUser,
+} from '@/services/auth'; // 분리된 API 함수 import
 
 interface User {
   id: number;
@@ -34,6 +34,7 @@ interface AuthState {
   handleKakaoCallback: (
     code: string
   ) => Promise<{ success: boolean; message?: string }>;
+  getMe: () => Promise<{ success: boolean; message?: string }>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -44,6 +45,27 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       refreshToken: null,
 
+      // 유저 정보 갱신
+      getMe: async () => {
+        try {
+          const result = await fetchUser(get().accessToken);
+
+          if (result.success) {
+            set({
+              user: result.data,
+            });
+            return { success: true };
+          } else {
+            return { success: false, message: result.message };
+          }
+        } catch (error) {
+          console.error('유저 정보 갱신 에러:', error);
+          return {
+            success: false,
+            message: '유저 정보를 갱신하는 중 오류가 발생했습니다.',
+          };
+        }
+      },
       // login 함수
       login: async (email: string, password: string) => {
         const result = await loginRequest(email, password);
@@ -108,7 +130,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: "auth-storage",
+      name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
     }
   )

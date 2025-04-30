@@ -1,5 +1,4 @@
 "use client";
-
 import { User } from "@/types/myprofileTypes";
 import Image from "next/image";
 import images from "../../public/images/images";

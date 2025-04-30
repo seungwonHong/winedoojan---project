@@ -1,13 +1,13 @@
-"use client";
-import Image from "next/image";
-import images from "../../../public/images/images";
-import icons from "../../../public/icons/icons";
-import Input from "@/components/common/Input";
-import Link from "next/link";
-import BlobButton from "@/components/common/BlobButton";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-import postSignup from "@/services/postSignup";
+'use client';
+import Image from 'next/image';
+import images from '../../../public/images/images';
+import icons from '../../../public/icons/icons';
+import Input from '@/components/common/Input';
+import Link from 'next/link';
+import BlobButton from '@/components/common/BlobButton';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import postSignup from '@/services/postSignup';
 
 interface FormData {
   email: string;
@@ -26,10 +26,10 @@ interface FormError {
 function Signup() {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
-    email: "",
-    password: "",
-    nickName: "",
-    passwordConfirm: "",
+    email: '',
+    password: '',
+    nickName: '',
+    passwordConfirm: '',
   });
   const [errors, setErrors] = useState<FormError>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -56,31 +56,31 @@ function Signup() {
 
     // 폼 입력 검증
     if (!formData.email) {
-      newErrors.email = "이메일은 필수 입력입니다.";
+      newErrors.email = '이메일은 필수 입력입니다.';
     } else if (
       !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.email)
     ) {
-      newErrors.email = "이메일 형식으로 작성해 주세요.";
+      newErrors.email = '이메일 형식으로 작성해 주세요.';
     }
     if (!formData.password) {
-      newErrors.password = "비밀번호는 필수 입력입니다.";
+      newErrors.password = '비밀번호는 필수 입력입니다.';
     } else if (!/^[A-Za-z0-9!@#$%^&*]+$/.test(formData.password)) {
-      newErrors.password = "비밀번호는 숫자, 영문, 특수문자로만 가능합니다.";
+      newErrors.password = '비밀번호는 숫자, 영문, 특수문자로만 가능합니다.';
     }
     if (formData.password.length < 8) {
-      newErrors.password = "비밀번호는 최소 8자 이상입니다.";
+      newErrors.password = '비밀번호는 최소 8자 이상입니다.';
     }
     if (!formData.nickName) {
-      newErrors.nickName = "닉네임은 필수 입력입니다.";
+      newErrors.nickName = '닉네임은 필수 입력입니다.';
     }
     if (formData.nickName.length > 20) {
-      newErrors.nickName = "닉네임은 최대 20자까지 가능합니다.";
+      newErrors.nickName = '닉네임은 최대 20자까지 가능합니다.';
     }
     if (!formData.passwordConfirm) {
-      newErrors.passwordConfirm = "비밀번호 확인은 필수 입력입니다.";
+      newErrors.passwordConfirm = '비밀번호 확인은 필수 입력입니다.';
     }
     if (formData.password !== formData.passwordConfirm) {
-      newErrors.passwordConfirm = "비밀번호가 일치하지 않습니다.";
+      newErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.';
     }
 
     setErrors(newErrors);
@@ -107,18 +107,18 @@ function Signup() {
 
       if (res) {
         // 회원가입 성공 시 로그인 화면으로 이동
-        router.push("/signin");
+        router.push('/signin');
       } else {
         // 회원가입 실패 시 에러 메시지 표시
         setErrors({
-          email: "폼을 다시 확인해주세요.",
+          email: '폼을 다시 확인해주세요.',
         });
       }
     } catch (error) {
       setErrors({
-        email: "회원가입 중 오류가 발생했습니다. 다시 시도해주세요.",
+        email: '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.',
       });
-      console.error("Signup error:", error);
+      console.error('Signup error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -131,6 +131,7 @@ function Signup() {
           <div className="flex w-full justify-center mb-16">
             <Link href="/">
               <Image
+                className="w-auto h-auto"
                 src={images.logoGarnet}
                 alt="logo"
                 width={200}
@@ -180,14 +181,14 @@ function Signup() {
 
             <div className="mt-[32px]">
               <BlobButton type="submit" disabled={isLoading}>
-                {isLoading ? "가입 중..." : "가입하기"}
+                {isLoading ? '가입 중...' : '가입하기'}
               </BlobButton>
             </div>
           </form>
 
           <div className="flex items-center justify-center mt-8 text-base">
             <span className="text-gray-500">
-              계정이 이미 있으신가요?{" "}
+              계정이 이미 있으신가요?{' '}
               <Link
                 className="text-garnet underline font-medium"
                 href="/signin"

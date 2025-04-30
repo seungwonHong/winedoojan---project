@@ -93,7 +93,7 @@ export async function fetchUploadImage({
   file,
 }: fetchUploadImageParams) {
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append('image', file);
 
   return post(`/${teamId}/images/upload`, formData, token);
 }
