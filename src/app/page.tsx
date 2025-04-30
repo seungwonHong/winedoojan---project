@@ -18,7 +18,7 @@ export default async function Home() {
     <div className="flex flex-col items-center lg:px-[390px] lg:pt-[24px] lg:pb-[109px] md:px-[20px] md:pt-[24px] md:pb-[72px] px-[16px] pt-[16px] pb-[62px]">
       <Header />
 
-      <div className="flex flex-col items-center overflow-hidden lg:px[98px] lg:pb-0 md:px-[58px] lg:w-[1140px] lg:h-[535px] md:w-[704px] md:h-[394px] w-[343px] h-[403px] rounded-2xl bg-[#171A21]">
+      <div className="flex flex-col items-center overflow-hidden lg:mt-[80px] mt-[24px] lg:px[98px] lg:pb-0 md:px-[58px] lg:w-[1140px] lg:h-[535px] md:w-[704px] md:h-[394px] w-[343px] h-[403px] rounded-2xl bg-[#171A21]">
         <Image
           width={140}
           height={100}
@@ -33,7 +33,7 @@ export default async function Home() {
         </div>
 
         <div className="flex flex-row items-end justify-center">
-          <WineMotionList wines={wines} />
+          <WineMotionList wines={wines.list} />
         </div>
       </div>
 
