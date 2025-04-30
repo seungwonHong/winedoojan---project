@@ -3,8 +3,6 @@ import icons from '../../public/icons/icons';
 import {
   fetchDeleteWineId,
   fetchDeleteReviewId,
-egisterWineModal from "./modals/registerWineModal";
-
 } from '@/services/myProfileApi';
 import { useState } from 'react';
 import LeaveReviewModal from './modals/ReviewModal';
@@ -13,7 +11,6 @@ import ModalButton from './common/ModalButton';
 import clsx from 'clsx';
 import { Review, Wine } from '@/types/myprofileTypes';
 import RegisterWineModal from './modals/WineModal';
-
 
 interface HamburgerMenuProps {
   teamId: string | null;
@@ -28,7 +25,7 @@ interface HamburgerMenuProps {
 }
 
 const HamburgerMenuDiv = clsx(
-  "w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-mistyrose hover:text-burgundy cursor-pointer"
+  'w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-mistyrose hover:text-burgundy cursor-pointer'
 );
 
 export default function HamburgerMenu({
@@ -96,7 +93,6 @@ export default function HamburgerMenu({
 
       {isEditModalOpen &&
         (tab === 'reviews' ? (
-
           <LeaveReviewModal
             onClose={() => setIsEditModalOpen(false)}
             wineName={review?.wine.name ?? ''}
@@ -105,7 +101,7 @@ export default function HamburgerMenu({
           />
         ) : (
           <RegisterWineModal onClose={() => setIsEditModalOpen(false)} />
-        ))} */}
+        ))}
 
       <Dialog open={isDelModalOpen} onClose={() => setIsDelModalOpen(false)}>
         <div

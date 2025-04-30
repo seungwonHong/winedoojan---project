@@ -1,4 +1,3 @@
-
 'use client';
 
 import MyReviewCard from '@/components/MyReviewCard';
@@ -15,7 +14,7 @@ import RegisterWineModal from '@/components/modals/WineModal';
 import { useRouter } from 'next/navigation';
 import { useInView } from 'react-intersection-observer';
 import clsx from 'clsx';
-
+import Image from 'next/image';
 
 const MyCardSkeleton = () => (
   <div className="w-[343px] lg:w-[800px] md:w-[704px] flex flex-row gap-[16px] rounded-xl border border-gray-200 bg-white p-12 shadow-sm animate-pulse mb-2.5">
