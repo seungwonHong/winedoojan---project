@@ -3,15 +3,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { WineRecommended } from "@/services/getWineRecommended";
 import WineCardSmall from "./common/WineCardSmall";
-import { div } from "framer-motion/client";
 
 interface Props {
   winesRecommended: WineRecommended["wines"];
 }
 
 const LandingWineRec = ({ winesRecommended }: Props) => {
-  console.log("추천 와인 리스트:", winesRecommended);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -32,7 +29,7 @@ const LandingWineRec = ({ winesRecommended }: Props) => {
         </span>
       </div>
 
-      <div className="relative flex flex-col overflow-hidden lg:overflow-visible md:overflow-visible self-end rounded-tl-[16px] rounded-bl-[16px] lg:rounded-bl-none md:rounded-bl-none lg:w-[356px] lg:h-[277px] md:w-[356px] md:h-[277px] w-[290px] h-[241px] mt-[60px] lg:pl-[20px] lg:pb-[56px] lg:pt-[20px] md:pl-[20px] md:pt-[20px] md:ml-auto pl-[20px] pt-[20px] bg-[#F2F4F8]">
+      <div className="relative flex flex-col overflow-hidden lg:overflow-visible md:overflow-visible self-end rounded-tl-[16px] rounded-bl-[16px] lg:rounded-bl-none md:rounded-bl-none lg:w-[356px] lg:h-[277px] md:w-[356px] md:h-[277px] w-[290px] h-[241px] mt-[60px] lg:pl-[20px] lg:pb-[56px] lg:pt-[20px] md:pl-[20px] md:pt-[20px] lg:ml-auto md:ml-auto pl-[20px] pt-[20px] bg-[#F2F4F8]">
         <span className="lg:text-[18px] md:text-[18px] text-[16px] text-[#50545B] font-bold mb-[20px]">
           이번 달 추천 와인
         </span>
