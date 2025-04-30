@@ -11,10 +11,11 @@ import ReviewListFilter from "./ReviewListFilter";
 
 import { Review } from "@/types/wineDetailTypes";
 
+import { Wine } from "@/types/wineDetailTypes";
+
 const WineDetail = ({ wineId }: { wineId: string }) => {
-  const { wine, loading, error } = useFetchWine(wineId);
+  const { wine, loading, error, refetch } = useFetchWine(wineId);
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
-  console.log(wine);
 
   useEffect(() => {
     if (wine) {
@@ -42,10 +43,9 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
           </div>
         </div>
         <div className="lg:relative lg:w-[280px]">
-          <WineDetailRatingCard wine={wine} />
+          <WineDetailRatingCard wine={wine} refetch={refetch} />
         </div>
-
-        <WineDetailReviewCardList reviews={filteredReviews} />
+        <WineDetailReviewCardList wine={wine} refetch={refetch} />
       </div>
     </div>
   );

@@ -1,4 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+
+import { useState } from "react";
+
 import { Review } from "@/types/wineDetailTypes";
 import { FiFilter } from "react-icons/fi";
 

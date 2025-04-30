@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 import { FaStar } from "react-icons/fa";
@@ -8,8 +8,9 @@ import { FaStar } from "react-icons/fa";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 
 import useFetchHeart from "@/hooks/winedetail/useFetchHeart";
-
-import LeaveReviewModal from "../modals/leaveReviewModal";
+import ReviewModal from "../modals/ReviewModal";
+import DeleteModal from "../modals/DeleteModal";
+import { useAuthStore } from "@/store/authStore";
 
 import default_profile_img from "../../../public/images/default_profile_img.png";
 import ic_hamburger from "../../../public/icons/ic_hamburger.png";
@@ -17,21 +18,19 @@ import ic_heart from "../../../public/icons/ic_heart.png";
 import ic_garnet_heart from "../../../public/icons/ic_garnet_heart.png";
 
 import { ReviewHeader } from "@/types/wineDetailTypes";
+import { Wine } from "@/types/wineDetailTypes";
 
-const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
+const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
   const { isLike, handleClickLike } = useFetchHeart(item.id, item.isLiked);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isReviewEditModalOpen, setIsReviewEditModalOpen] = useState(false);
+  const [isReviewDeleteModalOpen, setIsReviewDeleteModalOpen] = useState(false);
 
-  const handleClickMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
+  let token = useAuthStore.getState().accessToken;
 
-  const handleClickPatch = () => {
-    return;
-  };
-
-  const handleClickDelete = () => {
-    return;
+  const handleClose = async () => {
+    await refetch();
+    await setIsReviewEditModalOpen(false);
   };
 
   return (
@@ -65,27 +64,49 @@ const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
           </div>
           <div
             className="relative w-[30px] h-[30px] object-cover cursor-pointer"
-            onClick={handleClickMenu}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
           >
             <Image src={ic_hamburger} alt="ic_hamburger" fill sizes="30px" />
             {isMenuOpen && (
               <div className="z-20 absolute right-0 top-[35px] bg-white border border-gray-300 rounded-[16px] w-[126px] h-[104px] flex flex-col items-center justify-center">
                 <div
                   className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
-                  onClick={handleClickPatch}
+                  onClick={() => setIsReviewEditModalOpen(true)}
                 >
                   수정하기
                 </div>
                 <div
                   className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
-                  onClick={handleClickDelete}
+                  onClick={() => setIsReviewDeleteModalOpen(true)}
                 >
                   삭제하기
                 </div>
               </div>
             )}
           </div>
+          {isReviewEditModalOpen && (
+            <ReviewModal
+              onClose={handleClose}
+              accessToken={token as string}
+              wineId={wine.id}
+              wineName={wine.name}
+              mode={"edit"}
+              existingReviewData={item as any}
+            />
+          )}
         </div>
+        {isReviewDeleteModalOpen && (
+          <DeleteModal
+            onClose={() => setIsReviewDeleteModalOpen(false)}
+            onConfirm={async () => {
+              await refetch(); // 🔥 삭제 후 데이터 새로고침
+              setIsReviewDeleteModalOpen(false);
+            }}
+            accessToken={token as string}
+            id={item.id.toString()}
+            type={"review"}
+          />
+        )}
       </div>
       <div className="flex gap-[4px] w-[220px] z-10 mt-[20px] relative overflow-x-auto whitespace-nowrap scroll-smooth md:w-full">
         {item.aroma.map((item, index) => (
@@ -112,3 +133,9 @@ const WineDetailReviewHeader = ({ item }: ReviewHeader) => {
 };
 
 export default WineDetailReviewHeader;
+
+type Props = {
+  item: ReviewHeader["item"];
+  wine: Wine;
+  refetch: () => Promise<void>;
+};
