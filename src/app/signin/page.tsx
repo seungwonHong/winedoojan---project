@@ -26,7 +26,7 @@ function Signin() {
   });
   const [errors, setErrors] = useState<FormError>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { login, kakaoLogin, user } = useAuthStore();
+  const { login, kakaoLogin, isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -100,10 +100,10 @@ function Signin() {
 
   useEffect(() => {
     // 이미 로그인이 되어있으면 홈페이지로 이동
-    if (user) {
+    if (isAuthenticated) {
       router.push('/');
     }
-  }, [router, user]);
+  }, [isAuthenticated, router]);
 
   return (
     <div className="flex items-center w-full min-h-screen bg-gray-100">
