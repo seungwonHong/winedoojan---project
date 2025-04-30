@@ -30,7 +30,7 @@ interface Props {
 
 const WineCardSmall = ({ wine }: Props) => {
   return (
-    <div className="flex flex-row pb-0 mb-0 lg:w-[232px] lg:h-[185px] lg:px-[30px] lg:pt-[24px]  md:w-[140px] md:h-[111px] md:px-[18px] w-[208px] h-[166.5px] px-[27px] bg-[white] rounded-2xl">
+    <div className="flex flex-row shadow-lg overflow-hidden pb-0 mb-0 lg:w-[232px] lg:h-[185px] lg:px-[30px] lg:pt-[24px]  md:w-[140px] md:h-[111px] md:px-[18px] w-[208px] h-[166.5px] px-[27px] bg-[white] rounded-2xl">
       <img
         alt="wine"
         src={wine.image}

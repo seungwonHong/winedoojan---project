@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const WineCardBigSkeleton = () => {
   return (
-    <div className="flex flex-col rounded-2xl border-[1px]  bg-[#878484] border-[#CFDBEA] lg:w-[800px] lg:h-[375px] md:w-[600px] md:h-[375px] w-[300px] h-[360px] lg:mt-[42px] lg:pb-[19px] pt-[36.5px] md:mt-[74px] md:pb-[10px] pb-[15px] mt-[30px]">
+    <div className="flex flex-col rounded-2xl border-[1px]  bg-[#c7c5c5] border-[#CFDBEA] lg:w-[800px] lg:h-[375px] md:w-[600px] md:h-[375px] w-[300px] h-[360px] lg:mt-[42px] lg:pb-[19px] pt-[36.5px] md:mt-[74px] md:pb-[10px] pb-[15px] mt-[30px]">
       <div className="flex flex-row">
         {/* 사진 */}
         <motion.div className="relative overflow-hidden lg:w-[60px] lg:h-[208px] md:w-[74px] md:h-[208px] w-[60px] h-[212px] lg:ml-[60px] md:ml-[20px] ml-[10px]  bg-[#5d5b5b] rounded-lg">
