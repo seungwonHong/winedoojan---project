@@ -3,7 +3,7 @@ import {
   WinesResponse,
   UpdateUserResponse,
 } from "@/types/myprofileTypes";
-import { get, del, patch, post } from "./myProfileApiClient";
+import { get, del, patch, post, postNoHeader } from "./myProfileApiClient";
 
 // {teamId}/users/me/reviews
 interface fetchParams {
@@ -84,10 +84,10 @@ export async function fetchDeleteReviewId({ teamId, id }: fetchDeleteParams) {
 export async function fetchUploadImage({
   teamId,
   file,
+  token,
 }: fetchUploadImageParams) {
   const formData = new FormData();
   formData.append("image", file);
 
-  const res = await post(`/${teamId}/images/upload`, formData);
-  return await res.json();
+  return await postNoHeader(`/${teamId}/images/upload`, formData, token);
 }
