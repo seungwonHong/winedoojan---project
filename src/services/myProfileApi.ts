@@ -36,9 +36,9 @@ export async function fetchReviews({
   teamId,
   limit,
   cursor,
-  token,
 }: fetchGetParams): Promise<ReviewsResponse> {
-  return get(`/${teamId}/users/me/reviews`, limit, cursor, token);
+  const res = await get(`/${teamId}/users/me/reviews`, limit, cursor);
+  return await res.json();
 }
 
 // {teamId}/users/me/wines
@@ -46,54 +46,48 @@ export async function fetchWines({
   teamId,
   limit,
   cursor,
-  token,
 }: fetchGetParams): Promise<WinesResponse> {
-  return get(`/${teamId}/users/me/wines`, limit, cursor, token);
+  const res = await get(`/${teamId}/users/me/wines`, limit, cursor);
+  return await res.json();
 }
 
 // {teamId}/users/me
 export async function fetchUpdateImg({
   teamId,
   image,
-  token,
 }: fetchUpdateImgParams): Promise<UpdateUserResponse> {
-  return patch(`/${teamId}/users/me`, { image }, token);
+  const res = await patch(`/${teamId}/users/me`, { image });
+  return await res.json();
 }
 
 export async function fetchUpdateNickname({
   teamId,
   nickname,
-  token,
 }: fetchUpdateNicknameParams): Promise<UpdateUserResponse> {
-  return patch(`/${teamId}/users/me`, { nickname }, token);
+  const res = await patch(`/${teamId}/users/me`, { nickname });
+  return await res.json();
 }
 
 // {teamId}/wines/{id}
-export async function fetchDeleteWineId({
-  teamId,
-  id,
-  token,
-}: fetchDeleteParams) {
-  return del(`/${teamId}/wines/${id}`, token);
+export async function fetchDeleteWineId({ teamId, id }: fetchDeleteParams) {
+  const res = await del(`/${teamId}/wines/${id}`);
+  return await res.json();
 }
 
 // {teamId}/reviews/{id}
-export async function fetchDeleteReviewId({
-  teamId,
-  id,
-  token,
-}: fetchDeleteParams) {
-  return del(`/${teamId}/reviews/${id}`, token);
+export async function fetchDeleteReviewId({ teamId, id }: fetchDeleteParams) {
+  const res = await del(`/${teamId}/reviews/${id}`);
+  return await res.json();
 }
 
 // {teamId}/images/upload
 export async function fetchUploadImage({
   teamId,
-  token,
   file,
 }: fetchUploadImageParams) {
   const formData = new FormData();
-  formData.append('image', file);
+  formData.append("image", file);
 
-  return post(`/${teamId}/images/upload`, formData, token);
+  const res = await post(`/${teamId}/images/upload`, formData);
+  return await res.json();
 }

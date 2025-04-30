@@ -1,3 +1,4 @@
+
 'use client';
 
 import MyReviewCard from '@/components/MyReviewCard';
@@ -14,6 +15,7 @@ import RegisterWineModal from '@/components/modals/WineModal';
 import { useRouter } from 'next/navigation';
 import { useInView } from 'react-intersection-observer';
 import clsx from 'clsx';
+
 
 const MyCardSkeleton = () => (
   <div className="w-[343px] lg:w-[800px] md:w-[704px] flex flex-row gap-[16px] rounded-xl border border-gray-200 bg-white p-12 shadow-sm animate-pulse mb-2.5">
@@ -119,7 +121,14 @@ export default function ProfilePage() {
 
   if (!user || !accessToken) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
+        <Image
+          className="max-md:w-28"
+          src={images.wineGif}
+          alt="404 error"
+          width={200}
+          height={100}
+        />
         로딩 중...
       </div>
     );
@@ -240,9 +249,9 @@ export default function ProfilePage() {
         </div>
       </div>
       {/* 등록된 와인이 없을 경우 */}
-      {isWineModalOpen && (
-        <RegisterWineModal onClose={() => setIsWineModalOpen(false)} />
-      )}
+      {/* {isWineModalOpen && (
+        <WineModal onClose={() => setIsWineModalOpen(false)} />
+      )} */}
     </div>
   );
 }

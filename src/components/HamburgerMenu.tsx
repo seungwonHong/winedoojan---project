@@ -3,6 +3,8 @@ import icons from '../../public/icons/icons';
 import {
   fetchDeleteWineId,
   fetchDeleteReviewId,
+egisterWineModal from "./modals/registerWineModal";
+
 } from '@/services/myProfileApi';
 import { useState } from 'react';
 import LeaveReviewModal from './modals/ReviewModal';
@@ -11,6 +13,7 @@ import ModalButton from './common/ModalButton';
 import clsx from 'clsx';
 import { Review, Wine } from '@/types/myprofileTypes';
 import RegisterWineModal from './modals/WineModal';
+
 
 interface HamburgerMenuProps {
   teamId: string | null;
@@ -90,8 +93,10 @@ export default function HamburgerMenu({
         </div>
       )}
       {/* 수정하기 모달 */}
+
       {isEditModalOpen &&
         (tab === 'reviews' ? (
+
           <LeaveReviewModal
             onClose={() => setIsEditModalOpen(false)}
             wineName={review?.wine.name ?? ''}
@@ -100,7 +105,7 @@ export default function HamburgerMenu({
           />
         ) : (
           <RegisterWineModal onClose={() => setIsEditModalOpen(false)} />
-        ))}
+        ))} */}
 
       <Dialog open={isDelModalOpen} onClose={() => setIsDelModalOpen(false)}>
         <div
