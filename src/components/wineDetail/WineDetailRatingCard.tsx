@@ -3,12 +3,17 @@ import { useState } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
 import ModalButton from "../common/ModalButton";
-import LeaveReviewModal from "../modals/leaveReviewModal";
+import ReviewModal from "../modals/ReviewModal";
+import { useAuthStore } from "@/store/authStore";
 
-import { Wine } from "@/types/wineDetailTypes";
+import { WineDetailReviewCardListProps } from "@/types/wineDetailTypes";
 
-const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
+const WineDetailRatingCard = ({
+  wine,
+  refetch,
+}: WineDetailReviewCardListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  let token = useAuthStore.getState().accessToken;
 
   const totalReviews = Object.values(wine.avgRatings).reduce(
     (acc, cur) => acc + cur,
@@ -16,6 +21,11 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
   );
   const fullStars = Math.floor(wine.avgRating);
   const emptyStars = 5 - fullStars;
+
+  const handleClose = async () => {
+    await refetch();
+    await setIsModalOpen(false);
+  };
   return (
     <div className="mt-[40px] md:flex md:justify-between md:w-[576px] md:mx-auto md:items-center lg:inline-block lg:w-[280px] lg:m-0 lg:absolute lg:top-[-40px] lg:left-[850px]">
       <div className="flex justify-between md:flex-col md:gap-[20px] lg:flex-row">
@@ -48,8 +58,9 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
           <ModalButton
             onClick={() => setIsModalOpen(true)}
             fontSize="text-[14px] md:text-[16px]"
-            width="w-[100px] md:w-[113px]"
-            height="h-[40px] md:h-[42px]"
+            width="w-[113px]"
+            height="h-[42px]"
+            className="flex flex-wrap justify-center items-center"
           >
             리뷰 남기기
           </ModalButton>
@@ -57,11 +68,12 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
       </div>
 
       {isModalOpen && (
-        <LeaveReviewModal
-          wineImage="a"
+        <ReviewModal
+          accessToken={token as string}
           wineName={wine.name}
           wineId={wine.id}
-          onClose={() => setIsModalOpen(false)}
+          mode={"create"}
+          onClose={handleClose}
         />
       )}
 
@@ -75,7 +87,7 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
 
             return (
               <div key={score} className="flex items-center">
-                <div className="w-[24px] mr-[16px] text-[#8D94A0] font-[700] text-[16px]">
+                <div className="w-[30px] mr-[16px] text-[#8D94A0] font-[700] text-[16px]">
                   {score}점
                 </div>
                 <div className="relative w-[303px] h-[6px] bg-[#F0F2F5] rounded-[4px] md:w-[241px]">
@@ -92,7 +104,9 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
         <ModalButton
           onClick={() => setIsModalOpen(true)}
           fontSize="text-[14px] md:text-[16px]"
-          className="w-[100px] h-[40px] md:w-[113px] md:h-[42px]"
+          width="w-[113px]"
+          height="h-[42px]"
+          className="flex flex-wrap justify-center items-center"
         >
           리뷰 남기기
         </ModalButton>
