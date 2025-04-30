@@ -1,5 +1,4 @@
-"use client";
-
+'use client';
 import { User } from "@/types/myprofileTypes";
 import Image from "next/image";
 import images from "../../public/images/images";
@@ -36,7 +35,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
   // 닉네임 수정
   const handleNicknameUpdate = async () => {
     if (nickname.trim().length < 1) {
-      toast.warning("닉네임을 입력해주세요!");
+      toast.warning('닉네임을 입력해주세요!');
       setNickname(user.nickname);
       return;
     }
@@ -48,10 +47,10 @@ export default function MyProfile({ user, token }: MyProfileProps) {
         token,
       });
 
-      toast.success("닉네임이 변경되었습니다!");
+      toast.success('닉네임이 변경되었습니다!');
       setIsEditNick(false);
     } catch (err) {
-      console.error("닉네임 업데이트 실패:", err);
+      console.error('닉네임 업데이트 실패:', err);
     }
   };
 
@@ -67,14 +66,14 @@ export default function MyProfile({ user, token }: MyProfileProps) {
       const data = await fetchUpdateUser({
         teamId: user.teamId,
         image:
-          "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1/1745594933907/default_profile_img.png",
+          'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1/1745594933907/default_profile_img.png',
         nickname,
         token,
       });
       setImg(data.image);
       setIsModalOpen(false);
     } catch (err) {
-      console.error("기본 이미지로 변경 실패:", err);
+      console.error('기본 이미지로 변경 실패:', err);
     }
   };
 
@@ -96,7 +95,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
       });
       setImg(data.image);
       setIsModalOpen(false);
-      toast.success("프로필 이미지가 변경되었습니다!");
+      toast.success('프로필 이미지가 변경되었습니다!');
     } catch (err) {
       console.error(err);
     }

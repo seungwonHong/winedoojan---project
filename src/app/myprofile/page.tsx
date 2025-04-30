@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import MyReviewCard from "@/components/MyReviewCard";
 import { fetchReviews, fetchWines } from "../../services/myProfileApi";
@@ -166,21 +166,21 @@ export default function ProfilePage() {
           {/* 탭 */}
           <div
             className={`flex gap-[32px] items-center ${
-              tab === "reviews" ? "mb-[22px]" : "mb-[64px]"
+              tab === 'reviews' ? 'mb-[22px]' : 'mb-[64px]'
             }`}
           >
             <button
-              onClick={() => setTab("reviews")}
+              onClick={() => setTab('reviews')}
               className={`w-max h-[32px] font-bold text-xl ${
-                tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
+                tab === 'reviews' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
               }`}
             >
               내가 쓴 후기
             </button>
             <button
-              onClick={() => setTab("wines")}
+              onClick={() => setTab('wines')}
               className={`w-max h-[32px] font-bold text-xl ${
-                tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
+                tab === 'wines' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
               }`}
             >
               내가 등록한 와인
@@ -202,11 +202,11 @@ export default function ProfilePage() {
                   className="size-[180px]"
                 />
                 <div className="font-bold text-2xl text-[#2D3034]">
-                  등록된 {tab === "reviews" ? "리뷰가" : "와인이"} 없어요
+                  등록된 {tab === 'reviews' ? '리뷰가' : '와인이'} 없어요
                 </div>
                 <BlobButton
                   children={
-                    tab === "reviews" ? "리뷰등록하러가기" : "와인등록하러가기"
+                    tab === 'reviews' ? '리뷰등록하러가기' : '와인등록하러가기'
                   }
                   onClick={() => {
                     if (tab === "reviews") {
