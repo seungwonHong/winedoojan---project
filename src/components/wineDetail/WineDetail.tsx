@@ -6,8 +6,10 @@ import WineDetailCard from "./WineDetailCard";
 import WineDetailRatingCard from "./WineDetailRatingCard";
 import WineDetailReviewCardList from "./WineDetailReviewCardList";
 
+import { Wine } from "@/types/wineDetailTypes";
+
 const WineDetail = ({ wineId }: { wineId: string }) => {
-  const { wine, loading, error } = useFetchWine(wineId);
+  const { wine, loading, error, refetch } = useFetchWine(wineId);
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>에러 발생: {error}</div>;
@@ -22,9 +24,9 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
           리뷰 목록
         </div>
         <div className="lg:relative lg:w-[280px]">
-          <WineDetailRatingCard wine={wine} />
+          <WineDetailRatingCard wine={wine} refetch={refetch} />
         </div>
-        <WineDetailReviewCardList wine={wine} />
+        <WineDetailReviewCardList wine={wine} refetch={refetch} />
       </div>
     </div>
   );

@@ -8,7 +8,10 @@ import { useAuthStore } from "@/store/authStore";
 
 import { Wine } from "@/types/wineDetailTypes";
 
-const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
+const WineDetailRatingCard = ({
+  wine,
+  refetch,
+}: WineDetailReviewCardListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   let token = useAuthStore.getState().accessToken;
 
@@ -18,6 +21,11 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
   );
   const fullStars = Math.floor(wine.avgRating);
   const emptyStars = 5 - fullStars;
+
+  const handleClose = async () => {
+    await refetch();
+    await setIsModalOpen(false);
+  };
   return (
     <div className="mt-[40px] md:flex md:justify-between md:w-[576px] md:mx-auto md:items-center lg:inline-block lg:w-[280px] lg:m-0 lg:absolute lg:top-[-40px] lg:left-[850px]">
       <div className="flex justify-between md:flex-col md:gap-[20px] lg:flex-row">
@@ -65,7 +73,7 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
           wineName={wine.name}
           wineId={wine.id}
           mode={"create"}
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleClose}
         />
       )}
 
@@ -108,3 +116,8 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
 };
 
 export default WineDetailRatingCard;
+
+interface WineDetailReviewCardListProps {
+  wine: Wine;
+  refetch: () => Promise<void>; // ✅ 추가
+}

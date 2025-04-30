@@ -10,8 +10,17 @@ import ic_top from "../../../public/icons/ic_top.png";
 import ic_bottom from "../../../public/icons/ic_bottom.png";
 
 import { Review } from "@/types/wineDetailTypes";
+import { Wine } from "@/types/wineDetailTypes";
 
-const WineDetailReviewCard = ({ item }: { item: Review }) => {
+const WineDetailReviewCard = ({
+  item,
+  wine,
+  refetch,
+}: {
+  item: Review;
+  wine: Wine;
+  refetch: () => Promise<void>;
+}) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const handleIsOpen = () => {
@@ -23,7 +32,12 @@ const WineDetailReviewCard = ({ item }: { item: Review }) => {
         key={item.id}
         className="border border-[#CFDBEA] mt-[20px] rounded-[12px] md:rounded-[16px] py-[16px] px-[20px] md:py-[32px] md:px-[40px] lg:py-[16px] md:mt-[36px] lg:mt-[22px] "
       >
-        <WineDetailReviewHeader key={item.id} item={item} />
+        <WineDetailReviewHeader
+          key={item.id}
+          item={item}
+          wine={wine}
+          refetch={refetch}
+        />
         {isOpen ? (
           <div className="relative bottom-[40px]">
             <div className="mt-[16px]">{item.content}</div>
