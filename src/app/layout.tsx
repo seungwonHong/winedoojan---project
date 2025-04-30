@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import ScrollToTop from '@/components/common/ScrollToTop';
 
 export const metadata: Metadata = {
   title: '와인두잔',
@@ -19,7 +20,10 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css"
         />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        <ScrollToTop />
+      </body>
     </html>
   );
 }

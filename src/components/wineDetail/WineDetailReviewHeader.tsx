@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-import { FaStar } from "react-icons/fa";
+import { FaStar } from 'react-icons/fa';
 
-import { getTimeAgo } from "@/utils/getTimeAgo";
+import { getTimeAgo } from '@/utils/getTimeAgo';
 
 import useFetchHeart from "@/hooks/winedetail/useFetchHeart";
 import ReviewModal from "../modals/ReviewModal";
 import DeleteModal from "../modals/DeleteModal";
 import { useAuthStore } from "@/store/authStore";
 
-import default_profile_img from "../../../public/images/default_profile_img.png";
-import ic_hamburger from "../../../public/icons/ic_hamburger.png";
-import ic_heart from "../../../public/icons/ic_heart.png";
-import ic_garnet_heart from "../../../public/icons/ic_garnet_heart.png";
+import default_profile_img from '../../../public/images/default_profile_img.png';
+import ic_hamburger from '../../../public/icons/ic_hamburger.png';
+import ic_heart from '../../../public/icons/ic_heart.png';
+import ic_garnet_heart from '../../../public/icons/ic_garnet_heart.png';
 
 import { ReviewHeader } from "@/types/wineDetailTypes";
 import { Wine } from "@/types/wineDetailTypes";
