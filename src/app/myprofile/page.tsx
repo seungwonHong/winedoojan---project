@@ -1,24 +1,24 @@
 'use client';
 
-import MyReviewCard from "@/components/MyReviewCard";
-import { fetchReviews, fetchWines } from "../../services/myProfileApi";
-import { Wine, Review } from "@/types/myprofileTypes";
-import MyProfile from "@/components/MyProfile";
-import { useEffect, useState } from "react";
-import MyWineCard from "@/components/MyWineCard";
-import images from "../../../public/images/images";
-import BlobButton from "@/components/common/BlobButton";
-import Header from "@/components/common/Header";
-import { useAuthStore } from "@/store/authStore";
-import RegisterWineModal from "@/components/modals/registerWineModal";
-import { useRouter } from "next/navigation";
-import { useInView } from "react-intersection-observer";
+import MyReviewCard from '@/components/MyReviewCard';
+import { fetchReviews, fetchWines } from '../../services/myProfileApi';
+import { Wine, Review } from '@/types/myprofileTypes';
+import MyProfile from '@/components/MyProfile';
+import { useEffect, useState } from 'react';
+import MyWineCard from '@/components/MyWineCard';
+import images from '../../../public/images/images';
+import BlobButton from '@/components/common/BlobButton';
+import Header from '@/components/common/Header';
+import { useAuthStore } from '@/store/authStore';
+import RegisterWineModal from '@/components/modals/WineModal';
+import { useRouter } from 'next/navigation';
+import { useInView } from 'react-intersection-observer';
 
 export default function ProfilePage() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const accessToken = useAuthStore((state) => state.accessToken);
-  const [tab, setTab] = useState<"reviews" | "wines">("reviews");
+  const [tab, setTab] = useState<'reviews' | 'wines'>('reviews');
   const [openId, setOpenId] = useState<number | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewCursor, setReviewCursor] = useState<number | null>(null);
@@ -44,7 +44,7 @@ export default function ProfilePage() {
       setReviewCursor(res.nextCursor ?? null);
       setTotalCount(res.totalCount);
     } catch (error) {
-      console.error("리뷰 초기 로딩 실패", error);
+      console.error('리뷰 초기 로딩 실패', error);
     }
   };
 
@@ -63,7 +63,7 @@ export default function ProfilePage() {
       setReviewCursor(res.nextCursor ?? null);
       setTotalCount(res.totalCount);
     } catch (error) {
-      console.error("리뷰 추가 로딩 실패", error);
+      console.error('리뷰 추가 로딩 실패', error);
     }
   };
 
@@ -81,7 +81,7 @@ export default function ProfilePage() {
       setWineCursor(res.nextCursor ?? null);
       setTotalCount(res.totalCount);
     } catch (error) {
-      console.error("와인 초기 로딩 실패", error);
+      console.error('와인 초기 로딩 실패', error);
     }
   };
 
@@ -100,14 +100,14 @@ export default function ProfilePage() {
       setWineCursor(res.nextCursor ?? null);
       setTotalCount(res.totalCount);
     } catch (error) {
-      console.error("와인 추가 로딩 실패", error);
+      console.error('와인 추가 로딩 실패', error);
     }
   };
 
   // 초기 로딩
   useEffect(() => {
     if (user && accessToken) {
-      if (tab === "reviews") {
+      if (tab === 'reviews') {
         setReviews([]);
         setReviewCursor(null);
         loadReview();
@@ -122,7 +122,7 @@ export default function ProfilePage() {
   // 스크롤 시 추가 로딩
   useEffect(() => {
     if (inView) {
-      if (tab === "reviews") {
+      if (tab === 'reviews') {
         loadMoreReview();
       } else {
         loadMoreWine();
@@ -133,7 +133,7 @@ export default function ProfilePage() {
   // 등록된 리뷰 없을 때 버튼 클릭 함수
   useEffect(() => {
     if (isReviewModalOpen) {
-      router.push("/wines");
+      router.push('/wines');
     }
   }, [isReviewModalOpen]);
 
@@ -149,7 +149,7 @@ export default function ProfilePage() {
   const commonCardProps = {
     teamId: user.teamId,
     token: accessToken,
-    onDeleteSuccess: tab === "reviews" ? loadReview : loadWine,
+    onDeleteSuccess: tab === 'reviews' ? loadReview : loadWine,
     tab,
     openId,
     setOpenId,
@@ -193,8 +193,8 @@ export default function ProfilePage() {
 
           {/* 목록 */}
           <div>
-            {(tab === "reviews" && reviews.length === 0) ||
-            (tab === "wines" && wines.length === 0) ? (
+            {(tab === 'reviews' && reviews.length === 0) ||
+            (tab === 'wines' && wines.length === 0) ? (
               <div className="w-[800px] h-[530px] flex flex-col gap-[30px] items-center justify-center">
                 <img
                   src={images.empty}
@@ -209,7 +209,7 @@ export default function ProfilePage() {
                     tab === 'reviews' ? '리뷰등록하러가기' : '와인등록하러가기'
                   }
                   onClick={() => {
-                    if (tab === "reviews") {
+                    if (tab === 'reviews') {
                       setIsReviewModalOpen(true);
                     } else {
                       setIsWineModalOpen(true);
@@ -219,7 +219,7 @@ export default function ProfilePage() {
               </div>
             ) : (
               <>
-                {tab === "reviews"
+                {tab === 'reviews'
                   ? reviews.map((review) => (
                       <MyReviewCard
                         key={review.id}

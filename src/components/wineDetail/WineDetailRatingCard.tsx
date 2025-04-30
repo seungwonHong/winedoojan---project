@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
-import ModalButton from "../common/ModalButton";
-import LeaveReviewModal from "../modals/leaveReviewModal";
+import ModalButton from '../common/ModalButton';
+import LeaveReviewModal from '../modals/ReviewModal';
 
-import { Wine } from "@/types/wineDetailTypes";
+import { Wine } from '@/types/wineDetailTypes';
 
 const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
