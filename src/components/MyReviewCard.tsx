@@ -8,7 +8,7 @@ interface MyReviewCardProps {
   id: number;
   review: Review;
   teamId: string | null;
-  token: string | null;
+  token: string;
   onDeleteSuccess: () => void;
   tab: string;
   openId: number | null;
