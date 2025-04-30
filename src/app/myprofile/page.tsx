@@ -13,15 +13,26 @@ import { useAuthStore } from "@/store/authStore";
 import RegisterWineModal from "@/components/modals/registerWineModal";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
-import WineCardBigSkeleton from "@/components/WineCardBigSkeleton";
 import clsx from "clsx";
+
+const MyCardSkeleton = () => (
+  <div className="w-[343px] lg:w-[800px] md:w-[704px] flex flex-row gap-[16px] rounded-xl border border-gray-200 bg-white p-12 shadow-sm animate-pulse mb-2.5">
+    <div className="w-2/5 h-[160px] bg-gray-100 rounded-md mb-4" />
+    <div className="w-3/5">
+      <div className="w-1/3 h-[32px] bg-gray-200 rounded mb-2" />
+      <div className="h-[24px] bg-gray-100 rounded mb-1" />
+      <div className="h-[24px] bg-gray-100 rounded mb-1" />
+      <div className="h-[24px] bg-gray-100 rounded mb-1" />
+    </div>
+  </div>
+);
 
 export default function ProfilePage() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const accessToken = useAuthStore((state) => state.accessToken);
   const [tab, setTab] = useState<"reviews" | "wines">("reviews");
-  const [openId, setOpenId] = useState<number | null>(null);
+  const [openId, setOpenId] = useState<number | null>(null); // 햄버거 버튼 열기/닫기를 위한 상태
   const [myProfileData, setMyProfileData] = useState({
     reviews: [] as Review[],
     reviewCursor: null as number | null,
@@ -35,6 +46,7 @@ export default function ProfilePage() {
   const { ref, inView } = useInView();
   const limit = 3;
 
+  // 리뷰/와인 목록 가져오기
   const getList = async (tab: "reviews" | "wines", isLoadMore = false) => {
     if (!user || !accessToken) return;
 
@@ -129,15 +141,17 @@ export default function ProfilePage() {
 
       <div
         className={clsx(
-          "flex justify-start gap-[30px] md:gap-[40px] lg:gap-[60px] flex-col mx-auto w-[343px] mt-[20px] lg:mt-[37px]",
+          "flex justify-start gap-[30px] md:gap-10 lg:gap-[60px] flex-col mx-auto w-[343px] mt-5 lg:mt-[37px]",
           "lg:flex-row lg:w-[1140px] md:w-[704px]"
         )}
       >
+        {/* 프로필 이미지, 닉네임*/}
         <MyProfile user={user} token={accessToken} />
 
-        <div className="">
+        <div>
           {/* 탭 */}
           <div
+<<<<<<< HEAD
 <<<<<<< HEAD
             className={`flex gap-[32px] items-center ${
               tab === 'reviews' ? 'mb-[22px]' : 'mb-[64px]'
@@ -150,11 +164,15 @@ export default function ProfilePage() {
 =======
             className={`flex gap-[16px] items-center lg:gap-[32px] ${
               tab === "reviews" ? "mb-[22px]" : "mb-[64px]"
+=======
+            className={`flex gap-4 items-center lg:gap-8 ${
+              tab === "reviews" ? "mb-6" : "mb-16"
+>>>>>>> 8d699e3 (refactor : skeleton ui 변경)
             }`}
           >
             <button
               onClick={() => setTab("reviews")}
-              className={`w-max h-[32px] font-bold text-lg lg:text-xl ${
+              className={`w-max h-8 font-bold text-lg lg:text-xl ${
                 tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
 >>>>>>> 9f4f955 (feat: 반응형 디자인 구현)
               }`}
@@ -168,7 +186,7 @@ export default function ProfilePage() {
                 tab === 'wines' ? 'text-[#2D3034]' : 'text-[#9FACBD]'
 =======
               onClick={() => setTab("wines")}
-              className={`w-max h-[32px] font-bold text-lg lg:text-xl ${
+              className={`w-max h-8 font-bold text-lg lg:text-xl ${
                 tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
 >>>>>>> 9f4f955 (feat: 반응형 디자인 구현)
               }`}
@@ -183,13 +201,16 @@ export default function ProfilePage() {
 
           {/* 목록 */}
           <div>
+            {/* 로딩중 : skeleton UI 표시 */}
             {isLoading ? (
               <>
-                <WineCardBigSkeleton />
-                <WineCardBigSkeleton />
+                <MyCardSkeleton />
+                <MyCardSkeleton />
+                <MyCardSkeleton />
               </>
             ) : (tab === "reviews" && myProfileData.reviews.length === 0) ||
               (tab === "wines" && myProfileData.wines.length === 0) ? (
+              // {/* 데이터 없을 때 : 이미지 + 버튼 */}
               <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center">
                 <img
                   src={images.empty}
@@ -213,6 +234,7 @@ export default function ProfilePage() {
                 />
               </div>
             ) : (
+              //{/* 데이터 있을 때 : 와인/리뷰 카드 */}
               <>
                 {tab === "reviews"
                   ? myProfileData.reviews.map((review) => (

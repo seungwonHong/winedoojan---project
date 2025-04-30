@@ -108,15 +108,15 @@ export default function MyProfile({ user, token }: MyProfileProps) {
   return (
     <div
       className={clsx(
-        "border border-[#cfdbea] mx-auto rounded-[16px] shadow-[0_2px_20px_0_rgba(0_0_0_/_0.04)] w-full h-[190px]",
-        "md:w-full md:h-[200px]",
-        "lg:w-[280px] lg:h-[530px] lg:mx-0"
+        "border border-[#cfdbea] mx-auto rounded-[16px] shadow-[0_2px_20px_0_rgba(0_0_0_/_0.04)] w-[343px] h-[241px]",
+        "md:w-[704px] md:h-[247px]",
+        "lg:w-[280px] lg:h-[530px]"
       )}
     >
       <div
         className={clsx(
           "py-[39px] flex flex-row gap-[16px] p-[20px]",
-          "lg:flex-col lg:px-[20px] lg:items-center",
+          "lg:flex-col lg:px-[20px]",
           "md:px-[40px] md:items-start"
         )}
       >
@@ -133,11 +133,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
           />
           <div
             onClick={() => setIsModalOpen(true)}
-            className={clsx(
-              "absolute inset-0 bg-burgundy bg-opacity-40 rounded-full flex items-center justify-center opacity-0",
-              "group-hover:opacity-100 cursor-pointer",
-              "sm:size-[60px] lg:size-[164px] md:size-[80px]"
-            )}
+            className="absolute inset-0 bg-garnet bg-opacity-40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer"
           >
             <img src={icons.editProfile} className="size-[48px]" />
           </div>
@@ -164,7 +160,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
                     onClick={handleCloseModal}
                     width="w-[108px]"
                     bgColor="bg-[#F3E7E6]"
-                    textColor="text-burgundy"
+                    textColor="text-garnet"
                   />
                   <ModalButton
                     children="변경하기"
@@ -178,7 +174,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
                     onClick={handleResetImage}
                     width="w-auto"
                     bgColor="bg-white"
-                    textColor="text-burgundy"
+                    textColor="text-garnet"
                     fontSize="text-[14px]"
                     fontWeight="font-medium"
                   />
@@ -192,40 +188,30 @@ export default function MyProfile({ user, token }: MyProfileProps) {
           <div
             className={clsx(
               "flex flex-col gap-[12px] w-[205px]",
-              "lg:w-[240px] lg:flex-col lg:items-end",
+              "lg:w-[240px]",
               "md:flex-row md:w-max md:items-center"
             )}
           >
             <input
-              className="w-full h-12 rounded-2xl px-[20px] py-[14px] border border-gray-300 focus:outline-none"
+              className="w-fill h-12 rounded-2xl px-[20px] py-[14px] border border-gray-300 focus:outline-none"
               name="nickname"
               type="text"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
             />
             <div className="flex justify-end gap-[8px]">
-              <ModalButton
-                children="취소"
+              <button
                 onClick={() => setIsEditNick(false)}
-                rounded="rounded-[12px]"
-                fontWeight="font-medium"
-                bgColor="bg-mistyrose"
-                textColor="text-burgundy"
-                height="h-[42px]"
-                width="w-max"
-                className="px-[13px] py-[8px] md:h-12"
-              />
-              <ModalButton
-                children="변경하기"
+                className="text-garnet bg-palepink px-[13px] py-[8px] rounded-[12px] font-medium md:h-12 md:mt-[10px]"
+              >
+                취소
+              </button>
+              <button
                 onClick={handleNicknameUpdate}
-                rounded="rounded-[12px]"
-                fontWeight="font-medium"
-                bgColor="bg-burgundy"
-                textColor="text-white"
-                height="h-[42px]"
-                width="w-max"
-                className="px-[13px] py-[8px] md:h-12"
-              />
+                className="text-white bg-garnet px-[13px] py-[8px] rounded-[12px] font-medium md:h-12 md:mt-[10px]"
+              >
+                변경하기
+              </button>
             </div>
           </div>
         ) : (
