@@ -16,6 +16,8 @@ export interface Wine {
   reviewCount: number;
   recentReview: boolean;
   userId: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Review {

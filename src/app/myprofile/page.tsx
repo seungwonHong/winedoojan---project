@@ -136,7 +136,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <>
+    <div className="w-max mx-auto">
       <Header />
 
       <div
@@ -157,7 +157,7 @@ export default function ProfilePage() {
           >
             <button
               onClick={() => setTab("reviews")}
-              className={`w-max h-[32px] font-bold text-xl ${
+              className={`w-max h-[32px] font-bold text-lg md:text-xl  ${
                 tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
               }`}
             >
@@ -165,7 +165,7 @@ export default function ProfilePage() {
             </button>
             <button
               onClick={() => setTab("wines")}
-              className={`w-max h-[32px] font-bold text-xl ${
+              className={`w-max h-[32px] font-bold text-lg md:text-xl ${
                 tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
               }`}
             >
@@ -243,6 +243,6 @@ export default function ProfilePage() {
       {isWineModalOpen && (
         <RegisterWineModal onClose={() => setIsWineModalOpen(false)} />
       )}
-    </>
+    </div>
   );
 }
