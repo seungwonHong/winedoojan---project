@@ -48,8 +48,9 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
           <ModalButton
             onClick={() => setIsModalOpen(true)}
             fontSize="text-[14px] md:text-[16px]"
-            width="w-[100px] md:w-[113px]"
-            height="h-[40px] md:h-[42px]"
+            width="w-[113px]"
+            height="h-[42px]"
+            className="flex flex-wrap justify-center items-center"
           >
             리뷰 남기기
           </ModalButton>
@@ -75,7 +76,7 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
 
             return (
               <div key={score} className="flex items-center">
-                <div className="w-[24px] mr-[16px] text-[#8D94A0] font-[700] text-[16px]">
+                <div className="w-[30px] mr-[16px] text-[#8D94A0] font-[700] text-[16px]">
                   {score}점
                 </div>
                 <div className="relative w-[303px] h-[6px] bg-[#F0F2F5] rounded-[4px] md:w-[241px]">
@@ -92,7 +93,9 @@ const WineDetailRatingCard = ({ wine }: { wine: Wine }) => {
         <ModalButton
           onClick={() => setIsModalOpen(true)}
           fontSize="text-[14px] md:text-[16px]"
-          className="w-[100px] h-[40px] md:w-[113px] md:h-[42px]"
+          width="w-[113px]"
+          height="h-[42px]"
+          className="flex flex-wrap justify-center items-center"
         >
           리뷰 남기기
         </ModalButton>
