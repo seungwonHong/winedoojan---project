@@ -1,8 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState } from "react";
 =======
 import { useState, useRef, useEffect } from "react";
 >>>>>>> d71f241 (리뷰 필터 기능 구현)
+=======
+import { useState } from "react";
+
+>>>>>>> 012b359 (ratingCard 컴포넌트 스타일 문제 수정)
 import { Review } from "@/types/wineDetailTypes";
 import { FiFilter } from "react-icons/fi";
 
