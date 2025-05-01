@@ -20,7 +20,7 @@ type Props = {
   existingReviewData?: Review;
 };
 
-const AROMA_MAP: Record<string, string> = {
+export const AROMA_MAP: Record<string, string> = {
   체리: "CHERRY",
   베리: "BERRY",
   오크: "OAK",
