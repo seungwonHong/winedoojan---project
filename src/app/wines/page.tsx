@@ -25,9 +25,11 @@ const page = () => {
   const { allWines, loading } = useWineListWines({ limit: 2 });
   const { accessToken } = useAuthStore.getState();
 
+  console.log(isDesktop);
+
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktop(window.innerWidth > 1024);
+      setIsDesktop(window.innerWidth >= 1200);
     };
     handleResize();
 
@@ -46,12 +48,12 @@ const page = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center lg:px-[390px] lg:pt-[24px] lg:pb-[109px] md:px-[20px] md:pt-[24px] md:pb-[72px] px-[16px] pt-[16px] pb-[62px]">
+      <div className="flex flex-col justify-center items-center lg:px-[390px] lg:pt-[24px] lg:pb-[109px] md:px-[20px] md:pt-[24px] md:pb-[72px] px-[16px] pt-[16px] pb-[62px]">
         <Header />
 
         <WineListRecWine wines={wines} />
 
-        <div className="flex flex-row w-full justify-center md:w-[704px]">
+        <div className="flex flex-row lg:w-[1140px] justify-center md:w-[704px] w-[343px]">
           <div className="flex flex-col md:flex-row lg:mt-[150px]  md:mt-[40px] mt-[24px]">
             {isDesktop ? (
               <div className="flex lg:flex-col md:flex-row">

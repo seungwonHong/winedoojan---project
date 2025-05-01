@@ -1,6 +1,7 @@
 import { FaStar } from "react-icons/fa";
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface Props {
   wine: {
@@ -32,7 +33,11 @@ interface Props {
 const WineCardSmall = ({ wine }: Props) => {
   return (
     <Link href={`wines/${wine.id}`}>
-      <div className="flex flex-row shadow-lg overflow-hidden pb-0 mb-0 lg:w-[232px] lg:h-[185px] lg:px-[30px] lg:pt-[24px]  md:w-[140px] md:h-[111px] md:px-[18px] w-[208px] h-[166.5px] px-[27px] bg-[white] rounded-2xl">
+      <motion.div
+        whileHover={{ y: -10 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="flex flex-row shadow-lg overflow-hidden pb-0 mb-0 lg:w-[232px] lg:h-[185px] lg:px-[30px] lg:pt-[24px]  md:w-[140px] md:h-[111px] md:px-[18px] w-[208px] h-[166.5px] px-[27px] bg-[white] rounded-2xl"
+      >
         <img
           alt="wine"
           src={wine.image}
@@ -59,7 +64,7 @@ const WineCardSmall = ({ wine }: Props) => {
             {wine.name}
           </span>
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 };
