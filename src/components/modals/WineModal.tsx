@@ -4,7 +4,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import imageCompression from 'browser-image-compression';
 import ModalButton from '@/components/common/ModalButton';
@@ -27,7 +27,7 @@ const WINE_TYPES = ['Red', 'White', 'Sparkling'] as const;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const COMPRESSION_OPTIONS = {
   maxSizeMB: 0.5,
-  maxWidthOrHeight: 1000,
+  maxWidthOrHeight: 600,
 };
 
 export default function WineModal({ onClose, accessToken, mode, wineData }: Props) {
@@ -39,6 +39,7 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
   const [price, setPrice] = useState('');
   const [selectedOption, setSelectedOption] = useState<(typeof WINE_TYPES)[number]>('Red');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [compressedImageFile, setCompressedImageFile] = useState<File | null>(null);
 
   // 수정 모드일 때 초기값 세팅
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) return;  // 파일이 없으면 함수 종료
 
     if (file.size > MAX_FILE_SIZE) {
       toast.warning('파일 크기가 너무 큽니다. 5MB 이하의 파일을 업로드하세요.');
@@ -79,8 +80,8 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
 
     try {
       const compressedFile = await imageCompression(file, COMPRESSION_OPTIONS);
-      console.log('압축된 이미지 크기:', compressedFile.size);
-
+      setCompressedImageFile(compressedFile);
+      
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === 'string') {
@@ -99,15 +100,39 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
       toast.warning('모든 항목을 입력해주세요.');
       return;
     }
+    
+    const formData = new FormData();
+    let imageUrl = wineData?.image; // 기존 이미지 URL을 저장해두기
+
+    // 이미지가 변경되었을 경우에만 새로 업로드
+    if (compressedImageFile) {
+      formData.append('image', compressedImageFile); // 새 이미지가 있다면 추가
+    } else if (!wineData?.image) {
+      toast.warning('이미지가 없습니다. 다시 선택해주세요.');
+      return;
+    }
+
+    if (formData.has('image')) {
+      const imageUploadResponse = await fetch('https://winereview-api.vercel.app/14-2/images/upload', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      });
+      
+      const imageResult = await imageUploadResponse.json();
+      imageUrl = imageResult.url; // 새로 업로드된 이미지 URL
+    }
 
     const winePayload = {
       name,
       region,
-      image: imagePreview,
+      image: imageUrl,
       price: parseFloat(price),
       type: selectedOption.toUpperCase(),
     };
-
+    
     const url =
       mode === 'create'
         ? 'https://winereview-api.vercel.app/14-2/wines'
@@ -152,6 +177,7 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
+      <ToastContainer position="top-center" autoClose={2000} hideProgressBar theme="light" />
       <div 
         className="bg-white w-[460px] rounded-2xl shadow-lg p-6 relative max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden"
         onClick={(e) => e.stopPropagation()}
