@@ -8,7 +8,7 @@ interface MyWineCardProps {
   id: number;
   wine: Wine;
   teamId: string | null;
-  token: string | null;
+  token: string;
   tab: string;
   openId: number | null;
   setOpenId: (id: number | null) => void;

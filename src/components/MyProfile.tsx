@@ -1,6 +1,5 @@
 "use client";
 import { User } from "@/types/myprofileTypes";
-import Image from "next/image";
 import images from "../../public/images/images";
 import icons from "../../public/icons/icons";
 import { useEffect, useState } from "react";
@@ -9,7 +8,6 @@ import {
   fetchUpdateImg,
   fetchUploadImage,
 } from "@/services/myProfileApi";
-import Input from "./common/Input";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DropZoneImageUploader from "./common/DropZoneImgUploader";
