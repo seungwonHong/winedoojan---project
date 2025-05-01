@@ -12,7 +12,7 @@ interface MyWineCardProps {
   tab: string;
   openId: number | null;
   setOpenId: (id: number | null) => void;
-  onDeleteSuccess: () => void;
+  onSuccess: () => void;
 }
 
 export default function MyWineCard({ ...props }: MyWineCardProps) {
