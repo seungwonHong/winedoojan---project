@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+
+import { toast } from "react-toastify";
+
+import handleResponseWithAuth from "@/utils/handleResponseWithAuth";
 import { useAuthStore } from "@/store/authStore";
 
 const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
   const [isLike, setIsLike] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-
-  const refreshAccessToken = useAuthStore((state) => state.refreshAccessToken);
+  const token = useAuthStore((state) => state.accessToken);
 
   useEffect(() => {
     setIsLike(initialIsLiked);
@@ -21,7 +24,15 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
 
     setIsLike(nextLiked);
 
-    let token = useAuthStore.getState().accessToken;
+    const rollback = () => {
+      setIsLike(wasLiked);
+      toast.warning(
+        method === "POST"
+          ? "하트 누르기에 실패했습니다."
+          : "하트 지우기에 실패했습니다."
+      );
+    };
+
     if (!token) {
       console.error("토큰 없음");
       setIsProcessing(false);
@@ -30,7 +41,7 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
     }
 
     try {
-      let res = await fetch(
+      let res = await handleResponseWithAuth(
         `https://winereview-api.vercel.app/14-2/reviews/${itemId}/like`,
         {
           method,
@@ -41,26 +52,11 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
         }
       );
 
-      if (res.status === 401) {
-        const success = await refreshAccessToken();
-        if (success) {
-          token = useAuthStore.getState().accessToken;
-          res = await fetch(
-            `https://winereview-api.vercel.app/14-2/reviews/${itemId}/like`,
-            {
-              method,
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-        } else {
-          throw new Error("토큰 갱신 실패");
-        }
-      }
-
-      if (!res.ok) {
+      if (res.ok) {
+        toast.success(
+          method === "POST" ? "하트를 눌렀습니다." : "하트를 지웠습니다."
+        );
+      } else {
         try {
           const error = await res.json();
           console.error("좋아요 실패:", error.message);
@@ -68,10 +64,12 @@ const useFetchHeart = (itemId: number, initialIsLiked: boolean) => {
           console.error("좋아요 실패: 응답 파싱 오류");
         }
         setIsLike(wasLiked);
+        rollback();
       }
     } catch (err) {
       console.error("좋아요 요청 중 에러:", err);
       setIsLike(wasLiked);
+      rollback();
     } finally {
       setIsProcessing(false);
     }
