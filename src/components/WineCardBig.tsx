@@ -36,7 +36,7 @@ const WineCardBig = ({ wine }: Props) => {
     <motion.div
       whileHover={{ y: -10 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="flex flex-col rounded-2xl border-[1px] border-[#CFDBEA] lg:w-[800px] md:w-[600px]  w-[300px] lg:mt-[42px] lg:pb-[19px] pt-[36.5px] md:mt-[36px] md:pb-[10px] pb-[15px] mt-[30px] shadow-lg"
+      className="flex flex-col rounded-2xl border-[1px] border-[#CFDBEA] lg:w-[800px] md:w-[600px] w-[300px] lg:mt-[42px] lg:pb-[19px] pt-[36.5px] md:mt-[36px] md:pb-[10px] pb-[15px] mt-[30px] shadow-lg"
     >
       <div className="flex flex-row">
         <Link href={`wines/${wine.id}`}>

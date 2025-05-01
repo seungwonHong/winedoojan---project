@@ -89,13 +89,24 @@ const page = () => {
                 와인 등록하기
               </ModalButton>
             )}
-            {allWines?.length > 0 ? (
+            {allWines !== null && allWines?.length > 0 ? (
               <>
                 {allWines.map((allwine) => (
                   <WineCardBig key={allwine.id} wine={allwine} />
                 ))}
                 {loading && <LoadingAnimation />}
               </>
+            ) : allWines !== null && allWines?.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full">
+                <img
+                  src="/images/noSearchResult.jpeg"
+                  alt="searchNotFound"
+                  className="lg:w-[300px] lg:h-[300px]"
+                />
+                <span className="lg:text-[24px] font-semibold text-[#800020] lg:mt-[30px]">
+                  검색 결과가 없습니다
+                </span>
+              </div>
             ) : (
               Array.from({ length: 10 }).map((_, index) => (
                 <WineCardBigSkeleton key={index} />
