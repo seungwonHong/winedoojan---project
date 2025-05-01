@@ -3,33 +3,36 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import imageCompression from 'browser-image-compression';
 import ModalButton from '@/components/common/ModalButton';
 import DropdownSelect from '@/components/common/DropdownSelect';
+import handleResponseWithAuth from '@/utils/handleResponseWithAuth';
+import type { Wine } from '@/types/wineDetailTypes';
+
+type WineWithType = Wine & {
+  type: 'Red' | 'White' | 'Sparkling';
+};
 
 type Props = {
   onClose: () => void;
   accessToken: string;
   mode: 'create' | 'edit'; // post | patch
-  wineData?: {
-    id: number;
-    name: string;
-    region: string;
-    price: number;
-    type: 'Red' | 'White' | 'Sparkling';
-    image: string;
-  };
+  wineData?: WineWithType;
 };
 
 const WINE_TYPES = ['Red', 'White', 'Sparkling'] as const;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const COMPRESSION_OPTIONS = {
   maxSizeMB: 0.5,
-  maxWidthOrHeight: 600,
+  maxWidthOrHeight: 1000,
 };
 
 export default function WineModal({ onClose, accessToken, mode, wineData }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const [name, setName] = useState('');
   const [region, setRegion] = useState('');
@@ -70,12 +73,14 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
     if (!file) return;
 
     if (file.size > MAX_FILE_SIZE) {
-      alert('파일 크기가 너무 큽니다. 5MB 이하의 파일을 업로드하세요.');
+      toast.warning('파일 크기가 너무 큽니다. 5MB 이하의 파일을 업로드하세요.');
       return;
     }
 
     try {
       const compressedFile = await imageCompression(file, COMPRESSION_OPTIONS);
+      console.log('압축된 이미지 크기:', compressedFile.size);
+
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === 'string') {
@@ -85,13 +90,13 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
       reader.readAsDataURL(compressedFile);
     } catch (error) {
       console.error('이미지 압축 실패:', error);
-      alert('이미지 압축 중 오류가 발생했습니다.');
+      toast.warning('이미지 압축 중 오류가 발생했습니다.');
     }
   };
 
   const handleSubmit = async () => {
     if (!name || !region || !price || !imagePreview) {
-      alert('모든 항목을 입력해주세요.');
+      toast.warning('모든 항목을 입력해주세요.');
       return;
     }
 
@@ -111,7 +116,7 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
     const method = mode === 'create' ? 'POST' : 'PATCH';
     
     try {
-      const response = await fetch(url, {
+      const response = await handleResponseWithAuth(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
@@ -128,11 +133,14 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
 
       const result = await response.json();
       console.log(mode === 'create' ? '와인 등록 성공:' : '와인 수정 성공:', result);
-      alert(mode === 'create' ? '와인이 성공적으로 등록되었습니다.' : '와인이 성공적으로 수정되었습니다.');
-      onClose();
+      toast.success(mode === 'create' ? '와인이 성공적으로 등록되었습니다.' : '와인이 성공적으로 수정되었습니다.');
+      
+      if (mode === 'create' && result.id) {
+        router.push(`/wines/${result.id}`); // 상세 페이지로 리다이렉트
+      }
     } catch (error) {
       console.error(mode === 'create' ? '등록 실패:' : '수정 실패:', error);
-      alert(mode === 'create' ? '와인 등록 중 오류가 발생했습니다.' : '와인 수정 중 오류가 발생했습니다.');
+      toast.warning(mode === 'create' ? '와인 등록 중 오류가 발생했습니다.' : '와인 수정 중 오류가 발생했습니다.');
     }
   };
 
