@@ -144,7 +144,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="w-max mx-auto">
+    <div className="w-max mx-auto mt-5 md:mt-10">
       <Header />
 
       <div
