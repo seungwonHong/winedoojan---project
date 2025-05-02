@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import WineDetailReviewHeader from "./WineDetailReviewHeader";
 import WineTasteSlider from "./WineTasteSlider";
+
 import ic_top from "../../../public/icons/ic_top.png";
 import ic_bottom from "../../../public/icons/ic_bottom.png";
 
@@ -26,6 +27,9 @@ const WineDetailReviewCard = ({
   const handleIsOpen = () => {
     setIsOpen((prev) => !prev);
   };
+
+  if (!wine || wine.reviews.length === 0) return null;
+
   return (
     <div>
       <div
