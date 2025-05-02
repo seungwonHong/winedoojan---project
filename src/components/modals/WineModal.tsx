@@ -18,7 +18,7 @@ type WineWithType = Wine & {
 
 type Props = {
   onClose: () => void;
-  accessToken: string;
+  accessToken: string | null;
   mode: 'create' | 'edit'; // post | patch
   wineData?: WineWithType;
 };
