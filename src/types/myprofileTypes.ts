@@ -12,7 +12,7 @@ export interface Wine {
   image: string;
   price: number;
   avgRating: number;
-  type: string;
+  type: "Red" | "White" | "Sparkling";
   reviewCount: number;
   recentReview: boolean;
   userId: number;
@@ -31,6 +31,7 @@ export interface Review {
   content: string;
   createdAt: string;
   updatedAt: string;
+  flavors: string[];
   user: User;
   wine: Wine;
 }

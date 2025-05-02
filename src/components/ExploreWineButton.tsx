@@ -1,7 +1,7 @@
-'use client'
-import Link from "next/link";
-import React from "react";
-import { motion } from "framer-motion";
+'use client';
+import Link from 'next/link';
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const ExploreWineButton = () => {
   return (
@@ -13,7 +13,7 @@ const ExploreWineButton = () => {
     >
       <Link
         href="/wines"
-        className="bg-[#6A42DB] w-[280px] h-[50px] rounded-full mt-[104px] flex flex-row items-center justify-center text-[16px] font-bold text-[white]"
+        className="bg-garnet w-[280px] h-[50px] rounded-full mt-[104px] flex flex-row items-center justify-center text-[16px] font-bold text-[white]"
       >
         와인 보러가기
       </Link>

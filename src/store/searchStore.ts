@@ -12,7 +12,7 @@ interface Options {
   setMaxPrice: (maxPrice: number | undefined) => void;
   rating: number | undefined;
   setRating: (rating: number | undefined) => void;
-  allWines: WineResponse["list"];
+  allWines: WineResponse["list"] | null;
   setAllWines: (allWines: WineResponse["list"]) => void;
   name: string | undefined;
   setName: (name: string | undefined) => void;
@@ -46,7 +46,7 @@ const searchStore = create<Options>((set) => ({
   minPrice: undefined,
   maxPrice: undefined,
   rating: undefined,
-  allWines: [],
+  allWines: null,
   name: undefined,
   nextCursor: undefined,
   buttonClick: { red: false, white: false, sparkling: false },

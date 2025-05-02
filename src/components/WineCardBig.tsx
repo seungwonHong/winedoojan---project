@@ -2,6 +2,7 @@ import React from "react";
 import { FaStar } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface Props {
   wine: {
@@ -35,22 +36,26 @@ const WineCardBig = ({ wine }: Props) => {
     <motion.div
       whileHover={{ y: -10 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="flex flex-col rounded-2xl border-[1px] border-[#CFDBEA] lg:w-[800px] lg:h-[375px] md:w-[600px] md:h-[375px] w-[300px] h-[360px] lg:mt-[42px] lg:pb-[19px] pt-[36.5px] md:mt-[36px] md:pb-[10px] pb-[15px] mt-[30px] shadow-lg"
+      className="flex flex-col rounded-2xl border-[1px] border-[#CFDBEA] lg:w-[800px] md:w-[600px] w-[300px] lg:mt-[42px] lg:pb-[19px] pt-[36.5px] md:mt-[36px] md:pb-[10px] pb-[15px] mt-[30px] shadow-lg"
     >
       <div className="flex flex-row">
-        <motion.img
-          src={wine.image}
-          alt="wineImage"
-          className="lg:w-[60px] lg:h-[208px] md:w-[74px] md:h-[208px] w-[60px] h-[212px] lg:ml-[60px] md:ml-[20px] ml-[10px] cursor-pointer"
-          whileHover={{ scale: 1.2, y: -20 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        />
+        <Link href={`wines/${wine.id}`}>
+          <motion.img
+            src={wine.image}
+            alt="wineImage"
+            className="lg:w-[60px] lg:h-[208px] md:w-[74px] md:h-[208px] w-[60px] h-[212px] lg:ml-[60px] md:ml-[20px] ml-[10px] cursor-pointer"
+            whileHover={{ scale: 1.2, y: -20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          />
+        </Link>
 
         <div className="flex lg:flex-row md:flex-row flex-col lg:ml-[81px] md:ml-[37px] lg:mr-[60px] md:mr-[20px] ml-[15px] mr-[15px] w-full">
           <div className="flex flex-col lg:w-[300px] md:w-[250px] w-[180px]">
-            <span className="lg:text-[32px] md:text-[24px] text-[16px] text-[#2D3034] font-semibold cursor-pointer break-keep">
-              {wine.name}
-            </span>
+            <Link href={`wines/${wine.id}`}>
+              <span className="lg:text-[32px] md:text-[24px] text-[16px] text-[#2D3034] font-semibold cursor-pointer break-keep">
+                {wine.name}
+              </span>
+            </Link>
             <span className="lg:text-[16px] md:text-[16px] text-[12px] text-[#9FACBD] lg:mt-[20px] md:mt-[20px] font-normal">
               {wine.region}
             </span>
@@ -83,10 +88,12 @@ const WineCardBig = ({ wine }: Props) => {
                 {wine.reviewCount}개의 후기
               </span>
             </div>
-            <FaArrowRight
-              className="lg:w-[23px] lg:h-[23px] md:w-[23px] md:h-[23px] w-[20px] h-[20px] ml-auto lg:mt-[25.6px] md:mt-[25.6px] cursor-pointer"
-              color="#CFDBEA"
-            />
+            <Link href={`wines/${wine.id}`}>
+              <FaArrowRight
+                className="lg:w-[23px] lg:h-[23px] md:w-[23px] md:h-[23px] w-[20px] h-[20px] ml-auto lg:mt-[25.6px] md:mt-[25.6px] cursor-pointer"
+                color="#CFDBEA"
+              />
+            </Link>
           </div>
         </div>
       </div>
