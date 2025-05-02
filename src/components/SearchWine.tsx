@@ -54,7 +54,7 @@ const SearchWine = (props: Props) => {
         <IoSearch
           size={16.5}
           color="#9FACBD"
-          className="absolute top-[16px] left-[20px]"
+          className="absolute lg:top-[16px] lg:left-[20px] md:top-[16px] md:left-[20px] top-[12px] left-[20px]"
         />
       </form>
     </div>

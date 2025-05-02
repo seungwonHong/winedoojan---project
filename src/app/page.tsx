@@ -7,6 +7,7 @@ import getWineRecommended from "@/services/getWineRecommended";
 import LandingWineFilter from "@/components/LandingWineFilter";
 import LandingReviewSys from "@/components/LandingReviewSys";
 import ExploreWineButton from "@/components/ExploreWineButton";
+import LandingPageRedirect from "@/components/LandingPageRedirect";
 
 export default async function Home() {
   const wines = await getWine({ limit: 5 });
@@ -16,6 +17,8 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center lg:px-[390px] lg:pt-[24px] lg:pb-[109px] md:px-[20px] md:pt-[24px] md:pb-[72px] px-[16px] pt-[16px] pb-[62px]">
+      <LandingPageRedirect/>
+
       <Header />
 
       <div className="flex flex-col items-center overflow-hidden lg:mt-[80px] mt-[24px] lg:px[98px] lg:pb-0 md:px-[58px] lg:w-[1140px] lg:h-[535px] md:w-[704px] md:h-[394px] w-[343px] h-[403px] rounded-2xl bg-[#171A21]">

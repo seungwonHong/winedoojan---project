@@ -17,7 +17,7 @@ import Link from "next/link";
 import WineModal from "@/components/modals/WineModal";
 import { useAuthStore } from "@/store/authStore";
 
-const page = () => {
+const Wines = () => {
   const [isDesktop, setIsDesktop] = useState(true);
   const [isClose, setIsClose] = useState(true);
   const [addWine, setAddWine] = useState(false);
@@ -123,4 +123,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Wines;
