@@ -1,10 +1,15 @@
 // 리뷰 남기기 모달
+
 "use client";
 
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "@/styles/rangeSlider.css";
 import ModalButton from "@/components/common/ModalButton";
 import ReviewSlider from "@/components/common/ReviewSlider";
+import handleResponseWithAuth from '@/utils/handleResponseWithAuth';
+import type { Review } from '@/types/wineDetailTypes';
 
 type Props = {
   onClose: () => void;
@@ -12,19 +17,10 @@ type Props = {
   wineName: string;
   wineId: number;
   mode: "create" | "edit"; // post | patch
-  existingReviewData?: {
-    id: number;
-    rating: number;
-    content: string;
-    flavors: string[];
-    lightBold: number;
-    smoothTannic: number;
-    drySweet: number;
-    softAcidic: number;
-  };
+  existingReviewData?: Review;
 };
 
-const FLAVOR_MAP: Record<string, string> = {
+export const AROMA_MAP: Record<string, string> = {
   체리: "CHERRY",
   베리: "BERRY",
   오크: "OAK",
@@ -45,7 +41,7 @@ const FLAVOR_MAP: Record<string, string> = {
   카라멜: "CARAMEL",
   가죽: "LEATHER",
 };
-const FLAVORS = Object.keys(FLAVOR_MAP);
+const AROMAS = Object.keys(AROMA_MAP);
 
 export default function ReviewModal({
   onClose,
@@ -58,7 +54,7 @@ export default function ReviewModal({
   const [reviewData, setReviewData] = useState({
     rating: existingReviewData?.rating ?? 0,
     content: existingReviewData?.content ?? "",
-    flavors: existingReviewData?.flavors ?? [],
+    aroma: existingReviewData?.aroma ?? [],
     lightBold: existingReviewData?.lightBold ?? 5,
     smoothTannic: existingReviewData?.smoothTannic ?? 5,
     drySweet: existingReviewData?.drySweet ?? 5,
@@ -67,12 +63,12 @@ export default function ReviewModal({
 
   const [hoverRating, setHoverRating] = useState(0);
 
-  const handleFlavorSelect = (flavor: string) => {
+  const handleAromaSelect = (aroma: string) => {
     setReviewData((prev) => ({
       ...prev,
-      flavors: prev.flavors.includes(flavor)
-        ? prev.flavors.filter((f) => f !== flavor)
-        : [...prev.flavors, flavor],
+      aroma: prev.aroma.includes(aroma)
+        ? prev.aroma.filter((a) => a !== aroma)
+        : [...prev.aroma, aroma],
     }));
   };
 
@@ -87,34 +83,23 @@ export default function ReviewModal({
     if (
       reviewData.rating === 0 ||
       reviewData.content.trim() === "" ||
-      reviewData.flavors.length === 0
+      reviewData.aroma.length === 0
     ) {
-      alert("별점, 후기, 향을 모두 입력해주세요.");
+      toast.warning("별점, 후기, 향을 모두 입력해주세요.");
       return;
     }
 
-    const dataToSend =
-      mode === "create"
-        ? {
-            rating: reviewData.rating,
-            lightBold: reviewData.lightBold,
-            smoothTannic: reviewData.smoothTannic,
-            drySweet: reviewData.drySweet,
-            softAcidic: reviewData.softAcidic,
-            aroma: reviewData.flavors.map((flavor) => FLAVOR_MAP[flavor]),
-            content: reviewData.content,
-            wineId, // ✅ POST에서는 필요
-          }
-        : {
-            rating: reviewData.rating,
-            lightBold: reviewData.lightBold,
-            smoothTannic: reviewData.smoothTannic,
-            drySweet: reviewData.drySweet,
-            softAcidic: reviewData.softAcidic,
-            aroma: reviewData.flavors.map((flavor) => FLAVOR_MAP[flavor]),
-            content: reviewData.content,
-            // ❌ PATCH에서는 wineId 제거
-          };
+    const baseData = {
+      rating: reviewData.rating,
+      lightBold: reviewData.lightBold,
+      smoothTannic: reviewData.smoothTannic,
+      drySweet: reviewData.drySweet,
+      softAcidic: reviewData.softAcidic,
+      aroma: reviewData.aroma.map((a) => AROMA_MAP[a]),
+      content: reviewData.content,
+    };
+
+    const dataToSend = mode === "create" ? { ...baseData, wineId } : baseData;
 
     const url =
       mode === "create"
@@ -123,66 +108,33 @@ export default function ReviewModal({
 
     const method = mode === "create" ? "POST" : "PATCH";
 
-    async function sendRequest(currentAccessToken: string) {
-      return fetch(url, {
+    try {
+      const response = await handleResponseWithAuth(url, {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentAccessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(dataToSend),
       });
-    }
-
-    try {
-      let response = await sendRequest(accessToken);
-
-      if (response.status === 401) {
-        const refreshResponse = await fetch(
-          "https://winereview-api.vercel.app/14-2/auth/refresh",
-          {
-            method: "POST",
-            credentials: "include",
-          }
-        );
-
-        if (!refreshResponse.ok) {
-          alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
-          onClose();
-          return;
-        }
-
-        const refreshData = await refreshResponse.json();
-        const newAccessToken = refreshData.accessToken;
-
-        if (!newAccessToken) {
-          alert("새 토큰을 받지 못했습니다. 다시 로그인해주세요.");
-          onClose();
-          return;
-        }
-
-        response = await sendRequest(newAccessToken);
-      }
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         console.error(
           `${mode === "create" ? "리뷰 등록" : "리뷰 수정"} 실패:`,
           errorText
         );
-        alert(
-          `${
-            mode === "create" ? "리뷰 등록" : "리뷰 수정"
-          } 중 오류가 발생했습니다.`
+        toast.warning(
+          `${mode === "create" ? "리뷰 등록" : "리뷰 수정"} 중 오류가 발생했습니다.`
         );
         return;
       }
-
-      alert(`${mode === "create" ? "리뷰가 등록" : "리뷰가 수정"}되었습니다!`);
+  
+      toast.success(`${mode === "create" ? "리뷰가 등록" : "리뷰가 수정"}되었습니다!`);
       onClose();
     } catch (error) {
       console.error("리뷰 제출 중 오류", error);
-      alert("리뷰 등록 중 네트워크 오류가 발생했습니다.");
+      toast.warning("리뷰 등록 중 네트워크 오류가 발생했습니다.");
     }
   };
 
@@ -291,9 +243,9 @@ export default function ReviewModal({
             기억에 남는 향이 있나요?
           </label>
           <div className="flex flex-wrap gap-[10px]">
-            {FLAVORS.map((flavor) => {
-              const isSelected = reviewData.flavors.includes(flavor);
-              const length = flavor.length;
+            {AROMAS.map((aroma) => {
+              const isSelected = reviewData.aroma.includes(aroma);
+              const length = aroma.length;
               const widthClass =
                 length === 1
                   ? "w-[50px]"
@@ -305,14 +257,14 @@ export default function ReviewModal({
 
               return (
                 <button
-                  key={flavor}
-                  onClick={() => handleFlavorSelect(flavor)}
+                  key={aroma}
+                  onClick={() => handleAromaSelect(aroma)}
                   className={`h-[46px] py-[10px] border border-gray-300 rounded-3xl text-base text-gray-800 
                     ${widthClass} ${
                     isSelected ? "bg-garnet text-white" : "bg-white"
                   }`}
                 >
-                  {flavor}
+                  {aroma}
                 </button>
               );
             })}
