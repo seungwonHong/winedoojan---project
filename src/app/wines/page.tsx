@@ -99,11 +99,11 @@ const Wines = () => {
             ) : allWines !== null && allWines?.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full">
                 <img
-                  src="/images/noSearchResult.jpeg"
+                  src="/images/empty.png"
                   alt="searchNotFound"
-                  className="lg:w-[300px] lg:h-[300px]"
+                  className="lg:w-[230px] lg:h-[230px] lg:mt-0 md:w-[200px] md:h-[200px] md:mt-[100px] w-[150px] h-[150px] mt-[100px]"
                 />
-                <span className="lg:text-[24px] font-semibold text-[#800020] lg:mt-[30px]">
+                <span className="lg:text-[24px] font-semibold text-[#800020] lg:mt-[30px] md:mt-[20px] mt-[20px]">
                   검색 결과가 없습니다
                 </span>
               </div>
