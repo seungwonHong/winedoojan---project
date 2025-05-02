@@ -11,12 +11,12 @@ interface Props {
 
 const WineListRecWine = ({ wines }: Props) => {
   return (
-    <div className="flex flex-col lg:w-[1140px] lg:h-[320px] md:w-[704px] md:h-[299px] w-[343px] h-[241px] rounded-2xl bg-[#F2F4F8] lg:mt-[20px] md:mt-[20px] mt-[15px] lg:pt-[30px] lg:pl-[30px] md:pt-[30px] md:pl-[30px] pt-[20px] pl-[20px]">
+    <div className="flex flex-col lg:w-[1140px] lg:h-[320px] md:w-[704px] md:h-[299px] w-[343px] h-[260px] rounded-2xl bg-[#F2F4F8] lg:mt-[20px] md:mt-[20px] mt-[15px] lg:pt-[30px] lg:pl-[30px] md:pt-[30px] md:pl-[30px] pt-[20px] pl-[20px]">
       <span className="text-[#2D3034] text-[20px] font-bold lg:mb-[30px] md:mb-[30px] mb-[20px]">
         이번 달 추천 와인
       </span>
 
-      <div className="flex flex-row gap-2 overflow-x-auto">
+      <div className="flex flex-row gap-2 overflow-x-auto overflow-y-visible h-[220px]">
         {wines.length > 0
           ? wines.map((wine) => (
               <motion.div

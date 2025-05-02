@@ -5,7 +5,7 @@ type Props = {};
 
 const WineCardSmallSkeleton = (props: Props) => {
   return (
-    <div className="flex flex-row pb-0 mb-0 lg:w-[232px] lg:h-[185px] lg:px-[15px] lg:pt-[24px] md:pt-[24px] pt-[24px] md:w-[140px] md:h-[111px] md:px-[12px] w-[208px] h-[166.5px] px-[10px] bg-[#c7c5c5] rounded-2xl">
+    <div className=" overflow-hidden flex flex-row pb-0 mb-0 lg:w-[232px] lg:h-[185px] lg:px-[15px] lg:pt-[24px] md:pt-[24px] pt-[24px] md:w-[140px] md:h-[111px] md:px-[12px] w-[208px] h-[166.5px] px-[10px] bg-[#c7c5c5] rounded-2xl">
       {/* 사진 */}
       <motion.div className="relative overflow-hidden lg:mr-[20px] md:mr-[15px] mr-[15px] lg:w-[60px] lg:h-[168px] md:w-[30px] md:h-[97px] w-[40px] h-[145px]  bg-[#5d5b5b] rounded-lg">
         <motion.div

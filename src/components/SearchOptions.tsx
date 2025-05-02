@@ -5,7 +5,9 @@ import React, { useState } from "react";
 const SearchOptions = () => {
   const {
     setType,
+    minPrice,
     setMinPrice,
+    maxPrice,
     setMaxPrice,
     setRating,
     buttonClick,
@@ -179,13 +181,25 @@ const SearchOptions = () => {
       <div className="flex flex-row items-center mt-[20px]">
         <input
           type="number"
-          className="border-[1px] border-[#CFDBEA] rounded-2xl w-[120px] h-[30px] px-[10px]"
+          inputMode="numeric"
+          onKeyDown={(e) => {
+            if (["-", "+", "e", "E"].includes(e.key)) {
+              e.preventDefault();
+            }
+          }}
+          className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none border-[1px] border-[#CFDBEA] rounded-2xl w-[120px] h-[30px] px-[10px]"
           onChange={(e) => setMinPrice(Number(e.target.value))}
         />
         <span className="ml-[15px] mr-[15px]">~</span>
         <input
           type="number"
-          className="border-[1px] border-[#CFDBEA] rounded-2xl w-[120px] h-[30px] px-[10px]"
+          inputMode="numeric"
+          onKeyDown={(e) => {
+            if (["-", "+", "e", "E"].includes(e.key)) {
+              e.preventDefault();
+            }
+          }}
+          className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none border-[1px] border-[#CFDBEA] rounded-2xl w-[120px] h-[30px] px-[10px]"
           onChange={(e) => setMaxPrice(Number(e.target.value))}
         />
       </div>

@@ -13,16 +13,23 @@ import LoadingAnimation from "@/components/common/LoadingAnimation";
 import ModalButton from "@/components/common/ModalButton";
 import { FaPlus } from "react-icons/fa6";
 import FilterModal from "@/components/modals/FilterModal";
+import Link from "next/link";
+import WineModal from "@/components/modals/WineModal";
+import { useAuthStore } from "@/store/authStore";
 
 const page = () => {
   const [isDesktop, setIsDesktop] = useState(true);
   const [isClose, setIsClose] = useState(true);
+  const [addWine, setAddWine] = useState(false);
   const { wines } = useWineRecommended();
   const { allWines, loading } = useWineListWines({ limit: 2 });
+  const { accessToken } = useAuthStore.getState();
+
+  console.log(isDesktop);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
+      setIsDesktop(window.innerWidth >= 1200);
     };
     handleResize();
 
@@ -31,16 +38,22 @@ const page = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    setAddWine(!addWine);
+  };
+
+  const AddModal = () => {
+    setAddWine(!addWine);
+  };
 
   return (
     <>
-      <div className="flex flex-col items-center lg:px-[390px] lg:pt-[24px] lg:pb-[109px] md:px-[20px] md:pt-[24px] md:pb-[72px] px-[16px] pt-[16px] pb-[62px]">
+      <div className="flex flex-col justify-center items-center lg:px-[390px] lg:pt-[24px] lg:pb-[109px] md:px-[20px] md:pt-[24px] md:pb-[72px] px-[16px] pt-[16px] pb-[62px]">
         <Header />
 
         <WineListRecWine wines={wines} />
 
-        <div className="flex flex-row w-full justify-center md:w-[704px]">
+        <div className="flex flex-row lg:w-[1140px] justify-center md:w-[704px] w-[343px]">
           <div className="flex flex-col md:flex-row lg:mt-[150px]  md:mt-[40px] mt-[24px]">
             {isDesktop ? (
               <div className="flex lg:flex-col md:flex-row">
@@ -76,13 +89,24 @@ const page = () => {
                 와인 등록하기
               </ModalButton>
             )}
-            {allWines?.length > 0 ? (
+            {allWines !== null && allWines?.length > 0 ? (
               <>
                 {allWines.map((allwine) => (
                   <WineCardBig key={allwine.id} wine={allwine} />
                 ))}
                 {loading && <LoadingAnimation />}
               </>
+            ) : allWines !== null && allWines?.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full">
+                <img
+                  src="/images/noSearchResult.jpeg"
+                  alt="searchNotFound"
+                  className="lg:w-[300px] lg:h-[300px]"
+                />
+                <span className="lg:text-[24px] font-semibold text-[#800020] lg:mt-[30px]">
+                  검색 결과가 없습니다
+                </span>
+              </div>
             ) : (
               Array.from({ length: 10 }).map((_, index) => (
                 <WineCardBigSkeleton key={index} />
@@ -92,6 +116,9 @@ const page = () => {
         </div>
       </div>
       {!isClose && <FilterModal setIsClose={setIsClose} />}
+      {addWine && (
+        <WineModal onClose={AddModal} mode="create" accessToken={accessToken} />
+      )}
     </>
   );
 };
