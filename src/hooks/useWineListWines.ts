@@ -37,9 +37,9 @@ const useWineListWines = ({ limit }: Props) => {
     });
 
     setAllWines(
-      allWines.length === 0
+      allWines?.length === 0
         ? res.list ?? []
-        : [...allWines, ...(res.list ?? [])]
+        : [...(allWines ?? []), ...(res.list ?? [])]
     );
     setNextCursor(res.nextCursor ?? undefined);
     loadingRef.current = false;
