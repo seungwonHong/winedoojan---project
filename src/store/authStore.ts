@@ -7,6 +7,7 @@ import {
   handleKakaoCallbackRequest,
   fetchUser,
 } from '@/services/auth'; // 분리된 API 함수 import
+import { navigate } from '@/utils/navigate';
 
 interface User {
   id: number;
@@ -92,6 +93,8 @@ export const useAuthStore = create<AuthState>()(
           accessToken: null,
           refreshToken: null,
         });
+        // 로그아웃 시 랜딩페이지로 이동
+        navigate('/');
       },
 
       // accessToken 재발급
