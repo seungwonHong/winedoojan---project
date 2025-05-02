@@ -2,7 +2,7 @@
 import { useAuthStore } from "@/store/authStore";
 import handleResponseWithAuth from "@/utils/handleResponseWithAuth";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {};
 
@@ -10,6 +10,7 @@ const LandingPageRedirect = (props: Props) => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
   const { getMe } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -21,8 +22,10 @@ const LandingPageRedirect = (props: Props) => {
         router.push("/");
       }
     };
-    checkAuth();
+    checkAuth().finally(() => setIsLoading(false));
   }, []);
+
+  if (!isLoading) return null;
 
   return (
     <div className="fixed bg-white z-50 w-screen h-screen flex flex-col items-center justify-center">
