@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
-import { FaStar } from 'react-icons/fa';
+import { FaStar } from "react-icons/fa";
 
-import { getTimeAgo } from '@/utils/getTimeAgo';
+import { getTimeAgo } from "@/utils/getTimeAgo";
 
 import useFetchHeart from "@/hooks/winedetail/useFetchHeart";
 import ReviewModal from "../modals/ReviewModal";
 import DeleteModal from "../modals/DeleteModal";
 import { useAuthStore } from "@/store/authStore";
 
-import default_profile_img from '../../../public/images/default_profile_img.png';
-import ic_hamburger from '../../../public/icons/ic_hamburger.png';
-import ic_heart from '../../../public/icons/ic_heart.png';
-import ic_garnet_heart from '../../../public/icons/ic_garnet_heart.png';
+import default_profile_img from "../../../public/images/default_profile_img.png";
+import ic_hamburger from "../../../public/icons/ic_hamburger.png";
+import ic_heart from "../../../public/icons/ic_heart.png";
+import ic_garnet_heart from "../../../public/icons/ic_garnet_heart.png";
 
-import { ReviewHeader } from "@/types/wineDetailTypes";
+import { Review } from "@/types/wineDetailTypes";
 import { Wine } from "@/types/wineDetailTypes";
 
 const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
@@ -27,10 +27,11 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
   const [isReviewDeleteModalOpen, setIsReviewDeleteModalOpen] = useState(false);
 
   let token = useAuthStore.getState().accessToken;
+  const user = useAuthStore((state) => state.user);
 
   const handleClose = async () => {
     await refetch();
-    await setIsReviewEditModalOpen(false);
+    setIsReviewEditModalOpen(false);
   };
 
   return (
@@ -52,38 +53,43 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
           </div>
         </div>
         <div className="flex gap-[18px]">
-          <div
-            className="relative w-[30px] h-[30px] object-cover cursor-pointer"
-            onClick={handleClickLike}
-          >
-            {isLike ? (
-              <Image src={ic_garnet_heart} alt="ic_heart" fill sizes="30px" />
-            ) : (
-              <Image src={ic_heart} alt="ic_heart" fill sizes="30px" />
-            )}
-          </div>
-          <div
-            className="relative w-[30px] h-[30px] object-cover cursor-pointer"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-          >
-            <Image src={ic_hamburger} alt="ic_hamburger" fill sizes="30px" />
-            {isMenuOpen && (
-              <div className="z-20 absolute right-0 top-[35px] bg-white border border-gray-300 rounded-[16px] w-[126px] h-[104px] flex flex-col items-center justify-center">
-                <div
-                  className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
-                  onClick={() => setIsReviewEditModalOpen(true)}
-                >
-                  수정하기
+          {user?.id !== item.user.id && (
+            <div
+              className="relative w-[30px] h-[30px] object-cover cursor-pointer"
+              onClick={handleClickLike}
+            >
+              {isLike ? (
+                <Image src={ic_garnet_heart} alt="ic_heart" fill sizes="30px" />
+              ) : (
+                <Image src={ic_heart} alt="ic_heart" fill sizes="30px" />
+              )}
+            </div>
+          )}
+          {user?.id === item.user.id && (
+            <div
+              className="relative w-[30px] h-[30px] object-cover cursor-pointer"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+            >
+              <Image src={ic_hamburger} alt="ic_hamburger" fill sizes="30px" />
+              {isMenuOpen && (
+                <div className="z-20 absolute right-0 top-[35px] bg-white border border-gray-300 rounded-[16px] w-[126px] h-[104px] flex flex-col items-center justify-center">
+                  <div
+                    className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
+                    onClick={() => setIsReviewEditModalOpen(true)}
+                  >
+                    수정하기
+                  </div>
+                  <div
+                    className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
+                    onClick={() => setIsReviewDeleteModalOpen(true)}
+                  >
+                    삭제하기
+                  </div>
                 </div>
-                <div
-                  className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
-                  onClick={() => setIsReviewDeleteModalOpen(true)}
-                >
-                  삭제하기
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
+
           {isReviewEditModalOpen && (
             <ReviewModal
               onClose={handleClose}
@@ -99,7 +105,7 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
           <DeleteModal
             onClose={() => setIsReviewDeleteModalOpen(false)}
             onConfirm={async () => {
-              await refetch(); // 🔥 삭제 후 데이터 새로고침
+              await refetch();
               setIsReviewDeleteModalOpen(false);
             }}
             accessToken={token as string}
@@ -108,13 +114,13 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
           />
         )}
       </div>
-      <div className="flex gap-[4px] w-[220px] z-10 mt-[20px] relative overflow-x-auto whitespace-nowrap scroll-smooth md:w-full">
-        {item.aroma.map((item, index) => (
+      <div className="flex gap-[4px] w-[220px] md:w-[495px] lg:w-[584px] z-10 mt-[20px] relative overflow-x-auto whitespace-nowrap scroll-smooth">
+        {item.aroma.map((aroma, index) => (
           <div
             key={index}
             className="rounded-[100px] border border-[#CFDBEA] py-[6px] px-[10px] inline-block"
           >
-            {item}
+            {aromaLabelMap[aroma] || aroma}
           </div>
         ))}
       </div>
@@ -135,7 +141,29 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
 export default WineDetailReviewHeader;
 
 type Props = {
-  item: ReviewHeader["item"];
+  item: Review;
   wine: Wine;
   refetch: () => Promise<void>;
+};
+
+const aromaLabelMap: Record<string, string> = {
+  CHERRY: "체리",
+  BERRY: "베리",
+  OAK: "오크",
+  VANILLA: "바닐라",
+  PEPPER: "후추",
+  BAKING: "제빵",
+  GRASS: "풀",
+  APPLE: "사과",
+  PEACH: "복숭아",
+  CITRUS: "시트러스",
+  TROPICAL: "트로피컬",
+  MINERAL: "미네랄",
+  FLOWER: "꽃",
+  TOBACCO: "담뱃잎",
+  EARTH: "흙",
+  CHOCOLATE: "초콜릿",
+  SPICE: "스파이스",
+  CARAMEL: "카라멜",
+  LEATHER: "가죽",
 };

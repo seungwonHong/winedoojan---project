@@ -8,6 +8,8 @@ import WineDetailCard from "./WineDetailCard";
 import WineDetailRatingCard from "./WineDetailRatingCard";
 import WineDetailReviewCardList from "./WineDetailReviewCardList";
 import ReviewListFilter from "./ReviewListFilter";
+import SkeletonWineDetailCard from "./skeleton/SkeletonWineDetailCard";
+import SkeletonWineReviewCard from "./skeleton/SkeletonWineReviewCard";
 
 import { Review } from "@/types/wineDetailTypes";
 
@@ -21,7 +23,13 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
     }
   }, [wine]);
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading)
+    return (
+      <>
+        <SkeletonWineDetailCard />
+        <SkeletonWineReviewCard />
+      </>
+    );
   if (error) return <div>에러 발생: {error}</div>;
   if (!wine) return null;
 
