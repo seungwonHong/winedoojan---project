@@ -242,6 +242,9 @@ export default function ProfilePage() {
                         key={review.id}
                         id={review.id}
                         review={review}
+                        onClick={() => {
+                          router.push(`/wines/${review.wine.id}`);
+                        }}
                         {...commonCardProps}
                       />
                     ))
@@ -250,6 +253,9 @@ export default function ProfilePage() {
                         key={wine.id}
                         id={wine.id}
                         wine={wine}
+                        onClick={() => {
+                          router.push(`/wines/${wine.id}`);
+                        }}
                         {...commonCardProps}
                       />
                     ))}
