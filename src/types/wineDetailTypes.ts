@@ -4,27 +4,40 @@ export interface Wine {
   region: string;
   image: string;
   price: number;
-  reviews: any[];
-  reviewCount: number;
+  type: string;
   avgRating: number;
-  avgRatings: { 1: number; 2: number; 3: number; 4: number; 5: number };
+  reviewCount: number;
+  recentReview: Review;
+  userId: number;
+  reviews: Review[];
+  avgRatings: {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
+  };
 }
 
 export interface Review {
   id: number;
+  wineId: number;
+  teamId: string;
   isLiked: boolean;
   rating: number;
   content: string;
   createdAt: string;
+  updatedAt: string;
   lightBold: number;
   smoothTannic: number;
   drySweet: number;
   softAcidic: number;
+  aroma: string[];
   user: {
+    id: number;
     nickname: string;
     image: string | null;
   };
-  aroma: string[];
 }
 
 export interface tastingNotes {
@@ -32,20 +45,6 @@ export interface tastingNotes {
   flavorKeyword: string;
   minLabel: string;
   maxLabel: string;
-}
-
-export interface ReviewHeader {
-  item: {
-    id: number;
-    isLiked: boolean;
-    rating: number;
-    createdAt: string;
-    user: {
-      image: string | null;
-      nickname: string;
-    };
-    aroma: string[];
-  };
 }
 
 export interface WineDetailReviewCardListProps {
@@ -56,9 +55,4 @@ export interface WineDetailReviewCardListProps {
 export interface ReviewListFilterProps {
   reviews: Review[];
   onSort: (reviews: Review[]) => void;
-}
-
-export interface WineDetailReviewCardListProps {
-  wine: Wine;
-  refetch: () => Promise<void>;
 }
