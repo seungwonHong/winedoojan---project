@@ -36,7 +36,11 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
   return (
     <div>
       <WineDetailCard wine={wine} />
-      <div className="lg:w-[800px]">
+      <div
+        className={`${
+          !wine || wine.reviews.length === 0 ? "" : "lg:w-[800px]"
+        } `}
+      >
         <div className="flex justify-between items-center">
           <div className="mt-[60px] text-[20px] text-[#2D3034] font-[700]">
             리뷰 목록

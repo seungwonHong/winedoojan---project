@@ -11,6 +11,7 @@ import useFetchHeart from "@/hooks/winedetail/useFetchHeart";
 import ReviewModal from "../modals/ReviewModal";
 import DeleteModal from "../modals/DeleteModal";
 import { useAuthStore } from "@/store/authStore";
+import { AROMA_MAP } from "../modals/ReviewModal";
 
 import default_profile_img from "../../../public/images/default_profile_img.png";
 import ic_hamburger from "../../../public/icons/ic_hamburger.png";
@@ -97,7 +98,7 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
               wineId={wine.id}
               wineName={wine.name}
               mode={"edit"}
-              existingReviewData={item as any}
+              existingReviewData={item}
             />
           )}
         </div>
@@ -120,7 +121,7 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
             key={index}
             className="rounded-[100px] border border-[#CFDBEA] py-[6px] px-[10px] inline-block"
           >
-            {aromaLabelMap[aroma] || aroma}
+            {AROMA_MAP[aroma] || aroma}
           </div>
         ))}
       </div>
@@ -140,30 +141,8 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
 
 export default WineDetailReviewHeader;
 
-type Props = {
+interface Props {
   item: Review;
   wine: Wine;
   refetch: () => Promise<void>;
-};
-
-const aromaLabelMap: Record<string, string> = {
-  CHERRY: "체리",
-  BERRY: "베리",
-  OAK: "오크",
-  VANILLA: "바닐라",
-  PEPPER: "후추",
-  BAKING: "제빵",
-  GRASS: "풀",
-  APPLE: "사과",
-  PEACH: "복숭아",
-  CITRUS: "시트러스",
-  TROPICAL: "트로피컬",
-  MINERAL: "미네랄",
-  FLOWER: "꽃",
-  TOBACCO: "담뱃잎",
-  EARTH: "흙",
-  CHOCOLATE: "초콜릿",
-  SPICE: "스파이스",
-  CARAMEL: "카라멜",
-  LEATHER: "가죽",
-};
+}

@@ -10,7 +10,7 @@ export default function WineDetailLayout({
     <>
       {children}
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={500}
         hideProgressBar
         closeOnClick
