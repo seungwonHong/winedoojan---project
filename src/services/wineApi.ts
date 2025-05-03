@@ -1,4 +1,4 @@
-// wineApi.ts
+// 와인 등록(수정)하기 모달창 api
 
 import handleResponseWithAuth from '@/utils/handleResponseWithAuth';
 
