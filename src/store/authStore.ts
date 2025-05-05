@@ -8,16 +8,7 @@ import {
   fetchUser,
 } from '@/services/auth'; // 분리된 API 함수 import
 import { navigate } from '@/utils/navigate';
-
-interface User {
-  id: number;
-  email: string;
-  nickname: string;
-  teamId: string;
-  createdAt: string;
-  updatedAt: string;
-  image: string | null;
-}
+import { User } from '@/types/schema';
 
 interface AuthState {
   isAuthenticated: boolean;

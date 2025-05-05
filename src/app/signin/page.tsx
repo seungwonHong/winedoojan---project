@@ -80,8 +80,8 @@ function Signin() {
       const isLoginSuccessful = result.success;
 
       if (isLoginSuccessful) {
-        // 로그인 성공 시 홈 화면으로 이동
-        router.push('/');
+        // 로그인 성공 시 wines 페이지로 이동
+        router.push('/wines');
       } else {
         // 로그인 실패 시 에러 메시지 표시
         setErrors({
@@ -122,7 +122,7 @@ function Signin() {
             </Link>
           </div>
           <form className="flex flex-col mb-[15px]" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-[25px]">
+            <div className="flex flex-col gap-[25px] mb-[56px]">
               <Input
                 name="email"
                 type="email"
@@ -142,22 +142,14 @@ function Signin() {
                 error={errors.password}
               />
             </div>
-            <Link className="text-garnet mt-[10px] mb-[56px]" href="/signup">
+            {/* <Link className="text-garnet mt-[10px] mb-[56px]" href="/signup">
               비밀번호를 잊으셨나요?
-            </Link>
+            </Link> */}
             <BlobButton type="submit" disabled={isLoading}>
               {isLoading ? '로그인 중...' : '로그인'}
             </BlobButton>
           </form>
           <div className="flex flex-col gap-4">
-            <BlobButton
-              buttonColor="#000"
-              fontColor="#000"
-              imageSrc={icons.googleIcon}
-              imageAlt="google"
-            >
-              Google로 시작하기
-            </BlobButton>
             <BlobButton
               buttonColor="#F3DC00"
               fontColor="#000"
