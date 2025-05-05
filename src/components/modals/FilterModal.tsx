@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import SearchOptions from "../SearchOptions";
 import { IoClose } from "react-icons/io5";
