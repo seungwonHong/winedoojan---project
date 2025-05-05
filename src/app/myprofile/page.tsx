@@ -15,6 +15,7 @@ import { useInView } from 'react-intersection-observer';
 import WineModal from '@/components/modals/WineModal';
 import Image from 'next/image';
 import clsx from 'clsx';
+import { useAuthProtection } from '@/hooks/useAuthProtection';
 
 const MyCardSkeleton = () => (
   <div className="w-[343px] lg:w-[800px] md:w-[704px] flex flex-row gap-[16px] rounded-xl border border-gray-200 bg-white p-12 shadow-sm animate-pulse mb-2.5">
@@ -45,6 +46,7 @@ export default function ProfilePage() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isWineModalOpen, setIsWineModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const isAuthLoading = useAuthProtection();
   const { ref, inView } = useInView();
   const limit = 3;
 
@@ -132,7 +134,7 @@ export default function ProfilePage() {
     loadData(tab);
   }, [myProfileData.updatedAt]);
 
-  if (!user || !accessToken) {
+  if (!user || !accessToken || isAuthLoading) {
     return (
       <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
         <Image

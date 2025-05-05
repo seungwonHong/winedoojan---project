@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import useFetchWine from "@/hooks/winedetail/useFetchWine";
+import useFetchWine from '@/hooks/winedetail/useFetchWine';
 
-import WineDetailCard from "./WineDetailCard";
-import WineDetailRatingCard from "./WineDetailRatingCard";
-import WineDetailReviewCardList from "./WineDetailReviewCardList";
-import ReviewListFilter from "./ReviewListFilter";
-import SkeletonWineDetailCard from "./skeleton/SkeletonWineDetailCard";
-import SkeletonWineReviewCard from "./skeleton/SkeletonWineReviewCard";
+import WineDetailCard from './WineDetailCard';
+import WineDetailRatingCard from './WineDetailRatingCard';
+import WineDetailReviewCardList from './WineDetailReviewCardList';
+import ReviewListFilter from './ReviewListFilter';
+import SkeletonWineDetailCard from './skeleton/SkeletonWineDetailCard';
+import SkeletonWineReviewCard from './skeleton/SkeletonWineReviewCard';
 
-import { Review } from "@/types/wineDetailTypes";
+import { Review } from '@/types/wineDetailTypes';
 
 const WineDetail = ({ wineId }: { wineId: string }) => {
   const { wine, loading, error, refetch } = useFetchWine(wineId);
@@ -38,7 +38,7 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
       <WineDetailCard wine={wine} />
       <div
         className={`${
-          !wine || wine.reviews.length === 0 ? "" : "lg:w-[800px]"
+          !wine || wine.reviews.length === 0 ? '' : 'lg:w-[800px]'
         } `}
       >
         <div className="flex justify-between items-center">
