@@ -44,7 +44,9 @@ const WineDetailReviewCard = ({
         />
         {isOpen ? (
           <div className="relative bottom-[40px]">
-            <div className="mt-[16px]">{item.content}</div>
+            <div className="mt-[16px] w-[300px] md:w-[500px] flex flex-wrap">
+              <span className="break-all">{item.content}</span>
+            </div>
             <WineTasteSlider
               value={item.lightBold}
               flavorKeyword="바디감"

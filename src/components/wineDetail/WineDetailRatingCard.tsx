@@ -2,11 +2,12 @@ import { useState } from "react";
 
 import { FaStar, FaRegStar } from "react-icons/fa";
 
+import BlobButton from "../common/BlobButton";
 import ModalButton from "../common/ModalButton";
 import ReviewModal from "../modals/ReviewModal";
 import { useAuthStore } from "@/store/authStore";
 
-import emptyReview from "../../../public/images/404-wine.png";
+import emptyReview from "../../../public/images/empty.png";
 
 import { WineDetailReviewCardListProps } from "@/types/wineDetailTypes";
 
@@ -32,22 +33,18 @@ const WineDetailRatingCard = ({
   // 리뷰 없을 때
   if (!wine || wine.reviews.length === 0)
     return (
-      <div className="flex flex-col justify-center items-center gap-[20px] w-[343px] h-[405px] md:w-[704px] md:h-[442px] lg:w-[800px]">
+      <div className="w-[343px] h-[405px] md:w-[704px] md:h-[442px] lg:w-[1140px] mx-auto flex flex-col justify-center items-center gap-[30px] ">
         <img
           src={emptyReview.src}
           alt="wineImage"
-          className="w-[250px] md:w-[300px] md:h-[150px] object-contain"
+          className="w-[180px] h-[180px] object-contain"
         />
-        <div>작성된 리뷰가 없어요</div>
-        <ModalButton
-          onClick={() => setIsModalOpen(true)}
-          fontSize="text-[14px] md:text-[16px]"
-          width="w-[113px]"
-          height="h-[42px]"
-          className="flex flex-wrap justify-center items-center"
-        >
+        <div className="font-bold text-2xl text-[#2D3034]">
+          등록된 리뷰가 없어요
+        </div>
+        <BlobButton onClick={() => setIsModalOpen(true)}>
           리뷰 남기기
-        </ModalButton>
+        </BlobButton>
         {isModalOpen && (
           <ReviewModal
             accessToken={token as string}

@@ -2,6 +2,21 @@
 
 **와인두잔**은 사용자들이 다양한 와인에 대한 솔직한 리뷰를 읽고, 자신에게 맞는 와인을 쉽게 찾아 구매 결정을 내릴 수 있도록 돕는 플랫폼입니다. 와인의 종류, 맛, 가격대, 별점 등 다양한 기준을 바탕으로 리뷰를 작성하고 공유하며, 강력한 필터링 기능을 통해 원하는 와인을 손쉽게 탐색해보세요.
 
+**💻 프로젝트 프리뷰 💻**
+
+
+<div align="center">
+  <img src="https://i.ibb.co/rGd2qLpR/winedoojan.png" alt="winedoojan" border="0">
+</div>
+<details>
+  <summary>더 많은 스크린샷 보기</summary>
+  <br>
+  <div align="center">
+    <img src="https://i.ibb.co/nJkHQCy/winedoojan1.png" alt="winedoojan1" border="0" width=500px>
+    <img src="https://i.ibb.co/Ng3FW3zf/winedoojan2.png" alt="winedoojan2" border="0" width=500px>
+  </div>
+</details>
+
 **✨ 프로젝트 목표 ✨**
 
 - 사용자들의 와인 구매 결정 과정을 지원하는 정보 제공
@@ -13,18 +28,24 @@
 **🛠️ 기술 스택 🛠️**
 
 - **Frontend:**
-  - TypeScript
-  - React
-  - Next.js
-  - TailwindCSS
-  - Zustand
-  - Motion(Framer Motion)
+
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"> <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"> <img src="https://img.shields.io/badge/Zustand-593D88?style=for-the-badge&logo=react&logoColor=white"> <img src="https://img.shields.io/badge/framer-%230055FF.svg?&style=for-the-badge&logo=framer&logoColor=white" />
+
 - **Backend:**
-  - MongoDB
-  - OAuth
+
+  <img src="https://img.shields.io/badge/mongodb-%2347A248.svg?&style=for-the-badge&logo=mongodb&logoColor=white" />
+
+- **Authentication:**
+
+  <img src="https://img.shields.io/badge/OAuth-2.0-4285F4?style=for-the-badge&logo=google&logoColor=white" />
+
+- **API Integration:**
+
+  <img src="https://img.shields.io/badge/kakao-FFCD00.svg?&style=for-the-badge&logo=kakaotalk&logoColor=white" />
+
 - **Development Environment & Tools:**
-  - Git & GitHub
-  - Vercel
+
+  <img src="https://img.shields.io/badge/github-%23181717.svg?&style=for-the-badge&logo=github&logoColor=white" /> <img src="https://img.shields.io/badge/vercel-%23000000.svg?&style=for-the-badge&logo=vercel&logoColor=white" />
 
 **⚙️ 주요 기능 ⚙️**
 
@@ -51,4 +72,3 @@
 - API를 활용한 데이터 관리 능력
 - OAuth를 사용한 로그인/회원가입 기능 숙달
 
-많은 관심과 참여 부탁드립니다! 🍷

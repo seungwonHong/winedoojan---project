@@ -3,42 +3,51 @@ import { Review } from "@/types/myprofileTypes";
 import HamburgerMenu from "./HamburgerMenu";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 import { MyProfileCard } from "./MyProfileCard";
+import { motion } from "framer-motion";
 
 interface MyReviewCardProps {
   id: number;
   review: Review;
   teamId: string | null;
   token: string;
-  onDeleteSuccess: () => void;
+  onSuccess: () => void;
   tab: string;
   openId: number | null;
   setOpenId: (id: number | null) => void;
+  onClick: () => void;
 }
 
 export default function MyReviewCard({ ...props }: MyReviewCardProps) {
   const timeAgo = getTimeAgo(props.review.updatedAt);
 
   return (
-    <MyProfileCard
-      pt="pt-[24px]"
-      mb="mb-[8px]"
-      className="flex-col pb-[30px] text-[14px] md:text-[16px]"
+    <motion.div
+      whileHover={{ y: -5 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="cursor-pointer"
     >
-      {/* 평점, 작성 시간 */}
-      <div className="flex items-center mb-[17px] lg:mb-[20px] gap-[15px]">
-        <Rating rating={props.review.rating} />
-        <div className="text-[#9facbd]">{timeAgo}</div>
+      <MyProfileCard
+        pt="pt-[24px]"
+        mb="mb-[12px]"
+        className="flex-col pb-[30px] text-[14px] md:text-[16px]"
+        onClick={props.onClick}
+      >
+        {/* 평점, 작성 시간 */}
+        <div className="flex items-center mb-[17px] lg:mb-[20px] gap-[15px]">
+          <Rating rating={props.review.rating} />
+          <div className="text-[#9facbd]">{timeAgo}</div>
 
-        <div className="ml-auto">
-          <HamburgerMenu {...props} />
+          <div className="ml-auto">
+            <HamburgerMenu {...props} />
+          </div>
         </div>
-      </div>
-      {/* 와인 이름 */}
-      <div className="text-[#9facbd] font-medium mb-[10px]">
-        {props.review.wine.name}
-      </div>
-      {/* 후기 내용 */}
-      <div className="text-[#2D3034]">{props.review.content}</div>
-    </MyProfileCard>
+        {/* 와인 이름 */}
+        <div className="text-[#9facbd] font-medium mb-[10px]">
+          {props.review.wine.name}
+        </div>
+        {/* 후기 내용 */}
+        <div className="text-[#2D3034]">{props.review.content}</div>
+      </MyProfileCard>
+    </motion.div>
   );
 }

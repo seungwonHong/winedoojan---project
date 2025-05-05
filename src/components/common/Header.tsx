@@ -52,7 +52,7 @@ const Header = () => {
 
   return (
     <header className="flex flex-row justify-between items-center  lg:w-[1140px] lg:h-[70px] md:w-[704px] md:h-[70px] w-[343px] h-[50px] rounded-2xl bg-[#101318] lg:px-[60px] md:px-[60px] px-[20px] lg:py-[25px] md:py-[25px] py-[16px]">
-      <Link href={'/'}>
+      <Link href={'/wines'}>
         <Image
           className="lg:w-[156px] lg:h-[40px] md:w-[156px] md:h-[40px] w-[117px] h-[30px] cursor-pointer"
           alt="logo"
