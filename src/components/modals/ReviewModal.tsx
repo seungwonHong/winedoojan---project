@@ -3,13 +3,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/styles/rangeSlider.css";
 import ModalButton from "@/components/common/ModalButton";
 import ReviewSlider from "@/components/common/ReviewSlider";
-import handleResponseWithAuth from '@/utils/handleResponseWithAuth';
-import type { Review } from '@/types/wineDetailTypes';
+import type { Review } from "@/types/wineDetailTypes";
+import { submitReview } from "@/services/reviewApi"; 
 
 type Props = {
   onClose: () => void;
@@ -41,6 +41,7 @@ export const AROMA_MAP: Record<string, string> = {
   카라멜: "CARAMEL",
   가죽: "LEATHER",
 };
+
 const AROMAS = Object.keys(AROMA_MAP);
 
 export default function ReviewModal({
@@ -64,11 +65,12 @@ export default function ReviewModal({
   const [hoverRating, setHoverRating] = useState(0);
 
   const handleAromaSelect = (aroma: string) => {
+    const englishAroma = AROMA_MAP[aroma];
     setReviewData((prev) => ({
       ...prev,
-      aroma: prev.aroma.includes(aroma)
-        ? prev.aroma.filter((a) => a !== aroma)
-        : [...prev.aroma, aroma],
+      aroma: prev.aroma.includes(englishAroma)
+        ? prev.aroma.filter((a) => a !== englishAroma)
+        : [...prev.aroma, englishAroma],
     }));
   };
 
@@ -95,46 +97,34 @@ export default function ReviewModal({
       smoothTannic: reviewData.smoothTannic,
       drySweet: reviewData.drySweet,
       softAcidic: reviewData.softAcidic,
-      aroma: reviewData.aroma.map((a) => AROMA_MAP[a]),
+      aroma: reviewData.aroma,
       content: reviewData.content,
     };
 
-    const dataToSend = mode === "create" ? { ...baseData, wineId } : baseData;
-
-    const url =
-      mode === "create"
-        ? "https://winereview-api.vercel.app/14-2/reviews"
-        : `https://winereview-api.vercel.app/14-2/reviews/${existingReviewData?.id}`;
-
-    const method = mode === "create" ? "POST" : "PATCH";
-
     try {
-      const response = await handleResponseWithAuth(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(dataToSend),
+      const response = await submitReview({
+        data: baseData,
+        wineId,
+        accessToken,
+        mode,
+        existingReviewId: mode === "edit" ? existingReviewData?.id : undefined,
       });
-  
+
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(
-          `${mode === "create" ? "리뷰 등록" : "리뷰 수정"} 실패:`,
-          errorText
-        );
-        toast.warning(
-          `${mode === "create" ? "리뷰 등록" : "리뷰 수정"} 중 오류가 발생했습니다.`
-        );
+        console.error("리뷰 제출 실패:", errorText);
+        toast.warning("리뷰 등록/수정 중 오류가 발생했습니다.");
         return;
       }
-  
-      toast.success(`${mode === "create" ? "리뷰가 등록" : "리뷰가 수정"}되었습니다!`);
-      onClose();
-    } catch (error) {
-      console.error("리뷰 제출 중 오류", error);
-      toast.warning("리뷰 등록 중 네트워크 오류가 발생했습니다.");
+
+      toast.success(`리뷰가 ${mode === "create" ? "등록" : "수정"}되었습니다!`);
+      // 토스트 메시지가 보여지고 나서 모달이 닫히도록 변경
+      setTimeout(() => {
+        onClose();
+      }, 2000); // 2초 후에 모달이 닫히도록 설정
+    } catch (err) {
+      console.error("리뷰 제출 중 네트워크 오류", err);
+      toast.warning("리뷰 제출 중 오류가 발생했습니다.");
     }
   };
 
@@ -143,28 +133,21 @@ export default function ReviewModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
+      <ToastContainer position="top-center" autoClose={2000} hideProgressBar theme="light" />
       <div
         className="bg-white w-[528px] rounded-2xl shadow-lg p-6 relative max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl text-gray-800 font-bold">
-            {mode === "create" ? "리뷰 등록" : "리뷰 수정"}
-          </h2>
-        </div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          {mode === "create" ? "리뷰 등록" : "리뷰 수정"}
+        </h2>
 
-        {/* 와인 아이콘 + 와인이름 + 별점 */}
+        {/* 별점 */}
         <div className="flex items-center my-6 gap-3">
-          <img
-            src="/images/wine.svg"
-            alt="와인 아이콘"
-            className="bg-gray-100 w-12 h-12 rounded-xl p-1"
-          />
+          <img src="/images/wine.svg" alt="와인 아이콘" className="w-12 h-12 rounded-xl p-1 bg-gray-100" />
           <div>
-            <span className="text-base text-gray-800 font-semibold">
-              {wineName}
-            </span>
-            <div className="flex items-center gap-1 mt-2">
+            <span className="font-semibold text-base text-gray-800">{wineName}</span>
+            <div className="flex gap-1 mt-2">
               {[1, 2, 3, 4, 5].map((num) => (
                 <button
                   key={num}
@@ -183,8 +166,8 @@ export default function ReviewModal({
                         ? "/images/staryellow.svg"
                         : "/images/star.svg"
                     }
+                    className="w-5 h-5"
                     alt={`${num}점`}
-                    className="w-5 h-5 cursor-pointer"
                   />
                 </button>
               ))}
@@ -192,7 +175,7 @@ export default function ReviewModal({
           </div>
         </div>
 
-        {/* 후기 작성 */}
+        {/* 후기 입력 */}
         <textarea
           className="w-full h-[120px] border border-gray-300 rounded-2xl px-5 py-3 mb-10 placeholder-gray-500 resize-none"
           placeholder="후기를 작성해주세요."
@@ -202,11 +185,9 @@ export default function ReviewModal({
           }
         />
 
-        {/* 맛 선택 range */}
+        {/* 슬라이더 */}
         <div className="mb-10">
-          <label className="block text-xl text-gray-800 font-bold mb-6">
-            와인의 맛은 어땠나요?
-          </label>
+          <label className="block text-xl font-bold text-gray-800 mb-6">와인의 맛은 어땠나요?</label>
           <ReviewSlider
             label="바디감"
             value={reviewData.lightBold}
@@ -232,26 +213,24 @@ export default function ReviewModal({
             label="산미"
             value={reviewData.softAcidic}
             onChange={(val) => handleSliderChange("softAcidic", val)}
-            leftLabel="안셔요"
-            rightLabel="많이셔요"
+            leftLabel="안 셔요"
+            rightLabel="많이 셔요"
           />
         </div>
 
-        {/* 향 선택 버튼(중복 가능) */}
+        {/* 향 */}
         <div className="mb-12">
-          <label className="block text-xl text-gray-800 font-bold mb-6">
-            기억에 남는 향이 있나요?
-          </label>
+          <label className="block text-xl font-bold text-gray-800 mb-6">기억에 남는 향이 있나요?</label>
           <div className="flex flex-wrap gap-[10px]">
             {AROMAS.map((aroma) => {
-              const isSelected = reviewData.aroma.includes(aroma);
-              const length = aroma.length;
+              const english = AROMA_MAP[aroma];
+              const isSelected = reviewData.aroma.includes(english);
               const widthClass =
-                length === 1
+                aroma.length === 1
                   ? "w-[50px]"
-                  : length === 2
+                  : aroma.length === 2
                   ? "w-[64px]"
-                  : length === 3
+                  : aroma.length === 3
                   ? "w-[78px]"
                   : "w-[92px]";
 
@@ -259,10 +238,9 @@ export default function ReviewModal({
                 <button
                   key={aroma}
                   onClick={() => handleAromaSelect(aroma)}
-                  className={`h-[46px] py-[10px] border border-gray-300 rounded-3xl text-base text-gray-800 
-                    ${widthClass} ${
-                    isSelected ? "bg-garnet text-white" : "bg-white"
-                  }`}
+                  className={`h-[46px] py-[10px] border border-gray-300 rounded-3xl text-base ${
+                    isSelected ? "bg-garnet text-white" : "bg-white text-gray-800"
+                  } ${widthClass}`}
                 >
                   {aroma}
                 </button>
@@ -271,6 +249,7 @@ export default function ReviewModal({
           </div>
         </div>
 
+        {/* 버튼 */}
         <div className="flex justify-end gap-4 mt-8">
           <ModalButton
             width="w-[108px]"
