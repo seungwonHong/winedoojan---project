@@ -142,9 +142,6 @@ function Signin() {
                 error={errors.password}
               />
             </div>
-            {/* <Link className="text-garnet mt-[10px] mb-[56px]" href="/signup">
-              비밀번호를 잊으셨나요?
-            </Link> */}
             <BlobButton type="submit" disabled={isLoading}>
               {isLoading ? '로그인 중...' : '로그인'}
             </BlobButton>

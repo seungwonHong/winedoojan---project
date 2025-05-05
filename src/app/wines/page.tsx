@@ -82,7 +82,7 @@ const Wines = () => {
             {!isDesktop && (
               <ModalButton
                 onClick={handleClick}
-                width="w-[110px]"
+                width="w-[114px]"
                 height="h-[38px]"
                 fontSize="text-[14px]"
                 className="ml-auto md:mt-[20px] mt-[10px] md:h-[48px] md:w-[220px]"
