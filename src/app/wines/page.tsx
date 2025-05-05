@@ -1,21 +1,22 @@
-"use client";
-import Header from "@/components/common/Header";
-import SearchOptions from "@/components/SearchOptions";
-import SearchWine from "@/components/SearchWine";
-import WineCardBig from "@/components/WineCardBig";
-import WineListRecWine from "@/components/WineListRecWine";
-import useWineListWines from "@/hooks/useWineListWines";
-import useWineRecommended from "@/hooks/useWineRecommended";
-import { IoOptions } from "react-icons/io5";
-import React, { useEffect, useState } from "react";
-import WineCardBigSkeleton from "@/components/WineCardBigSkeleton";
-import LoadingAnimation from "@/components/common/LoadingAnimation";
-import ModalButton from "@/components/common/ModalButton";
-import { FaPlus } from "react-icons/fa6";
-import FilterModal from "@/components/modals/FilterModal";
-import Link from "next/link";
-import WineModal from "@/components/modals/WineModal";
-import { useAuthStore } from "@/store/authStore";
+'use client';
+import Header from '@/components/common/Header';
+import SearchOptions from '@/components/SearchOptions';
+import SearchWine from '@/components/SearchWine';
+import WineCardBig from '@/components/WineCardBig';
+import WineListRecWine from '@/components/WineListRecWine';
+import useWineListWines from '@/hooks/useWineListWines';
+import useWineRecommended from '@/hooks/useWineRecommended';
+import { IoOptions } from 'react-icons/io5';
+import React, { useEffect, useState } from 'react';
+import WineCardBigSkeleton from '@/components/WineCardBigSkeleton';
+import LoadingAnimation from '@/components/common/LoadingAnimation';
+import ModalButton from '@/components/common/ModalButton';
+import { FaPlus } from 'react-icons/fa6';
+import FilterModal from '@/components/modals/FilterModal';
+import Link from 'next/link';
+import WineModal from '@/components/modals/WineModal';
+import { useAuthStore } from '@/store/authStore';
+import Image from 'next/image';
 
 const Wines = () => {
   const [isDesktop, setIsDesktop] = useState(true);
@@ -33,9 +34,9 @@ const Wines = () => {
     };
     handleResize();
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleClick = () => {
@@ -98,10 +99,12 @@ const Wines = () => {
               </>
             ) : allWines !== null && allWines?.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full">
-                <img
+                <Image
                   src="/images/empty.png"
                   alt="searchNotFound"
-                  className="lg:w-[230px] lg:h-[230px] lg:mt-0 md:w-[200px] md:h-[200px] md:mt-[100px] w-[150px] h-[150px] mt-[100px]"
+                  className="w-[120px] h-[120px] max-lg:mt-[100px]"
+                  width={120}
+                  height={120}
                 />
                 <span className="lg:text-[24px] font-semibold text-[#800020] lg:mt-[30px] md:mt-[20px] mt-[20px]">
                   검색 결과가 없습니다

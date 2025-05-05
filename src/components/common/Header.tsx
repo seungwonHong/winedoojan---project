@@ -66,7 +66,7 @@ const Header = () => {
         <div className="w-[40px] h-[40px] max-md:w-5 max-md:h-5 bg-gray-700 rounded-full animate-pulse" />
       ) : user ? (
         <div className="relative">
-          <div className="rounded-full border-2">
+          <div className="rounded-full">
             <div className="relative flex items-center rounded-full w-[40px] h-[40px] max-md:w-6 max-md:h-6 cursor-pointer overflow-hidden">
               <Image
                 className="w-auto h-auto"
