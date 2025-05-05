@@ -23,7 +23,7 @@ interface HamburgerMenuProps {
   review?: Review;
   wine?: Wine;
   setOpenId: (id: number | null) => void;
-  onDeleteSuccess: () => void;
+  onSuccess: () => void;
 }
 
 const HamburgerMenuDiv = clsx(
@@ -37,7 +37,7 @@ export default function HamburgerMenu({
   tab,
   openId,
   setOpenId,
-  onDeleteSuccess,
+  onSuccess,
   review,
   wine,
 }: HamburgerMenuProps) {
@@ -55,7 +55,7 @@ export default function HamburgerMenu({
       } else {
         await fetchDeleteReviewId({ teamId, id, token });
       }
-      onDeleteSuccess();
+      onSuccess();
     } catch (err) {
       console.error("삭제 실패:", err);
     }
@@ -95,7 +95,10 @@ export default function HamburgerMenu({
       {isEditModalOpen &&
         (tab === "reviews" ? (
           <ReviewModal
-            onClose={() => setIsEditModalOpen(false)}
+            onClose={() => {
+              setIsEditModalOpen(false);
+              onSuccess();
+            }}
             accessToken={token}
             wineName={review?.wine.name ?? ""}
             wineId={id}
@@ -104,7 +107,10 @@ export default function HamburgerMenu({
           />
         ) : (
           <WineModal
-            onClose={() => setIsEditModalOpen(false)}
+            onClose={() => {
+              setIsEditModalOpen(false);
+              onSuccess();
+            }}
             accessToken={token}
             mode="edit"
             wineData={wine}

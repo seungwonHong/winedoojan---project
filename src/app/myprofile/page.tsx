@@ -40,6 +40,7 @@ export default function ProfilePage() {
     wines: [] as Wine[],
     wineCursor: null as number | null,
     totalCount: 0,
+    updatedAt: null as string | null,
   });
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isWineModalOpen, setIsWineModalOpen] = useState(false);
@@ -72,12 +73,21 @@ export default function ProfilePage() {
             cursor,
           });
 
-    setMyProfileData((prev) => ({
-      ...prev,
-      [listKey]: isLoadMore ? [...prev[listKey], ...res.list] : res.list,
-      [cursorKey]: res.nextCursor ?? null,
-      totalCount: res.totalCount,
-    }));
+    setMyProfileData((prev) => {
+      const newList = isLoadMore ? [...prev[listKey], ...res.list] : res.list;
+
+      newList.sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+
+      return {
+        ...prev,
+        [listKey]: newList,
+        [cursorKey]: res.nextCursor ?? null,
+        totalCount: res.totalCount,
+      };
+    });
   };
 
   const loadData = async (tab: "reviews" | "wines", isLoadMore = false) => {
@@ -118,6 +128,10 @@ export default function ProfilePage() {
     }
   }, [isReviewModalOpen]);
 
+  useEffect(() => {
+    loadData(tab);
+  }, [myProfileData.updatedAt]);
+
   if (!user || !accessToken) {
     return (
       <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
@@ -137,7 +151,7 @@ export default function ProfilePage() {
   const commonCardProps = {
     teamId: user.teamId,
     token: accessToken,
-    onDeleteSuccess: () => loadData(tab),
+    onSuccess: () => loadData(tab),
     tab,
     openId,
     setOpenId,
@@ -228,6 +242,9 @@ export default function ProfilePage() {
                         key={review.id}
                         id={review.id}
                         review={review}
+                        onClick={() => {
+                          router.push(`/wines/${review.wine.id}`);
+                        }}
                         {...commonCardProps}
                       />
                     ))
@@ -236,6 +253,9 @@ export default function ProfilePage() {
                         key={wine.id}
                         id={wine.id}
                         wine={wine}
+                        onClick={() => {
+                          router.push(`/wines/${wine.id}`);
+                        }}
                         {...commonCardProps}
                       />
                     ))}
