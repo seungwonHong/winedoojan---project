@@ -221,9 +221,6 @@ export default function ProfilePage() {
                   등록된 {tab === 'reviews' ? '리뷰가' : '와인이'} 없어요
                 </div>
                 <BlobButton
-                  children={
-                    tab === 'reviews' ? '리뷰등록하러가기' : '와인등록하러가기'
-                  }
                   onClick={() => {
                     if (tab === 'reviews') {
                       setIsReviewModalOpen(true);
@@ -231,7 +228,9 @@ export default function ProfilePage() {
                       setIsWineModalOpen(true);
                     }
                   }}
-                />
+                >
+                  {tab === 'reviews' ? '리뷰등록하러가기' : '와인등록하러가기'}
+                </BlobButton>
               </div>
             ) : (
               //{/* 데이터 있을 때 : 와인/리뷰 카드 */}

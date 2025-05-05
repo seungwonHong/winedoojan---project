@@ -1,18 +1,18 @@
-"use client";
-import icons from "../../public/icons/icons";
+'use client';
+import icons from '../../public/icons/icons';
 import {
   fetchDeleteWineId,
   fetchDeleteReviewId,
-} from "@/services/myProfileApi";
-import { useState } from "react";
-import { Dialog } from "@headlessui/react";
-import ModalButton from "./common/ModalButton";
-import clsx from "clsx";
-import { Review, Wine } from "@/types/myprofileTypes";
-import ReviewModal from "./modals/ReviewModal";
-import WineModal from "./modals/WineModal";
-import { useAuthStore } from "@/store/authStore";
-import DeleteModal from "./modals/DeleteModal";
+} from '@/services/myProfileApi';
+import { MouseEvent, useState } from 'react';
+import { Dialog } from '@headlessui/react';
+import ModalButton from './common/ModalButton';
+import clsx from 'clsx';
+import { Review, Wine } from '@/types/myprofileTypes';
+import ReviewModal from './modals/ReviewModal';
+import WineModal from './modals/WineModal';
+import { useAuthStore } from '@/store/authStore';
+import DeleteModal from './modals/DeleteModal';
 
 interface HamburgerMenuProps {
   teamId: string | null;
@@ -27,7 +27,7 @@ interface HamburgerMenuProps {
 }
 
 const HamburgerMenuDiv = clsx(
-  "w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-mistyrose hover:text-burgundy cursor-pointer"
+  'w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-mistyrose hover:text-burgundy cursor-pointer'
 );
 
 export default function HamburgerMenu({
@@ -50,20 +50,21 @@ export default function HamburgerMenu({
   // 리뷰/와인 삭제하기
   const handleDelete = async () => {
     try {
-      if (tab === "wines") {
+      if (tab === 'wines') {
         await fetchDeleteWineId({ teamId, id, token });
       } else {
         await fetchDeleteReviewId({ teamId, id, token });
       }
       onSuccess();
     } catch (err) {
-      console.error("삭제 실패:", err);
+      console.error('삭제 실패:', err);
     }
     setIsDelModalOpen(false);
   };
 
   // 햄버거 버튼 열림/닫힘
-  const handleOpenSelect = () => {
+  const handleOpenSelect = (e: MouseEvent) => {
+    e.stopPropagation();
     setOpenId(isOpen ? null : id);
   };
 
@@ -93,14 +94,14 @@ export default function HamburgerMenu({
       )}
       {/* 수정하기 모달 */}
       {isEditModalOpen &&
-        (tab === "reviews" ? (
+        (tab === 'reviews' ? (
           <ReviewModal
             onClose={() => {
               setIsEditModalOpen(false);
               onSuccess();
             }}
             accessToken={token}
-            wineName={review?.wine.name ?? ""}
+            wineName={review?.wine.name ?? ''}
             wineId={id}
             mode="edit"
             existingReviewData={review}
@@ -117,7 +118,7 @@ export default function HamburgerMenu({
           />
         ))}
       {isDelModalOpen &&
-        (tab === "reviews" ? (
+        (tab === 'reviews' ? (
           <DeleteModal
             onClose={() => setIsDelModalOpen(false)}
             onConfirm={handleDelete}
