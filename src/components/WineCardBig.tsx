@@ -70,7 +70,7 @@ const WineCardBig = ({ wine }: Props) => {
             <span className="lg:text-[34px] md:text-[28px] text-[22px] lg:text-[#2D3034] font-extrabold">
               {wine.avgRating}
             </span>
-            <div className="lg:ml-0 md:ml-0 ml-[20px]">
+            <div className="lg:ml-0 md:ml-0 ml-[20px] mr-auto">
               <div className="flex gap-[2px] lg:mt-[8px] md:mt-[3px] ">
                 {Array.from({ length: 5 }).map((_, index) => (
                   <FaStar

@@ -183,7 +183,7 @@ const SearchOptions = () => {
           type="number"
           inputMode="numeric"
           onKeyDown={(e) => {
-            if (["-", "+", "e", "E"].includes(e.key)) {
+            if (["-", "+", "e", "E", '.', ','].includes(e.key)) {
               e.preventDefault();
             }
           }}
@@ -195,7 +195,7 @@ const SearchOptions = () => {
           type="number"
           inputMode="numeric"
           onKeyDown={(e) => {
-            if (["-", "+", "e", "E"].includes(e.key)) {
+            if (["-", "+", "e", "E", ".", ","].includes(e.key)) {
               e.preventDefault();
             }
           }}
