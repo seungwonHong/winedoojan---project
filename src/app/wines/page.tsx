@@ -92,7 +92,7 @@ const Wines = () => {
                             ...allwine.recentReview,
                             user: {
                               ...allwine.recentReview.user,
-                              image: allwine.recentReview.user.image ?? "",
+                              image: allwine.recentReview?.user?.image ?? "",
                             },
                           }
                         : allwine.recentReview,
