@@ -23,6 +23,7 @@ const useWineListWines = ({ limit }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const bringWines = useCallback(async () => {
+    console.log(allWines);
     if (loadingRef.current) return;
     loadingRef.current = true;
     setLoading(true);
@@ -35,11 +36,12 @@ const useWineListWines = ({ limit }: Props) => {
       rating,
       name,
     });
+    const currentWines = searchStore.getState().allWines;
 
     setAllWines(
-      allWines?.length === 0
+      currentWines?.length === 0
         ? res.list ?? []
-        : [...(allWines ?? []), ...(res.list ?? [])]
+        : [...(currentWines ?? []), ...(res.list ?? [])]
     );
     setNextCursor(res.nextCursor ?? undefined);
     loadingRef.current = false;
@@ -48,6 +50,10 @@ const useWineListWines = ({ limit }: Props) => {
   console.log(`nextCursor: ${nextCursor}`);
 
   useEffect(() => {
+    const { setAllWines, setNextCursor } = searchStore.getState();
+    setAllWines(null);
+    setNextCursor(undefined);
+    console.log("초기화");
     bringWines();
   }, []);
 
