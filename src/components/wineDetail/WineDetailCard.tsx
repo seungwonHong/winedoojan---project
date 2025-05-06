@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Wine } from "@/types/wineDetailTypes";
+import { Wine } from '@/types/schema';
 
 const WineDetailCard = ({ wine }: { wine: Wine }) => {
   return (

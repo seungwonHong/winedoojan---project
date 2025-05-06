@@ -14,10 +14,18 @@ export interface Wine {
   avgRating: number;
   type: 'Red' | 'White' | 'Sparkling';
   reviewCount: number;
-  recentReview: boolean;
+  recentReview: Review;
   userId: number;
   createdAt: string;
   updatedAt: string;
+  reviews: Review[];
+  avgRatings: {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
+  };
 }
 
 export interface Review {
@@ -32,6 +40,9 @@ export interface Review {
   createdAt: string;
   updatedAt: string;
   flavors: string[];
+  wineId: number;
+  teamId: string;
+  isLiked: boolean;
   user: User;
   wine: Wine;
 }

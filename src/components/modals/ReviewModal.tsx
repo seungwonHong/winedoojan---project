@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "@/styles/rangeSlider.css";
-import ModalButton from "@/components/common/ModalButton";
-import ReviewSlider from "@/components/common/ReviewSlider";
-import handleResponseWithAuth from "@/utils/handleResponseWithAuth";
-import type { Review } from "@/types/schema";
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/rangeSlider.css';
+import ModalButton from '@/components/common/ModalButton';
+import ReviewSlider from '@/components/common/ReviewSlider';
+import handleResponseWithAuth from '@/utils/handleResponseWithAuth';
+import type { Review } from '@/types/schema';
 
 type Props = {
   onClose: () => void;

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import { useAuthStore } from "@/store/authStore";
-import handleResponseWithAuth from "@/utils/handleResponseWithAuth";
+import { useAuthStore } from '@/store/authStore';
+import handleResponseWithAuth from '@/utils/handleResponseWithAuth';
 
-import { Wine } from "../../types/wineDetailTypes";
+import { Wine } from '../../types/schema';
 
 const useFetchWine = (wineId: string) => {
   const [wine, setWine] = useState<Wine | null>(null);
@@ -15,7 +15,7 @@ const useFetchWine = (wineId: string) => {
       const token = useAuthStore.getState().accessToken;
 
       if (!token) {
-        setError("Access token이 없습니다.");
+        setError('Access token이 없습니다.');
         setLoading(false);
         return;
       }
@@ -23,23 +23,23 @@ const useFetchWine = (wineId: string) => {
       let res = await handleResponseWithAuth(
         `https://winereview-api.vercel.app/14-2/wines/${wineId}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
 
       if (!res.ok) {
-        throw new Error("와인 정보를 불러오지 못했습니다.");
+        throw new Error('와인 정보를 불러오지 못했습니다.');
       }
 
       const data = await res.json();
       setWine(data);
     } catch (err: any) {
       console.error(err);
-      setError("와인 정보를 불러오는 데 실패했습니다.");
+      setError('와인 정보를 불러오는 데 실패했습니다.');
     } finally {
       setLoading(false);
     }

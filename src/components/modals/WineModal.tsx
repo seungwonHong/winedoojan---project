@@ -4,8 +4,8 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import imageCompression from 'browser-image-compression';
 import ModalButton from '@/components/common/ModalButton';
 import DropdownSelect from '@/components/common/DropdownSelect';
@@ -30,7 +30,12 @@ const COMPRESSION_OPTIONS = {
   maxWidthOrHeight: 600,
 };
 
-export default function WineModal({ onClose, accessToken, mode, wineData }: Props) {
+export default function WineModal({
+  onClose,
+  accessToken,
+  mode,
+  wineData,
+}: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -67,14 +72,17 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
     }
   }, [mode, wineData]);
 
-  const handleInputChange = (field: keyof typeof formData) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: e.target.value,
-    }) as typeof formData);
-  };
+  const handleInputChange =
+    (field: keyof typeof formData) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData(
+        (prev) =>
+          ({
+            ...prev,
+            [field]: e.target.value,
+          } as typeof formData)
+      );
+    };
 
   const handleImageClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -83,7 +91,7 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;  // 파일이 없으면 함수 종료
+    if (!file) return; // 파일이 없으면 함수 종료
 
     if (file.size > MAX_FILE_SIZE) {
       toast.warning('파일 크기가 너무 큽니다. 5MB 이하의 파일을 업로드하세요.');
@@ -92,18 +100,24 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
 
     try {
       const compressedFile = await imageCompression(file, COMPRESSION_OPTIONS);
-      setFormData((prev) => ({
-        ...prev,
-        compressedImageFile: compressedFile,
-      }) as typeof formData);
-      
+      setFormData(
+        (prev) =>
+          ({
+            ...prev,
+            compressedImageFile: compressedFile,
+          } as typeof formData)
+      );
+
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === 'string') {
-          setFormData((prev) => ({
-            ...prev,
-            imagePreview: reader.result,
-          }) as typeof formData);
+          setFormData(
+            (prev) =>
+              ({
+                ...prev,
+                imagePreview: reader.result,
+              } as typeof formData)
+          );
         }
       };
       reader.readAsDataURL(compressedFile);
@@ -121,11 +135,17 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
 
     const { name, region, price, imagePreview, compressedImageFile } = formData;
 
-    if (!name || !region || !imagePreview || isNaN(parseFloat(price)) || parseFloat(price) <= 0) {
+    if (
+      !name ||
+      !region ||
+      !imagePreview ||
+      isNaN(parseFloat(price)) ||
+      parseFloat(price) <= 0
+    ) {
       toast.warning('모든 항목을 입력해주세요.');
       return;
     }
-    
+
     let imageUrl = wineData?.image; // 기존 이미지 URL을 저장해두기
     if (compressedImageFile) {
       imageUrl = await uploadWineImage(compressedImageFile, accessToken);
@@ -138,7 +158,7 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
       price: parseFloat(price),
       type: formData.selectedOption.toUpperCase(),
     };
-    
+
     try {
       const result = await submitWineData({
         mode,
@@ -146,28 +166,41 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
         winePayload,
         wineId: wineData?.id,
       });
-    
-      toast.success(mode === 'create' ? '와인이 성공적으로 등록되었습니다.' : '와인이 성공적으로 수정되었습니다.');
+
+      toast.success(
+        mode === 'create'
+          ? '와인이 성공적으로 등록되었습니다.'
+          : '와인이 성공적으로 수정되었습니다.'
+      );
       if (mode === 'create' && result.id) {
         router.push(`/wines/${result.id}`);
       }
     } catch (error) {
       console.error(error);
-      toast.warning(mode === 'create' ? '와인 등록 중 오류가 발생했습니다.' : '와인 수정 중 오류가 발생했습니다.');
+      toast.warning(
+        mode === 'create'
+          ? '와인 등록 중 오류가 발생했습니다.'
+          : '와인 수정 중 오류가 발생했습니다.'
+      );
     }
   };
 
-
   const labelClass = 'block text-base font-medium mb-4';
-  const inputClass = 'w-full h-12 border border-gray-300 rounded-2xl px-5 py-2 mb-8 placeholder-gray-500';
+  const inputClass =
+    'w-full h-12 border border-gray-300 rounded-2xl px-5 py-2 mb-8 placeholder-gray-500';
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
-      <ToastContainer position="top-center" autoClose={2000} hideProgressBar theme="light" />
-      <div 
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar
+        theme="light"
+      />
+      <div
         className="bg-white w-[460px] rounded-2xl shadow-lg p-6 relative max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden"
         onClick={(e) => e.stopPropagation()}
       >
@@ -204,7 +237,9 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
         <DropdownSelect
           options={WINE_TYPES}
           selected={formData.selectedOption}
-          onSelect={(selected) => setFormData((prev) => ({ ...prev, selectedOption: selected }))}
+          onSelect={(selected) =>
+            setFormData((prev) => ({ ...prev, selectedOption: selected }))
+          }
         />
 
         <label className={labelClass}>와인 사진</label>
@@ -236,10 +271,15 @@ export default function WineModal({ onClose, accessToken, mode, wineData }: Prop
         </div>
 
         <div className="flex justify-end gap-4 mt-8">
-          <ModalButton width = "w-[108px]" bgColor="bg-[#F3E7E6]" textColor="text-garnet" onClick={onClose}>
+          <ModalButton
+            width="w-[108px]"
+            bgColor="bg-[#F3E7E6]"
+            textColor="text-garnet"
+            onClick={onClose}
+          >
             취소
           </ModalButton>
-          <ModalButton width = "w-[294px]" onClick={handleSubmit}>
+          <ModalButton width="w-[294px]" onClick={handleSubmit}>
             {mode === 'create' ? '와인 등록하기' : '와인 수정하기'}
           </ModalButton>
         </div>

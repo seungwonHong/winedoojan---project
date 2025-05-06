@@ -1,12 +1,12 @@
-import { Wine, Review } from "@/types/myprofileTypes";
-import SkeletonMyProfile from "@/components/myProfile/skeleton/SkeletonMyProfile";
-import images from "../../../public/images/images";
-import BlobButton from "@/components/common/BlobButton";
-import MyWineCard from "@/components/myProfile/MyWineCard";
-import MyReviewCard from "./MyReviewCard";
+import { Wine, Review } from '@/types/schema';
+import SkeletonMyProfile from '@/components/myProfile/skeleton/SkeletonMyProfile';
+import images from '../../../public/images/images';
+import BlobButton from '@/components/common/BlobButton';
+import MyWineCard from '@/components/myProfile/MyWineCard';
+import MyReviewCard from './MyReviewCard';
 
 interface ProfileListProps {
-  tab: "reviews" | "wines";
+  tab: 'reviews' | 'wines';
   isLoading: boolean;
   reviews: Review[];
   wines: Wine[];
@@ -37,8 +37,8 @@ export default function ProfileList({
   }
 
   if (
-    (tab === "reviews" && reviews.length === 0) ||
-    (tab === "wines" && wines.length === 0)
+    (tab === 'reviews' && reviews.length === 0) ||
+    (tab === 'wines' && wines.length === 0)
   ) {
     return (
       <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center">
@@ -48,10 +48,10 @@ export default function ProfileList({
           className="size-[180px]"
         />
         <div className="font-bold text-2xl text-[#2D3034]">
-          등록된 {tab === "reviews" ? "리뷰가" : "와인이"} 없어요
+          등록된 {tab === 'reviews' ? '리뷰가' : '와인이'} 없어요
         </div>
         <BlobButton
-          children={tab === "reviews" ? "리뷰등록하러가기" : "와인등록하러가기"}
+          children={tab === 'reviews' ? '리뷰등록하러가기' : '와인등록하러가기'}
           onClick={() => {}}
         />
       </div>
@@ -60,7 +60,7 @@ export default function ProfileList({
 
   return (
     <>
-      {tab === "reviews"
+      {tab === 'reviews'
         ? reviews.map((review) => (
             <MyReviewCard
               key={review.id}

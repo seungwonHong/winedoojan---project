@@ -1,9 +1,9 @@
-import Rating from "../Rating";
-import { Review } from "@/types/myprofileTypes";
-import HamburgerMenu from "../HamburgerMenu";
-import { getTimeAgo } from "@/utils/getTimeAgo";
-import { MyProfileCard } from "./MyProfileCard";
-import { motion } from "framer-motion";
+import Rating from '../Rating';
+import { Review } from '@/types/schema';
+import HamburgerMenu from '../HamburgerMenu';
+import { getTimeAgo } from '@/utils/getTimeAgo';
+import { MyProfileCard } from './MyProfileCard';
+import { motion } from 'framer-motion';
 
 interface MyReviewCardProps {
   id: number;
@@ -25,7 +25,7 @@ export default function MyReviewCard({ ...props }: MyReviewCardProps) {
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       className="cursor-pointer"
     >
       <MyProfileCard
