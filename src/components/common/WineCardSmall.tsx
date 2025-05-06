@@ -45,7 +45,7 @@ const WineCardSmall = ({ wine }: Props) => {
         />
         <div className="flex flex-col w-full">
           <span className="lg:text-[36px] md:text-[21.6px] md:mt-[10px] text-[32.4px] text-[#2D3034] font-extrabold">
-            {wine.avgRating}
+            {wine.avgRating.toFixed(1)}
           </span>
           <div className="flex gap-[2px] lg:mt-[8px] md:mt-[3px] mt-[10px]">
             {Array.from({ length: 5 }).map((_, index) => (
