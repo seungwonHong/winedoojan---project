@@ -1,6 +1,6 @@
-import Rating from "./Rating";
+import Rating from "../Rating";
 import { Review } from "@/types/myprofileTypes";
-import HamburgerMenu from "./HamburgerMenu";
+import HamburgerMenu from "../HamburgerMenu";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 import { MyProfileCard } from "./MyProfileCard";
 import { motion } from "framer-motion";
@@ -15,6 +15,8 @@ interface MyReviewCardProps {
   openId: number | null;
   setOpenId: (id: number | null) => void;
   onClick: () => void;
+  onEdit: (item: Review) => void;
+  onDelete: (item: Review) => void;
 }
 
 export default function MyReviewCard({ ...props }: MyReviewCardProps) {
@@ -38,7 +40,11 @@ export default function MyReviewCard({ ...props }: MyReviewCardProps) {
           <div className="text-[#9facbd]">{timeAgo}</div>
 
           <div className="ml-auto">
-            <HamburgerMenu {...props} />
+            <HamburgerMenu
+              {...props}
+              onEdit={() => props.onEdit(props.review)}
+              onDelete={() => props.onDelete(props.review)}
+            />
           </div>
         </div>
         {/* 와인 이름 */}
