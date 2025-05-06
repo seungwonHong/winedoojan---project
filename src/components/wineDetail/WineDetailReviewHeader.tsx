@@ -121,18 +121,16 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
             key={index}
             className="rounded-[100px] border border-[#CFDBEA] py-[6px] px-[10px] inline-block"
           >
-            {AROMA_MAP[aroma] || aroma}
+            {REVERSE_AROMA_MAP[aroma] || aroma}
           </div>
         ))}
       </div>
       <div className="flex justify-end relative bottom-[38px] md:bottom-[42px]">
-        <div className="flex justify-center items-center text-[18px] font-[700] text-[#830E00] bg-[#ffe9e6] w-[60px] h-[36px] rounded-[12px] md:w-[80px] md:h-[42px] ">
+        <div className="flex gap-[3px] justify-center items-center text-[18px] font-[700] text-[#830E00] bg-[#ffe9e6] w-[60px] h-[36px] rounded-[12px] md:w-[80px] md:h-[42px] ">
           <div className="flex justify-center items-center relative w-[16px] h-[16px] md:w-[20px] md:h-[20px]">
-            <FaStar className="text-[#830E00] w-[16px] h-[16px]" />
+            <FaStar className="text-[#830E00] w-[16px] h-[16px] " />
           </div>
-          <div className="text-center relative top-[2px] left-[3px]">
-            {item.rating.toFixed(1)}
-          </div>
+          <div>{item.rating.toFixed(1)}</div>
         </div>
       </div>
     </div>
@@ -146,3 +144,7 @@ interface Props {
   wine: Wine;
   refetch: () => Promise<void>;
 }
+
+const REVERSE_AROMA_MAP: Record<string, string> = Object.fromEntries(
+  Object.entries(AROMA_MAP).map(([kor, eng]) => [eng, kor])
+);

@@ -7,7 +7,7 @@ const WineDetailReviewCardList = ({
   refetch,
 }: WineDetailReviewCardListProps) => {
   return (
-    <div>
+    <div className="mb-[200px]">
       {wine.reviews.map((item) => (
         <WineDetailReviewCard
           key={item.id}
