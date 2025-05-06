@@ -1,9 +1,9 @@
-import { Wine } from "@/types/myprofileTypes";
-import Image from "next/image";
-import images from "../../../public/images/images";
-import HamburgerMenu from "../HamburgerMenu";
-import { MyProfileCard } from "./MyProfileCard";
-import { motion } from "framer-motion";
+import { Wine } from '@/types/schema';
+import Image from 'next/image';
+import images from '../../../public/images/images';
+import HamburgerMenu from '../HamburgerMenu';
+import { MyProfileCard } from './MyProfileCard';
+import { motion } from 'framer-motion';
 
 interface MyWineCardProps {
   id: number;
@@ -23,7 +23,7 @@ export default function MyWineCard({ ...props }: MyWineCardProps) {
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       className="cursor-pointer"
     >
       <MyProfileCard

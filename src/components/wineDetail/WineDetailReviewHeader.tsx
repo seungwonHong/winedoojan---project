@@ -18,8 +18,7 @@ import ic_hamburger from '../../../public/icons/ic_hamburger.png';
 import ic_heart from '../../../public/icons/ic_heart.png';
 import ic_garnet_heart from '../../../public/icons/ic_garnet_heart.png';
 
-import { Review } from '@/types/wineDetailTypes';
-import { Wine } from '@/types/wineDetailTypes';
+import { Review, Wine } from '@/types/schema';
 
 const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
   const { isLike, handleClickLike } = useFetchHeart(item.id, item.isLiked);

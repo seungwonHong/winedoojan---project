@@ -7,7 +7,7 @@ import '@/styles/rangeSlider.css';
 import ModalButton from '@/components/common/ModalButton';
 import ReviewSlider from '@/components/common/ReviewSlider';
 import handleResponseWithAuth from '@/utils/handleResponseWithAuth';
-import type { Review } from '@/types/wineDetailTypes';
+import type { Review } from '@/types/schema';
 
 type Props = {
   onClose: () => void;

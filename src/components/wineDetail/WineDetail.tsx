@@ -14,7 +14,7 @@ import ReviewListFilter from './ReviewListFilter';
 import SkeletonWineDetailCard from './skeleton/SkeletonWineDetailCard';
 import SkeletonWineReviewCard from './skeleton/SkeletonWineReviewCard';
 
-import { Review } from '@/types/wineDetailTypes';
+import { Review } from '@/types/schema';
 import { useAuthProtection } from '@/hooks/useAuthProtection';
 
 const WineDetail = ({ wineId }: { wineId: string }) => {

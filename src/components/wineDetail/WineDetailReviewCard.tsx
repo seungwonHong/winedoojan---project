@@ -1,17 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import Image from "next/image";
+import Image from 'next/image';
 
-import WineDetailReviewHeader from "./WineDetailReviewHeader";
-import WineTasteSlider from "./WineTasteSlider";
+import WineDetailReviewHeader from './WineDetailReviewHeader';
+import WineTasteSlider from './WineTasteSlider';
 
-import ic_top from "../../../public/icons/ic_top.png";
-import ic_bottom from "../../../public/icons/ic_bottom.png";
+import ic_top from '../../../public/icons/ic_top.png';
+import ic_bottom from '../../../public/icons/ic_bottom.png';
 
-import { Review } from "@/types/wineDetailTypes";
-import { Wine } from "@/types/wineDetailTypes";
+import { Review, Wine } from '@/types/schema';
 
 const WineDetailReviewCard = ({
   item,
