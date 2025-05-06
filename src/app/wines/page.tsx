@@ -11,32 +11,16 @@ import React, { useEffect, useState } from "react";
 import WineCardBigSkeleton from "@/components/WineCardBigSkeleton";
 import LoadingAnimation from "@/components/common/LoadingAnimation";
 import ModalButton from "@/components/common/ModalButton";
-import { FaPlus } from "react-icons/fa6";
 import FilterModal from "@/components/modals/FilterModal";
-import Link from "next/link";
 import WineModal from "@/components/modals/WineModal";
 import { useAuthStore } from "@/store/authStore";
 
 const Wines = () => {
-  const [isDesktop, setIsDesktop] = useState(true);
   const [isClose, setIsClose] = useState(true);
   const [addWine, setAddWine] = useState(false);
   const { wines } = useWineRecommended();
   const { allWines, loading } = useWineListWines({ limit: 2 });
-  const { accessToken } = useAuthStore.getState();
-
-  console.log(isDesktop);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1200);
-    };
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const { accessToken, isAuthenticated } = useAuthStore.getState();
 
   const handleClick = () => {
     setAddWine(!addWine);
@@ -55,9 +39,9 @@ const Wines = () => {
 
         <div className="flex flex-row lg:w-[1140px] justify-center md:w-[704px] w-[343px]">
           <div className="flex flex-col md:flex-row lg:mt-[150px]  md:mt-[40px] mt-[24px]">
-            {isDesktop ? (
-              <div className="flex lg:flex-col md:flex-row">
-                <SearchOptions />
+            <div className="lg:flex lg:flex-col md:flex-row hidden">
+              <SearchOptions />
+              {isAuthenticated && (
                 <ModalButton
                   onClick={handleClick}
                   width="w-[284px]"
@@ -65,30 +49,32 @@ const Wines = () => {
                 >
                   와인 등록하기
                 </ModalButton>
-              </div>
-            ) : (
-              <div className="flex flex-row items-center justify-center lg:w-[48px] md:h-[48px] w-[36px] h-[36px]  md:w-[48px] lg:h-[48px] border-[1px] border-[#CFDBEA] rounded-lg ">
-                <IoOptions
-                  size={19.5}
-                  className="cursor-pointer"
-                  onClick={() => setIsClose(false)}
-                />
-              </div>
-            )}
+              )}
+            </div>
+
+            <div className="lg:hidden flex flex-row items-center justify-center lg:w-[48px] md:h-[48px] w-[36px] h-[36px]  md:w-[48px] lg:h-[48px] border-[1px] border-[#CFDBEA] rounded-lg ">
+              <IoOptions
+                size={19.5}
+                className="cursor-pointer"
+                onClick={() => setIsClose(false)}
+              />
+            </div>
           </div>
           <div className="flex flex-col items-center lg:mt-[40px] md:mt-[40px] mt-[24px] lg:ml-[60px] md:ml-auto ml-[10px]">
             <SearchWine />
-            {!isDesktop && (
+
+            {isAuthenticated && (
               <ModalButton
                 onClick={handleClick}
                 width="w-[110px]"
                 height="h-[38px]"
                 fontSize="text-[14px]"
-                className="ml-auto md:mt-[20px] mt-[10px] md:h-[48px] md:w-[220px]"
+                className="lg:hidden ml-auto md:mt-[20px] mt-[10px] md:h-[48px] md:w-[220px]"
               >
                 와인 등록하기
               </ModalButton>
             )}
+
             {allWines !== null && allWines?.length > 0 ? (
               <>
                 {allWines.map((allwine) => (

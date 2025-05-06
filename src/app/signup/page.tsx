@@ -10,20 +10,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-interface FormData {
-  email: string;
-  password: string;
-  nickName: string;
-  passwordConfirm: string;
-}
-
-interface FormError {
-  email?: string;
-  password?: string;
-  nickName?: string;
-  passwordConfirm?: string;
-}
-
 function Signup() {
   const router = useRouter();
 
