@@ -5,101 +5,59 @@ import icons from '../../../public/icons/icons';
 import Input from '@/components/common/Input';
 import Link from 'next/link';
 import BlobButton from '@/components/common/BlobButton';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
-
-interface FormData {
-  email: string;
-  password: string;
-}
-
-interface FormError {
-  email?: string;
-  password?: string;
-}
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 
 function Signin() {
-  const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState<FormError>({});
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login, kakaoLogin, isAuthenticated } = useAuthStore();
   const router = useRouter();
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const signinSchema = z.object({
+    email: z
+      .string()
+      .nonempty({ message: '이메일은 필수 입력입니다.' })
+      .email({ message: '이메일 형식으로 작성해 주세요.' }),
+    password: z.string().nonempty({ message: '비밀번호는 필수 입력입니다.' }),
+  });
 
-    // 입력 시 해당 필드의 에러 메시지 초기화
-    if (errors[name as keyof FormError]) {
-      setErrors({
-        ...errors,
-        [name]: undefined,
-      });
-    }
-  };
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<z.infer<typeof signinSchema>>({
+    resolver: zodResolver(signinSchema),
+  });
 
-  const validateForm = (): boolean => {
-    const newErrors: FormError = {};
-
-    // 이메일 검증
-    if (!formData.email) {
-      newErrors.email = '이메일은 필수 입력입니다.';
-    } else if (
-      !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.email)
-    ) {
-      newErrors.email = '이메일 형식으로 작성해 주세요.';
-    }
-
-    // 비밀번호 검증
-    if (!formData.password) {
-      newErrors.password = '비밀번호는 필수 입력입니다.';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
-
+  // login 시도
+  const onSubmit = async (data: z.infer<typeof signinSchema>) => {
     try {
-      setIsLoading(true);
+      const response = await login(data.email, data.password);
 
-      const result = await login(formData.email, formData.password);
-      const isLoginSuccessful = result.success;
-
-      if (isLoginSuccessful) {
-        // 로그인 성공 시 wines 페이지로 이동
+      if (response.success) {
+        // 성공시 와인 목록으로 이동
         router.push('/wines');
       } else {
-        // 로그인 실패 시 에러 메시지 표시
-        setErrors({
-          email: result.message,
+        setError('email', {
+          type: 'manual',
+          message: response.message,
         });
       }
     } catch (error) {
-      setErrors({
-        email: '로그인 중 오류가 발생했습니다. 다시 시도해주세요.',
+      console.log(error);
+      setError('email', {
+        type: 'manual',
+        message: '로그인 중 오류가 발생했습니다.',
       });
-      console.error('Login error:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // 이미 로그인이 되어있으면 와인 목록으로 이동
+    // 이미 로그인 상태시 와인 목록으로 이동
     if (isAuthenticated) {
       router.push('/wines');
     }
@@ -121,29 +79,28 @@ function Signin() {
               />
             </Link>
           </div>
-          <form className="flex flex-col mb-[15px]" onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col mb-[15px]"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <div className="flex flex-col gap-[25px] mb-[56px]">
               <Input
-                name="email"
                 type="email"
                 label="이메일"
                 placeholder="이메일 입력"
-                value={formData.email}
-                onChange={handleInputChange}
-                error={errors.email}
+                {...register('email')}
+                error={errors.email?.message}
               />
               <Input
-                name="password"
                 type="password"
                 label="비밀번호"
                 placeholder="비밀번호 입력"
-                value={formData.password}
-                onChange={handleInputChange}
-                error={errors.password}
+                {...register('password')}
+                error={errors.password?.message}
               />
             </div>
-            <BlobButton type="submit" disabled={isLoading}>
-              {isLoading ? '로그인 중...' : '로그인'}
+            <BlobButton type="submit" disabled={isSubmitting}>
+              {isSubmitting ? '로그인 중...' : '로그인'}
             </BlobButton>
           </form>
           <div className="flex flex-col gap-4">
