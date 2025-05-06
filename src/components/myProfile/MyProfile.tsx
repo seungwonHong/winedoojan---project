@@ -1,5 +1,5 @@
 "use client";
-import { User } from "@/types/myprofileTypes";
+import { User } from "@/types/schema";
 import images from "../../../public/images/images";
 import icons from "../../../public/icons/icons";
 import { useEffect, useState } from "react";

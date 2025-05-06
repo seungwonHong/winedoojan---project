@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import imageCompression from 'browser-image-compression';
 import ModalButton from '@/components/common/ModalButton';
 import DropdownSelect from '@/components/common/DropdownSelect';
-import type { Wine } from '@/types/wineDetailTypes';
+import type { Wine } from '@/types/schema';
 import { uploadWineImage, submitWineData } from '@/services/wineApi';
 
 type WineWithType = Wine & {
