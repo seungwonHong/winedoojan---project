@@ -1,30 +1,32 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import { notFound, useRouter } from "next/navigation";
+import { notFound, useRouter } from 'next/navigation';
 
-import useFetchWine from "@/hooks/winedetail/useFetchWine";
+import useFetchWine from '@/hooks/winedetail/useFetchWine';
 
-import ErrorBoundary from "../common/ErrorBoundary";
-import WineDetailCard from "./WineDetailCard";
-import WineDetailRatingCard from "./WineDetailRatingCard";
-import WineDetailReviewCardList from "./WineDetailReviewCardList";
-import ReviewListFilter from "./ReviewListFilter";
-import SkeletonWineDetailCard from "./skeleton/SkeletonWineDetailCard";
-import SkeletonWineReviewCard from "./skeleton/SkeletonWineReviewCard";
+import ErrorBoundary from '../common/ErrorBoundary';
+import WineDetailCard from './WineDetailCard';
+import WineDetailRatingCard from './WineDetailRatingCard';
+import WineDetailReviewCardList from './WineDetailReviewCardList';
+import ReviewListFilter from './ReviewListFilter';
+import SkeletonWineDetailCard from './skeleton/SkeletonWineDetailCard';
+import SkeletonWineReviewCard from './skeleton/SkeletonWineReviewCard';
 
-import { Review } from "@/types/wineDetailTypes";
+import { Review } from '@/types/wineDetailTypes';
+import { useAuthProtection } from '@/hooks/useAuthProtection';
 
 const WineDetail = ({ wineId }: { wineId: string }) => {
   const { wine, loading, error, refetch } = useFetchWine(wineId);
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
+  const isAuthLoading = useAuthProtection();
   const router = useRouter();
 
   useEffect(() => {
-    if (error === "Access token이 없습니다.") {
-      router.push("/signin");
-    } else if (error === "와인 정보를 불러오는 데 실패했습니다.") {
+    if (error === 'Access token이 없습니다.') {
+      router.push('/signin');
+    } else if (error === '와인 정보를 불러오는 데 실패했습니다.') {
       notFound();
     }
   }, [error]);
@@ -35,7 +37,7 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
     }
   }, [wine]);
 
-  if (loading)
+  if (loading || isAuthLoading)
     return (
       <>
         <SkeletonWineDetailCard mode="skeleton" />
@@ -52,7 +54,7 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
       </ErrorBoundary>
       <div
         className={`${
-          !wine || wine.reviews.length === 0 ? "" : "lg:w-[800px]"
+          !wine || wine.reviews.length === 0 ? '' : 'lg:w-[800px]'
         } `}
       >
         <div className="flex justify-between items-center">

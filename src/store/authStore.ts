@@ -8,22 +8,15 @@ import {
   fetchUser,
 } from '@/services/auth'; // 분리된 API 함수 import
 import { navigate } from '@/utils/navigate';
-
-interface User {
-  id: number;
-  email: string;
-  nickname: string;
-  teamId: string;
-  createdAt: string;
-  updatedAt: string;
-  image: string | null;
-}
+import { User } from '@/types/schema';
 
 interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
   accessToken: string | null;
   refreshToken: string | null;
+  isInitialized: boolean; // 추가: 초기화 상태 플래그
+  initializeAuth: () => Promise<void>; // 추가: 초기화 함수
   login: (
     email: string,
     password: string
@@ -45,6 +38,56 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       accessToken: null,
       refreshToken: null,
+      isInitialized: false, // 기본값: 초기화되지 않음
+
+      // 초기화 함수 추가
+      initializeAuth: async () => {
+        // 로컬 스토리지에서 가져온 토큰을 확인하고 유효성 검사
+        const currentAccessToken = get().accessToken;
+        const currentRefreshToken = get().refreshToken;
+
+        // 토큰이 있으면 사용자 정보 가져오기 시도
+        if (currentAccessToken) {
+          try {
+            const result = await fetchUser(currentAccessToken);
+            if (result.success) {
+              set({
+                isAuthenticated: true,
+                user: result.data,
+                isInitialized: true,
+              });
+              return;
+            }
+          } catch (error) {
+            console.log('토큰으로 사용자 정보 가져오기 실패: ', error);
+          }
+        }
+
+        // 액세스 토큰이 실패했지만 리프레시 토큰이 있다면 갱신 시도
+        if (currentRefreshToken) {
+          try {
+            const refreshed = await get().refreshAccessToken();
+            if (refreshed) {
+              // 갱신 성공 시 사용자 정보 다시 가져오기
+              const userResult = await get().getMe();
+              set({
+                isAuthenticated: userResult.success,
+                isInitialized: true,
+              });
+              return;
+            }
+          } catch (error) {
+            console.log('리프레시 토큰으로 갱신 실패: ', error);
+          }
+        }
+
+        // 모든 시도 실패 시 로그아웃 상태로 초기화
+        set({
+          isAuthenticated: false,
+          user: null,
+          isInitialized: true,
+        });
+      },
 
       // 유저 정보 갱신
       getMe: async () => {
@@ -77,6 +120,7 @@ export const useAuthStore = create<AuthState>()(
             accessToken,
             refreshToken,
             user,
+            isInitialized: true, // 로그인 성공 시 초기화 완료
           });
           return { success: true };
         } else {
@@ -92,6 +136,7 @@ export const useAuthStore = create<AuthState>()(
           user: null,
           accessToken: null,
           refreshToken: null,
+          isInitialized: true, // 로그아웃 상태로 초기화 완료
         });
         // 로그아웃 시 랜딩페이지로 이동
         navigate('/');
@@ -125,6 +170,7 @@ export const useAuthStore = create<AuthState>()(
             accessToken,
             refreshToken,
             user,
+            isInitialized: true, // 카카오 로그인 성공 시 초기화 완료
           });
           return { success: true };
         } else {
@@ -135,6 +181,13 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
+      // Optional: 하이드레이션이 완료될 때 호출되는 함수 추가
+      onRehydrateStorage: () => (state) => {
+        // 하이드레이션이 완료되면 isInitialized를 true로 설정
+        if (state) {
+          state.isInitialized = true;
+        }
+      },
     }
   )
 );

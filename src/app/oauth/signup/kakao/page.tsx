@@ -12,7 +12,7 @@ function KakaoCallbackPage() {
     if (code) {
       handleKakaoCallback(code).then(({ success, message }) => {
         if (success) {
-          router.push('/');
+          router.push('/wines');
         } else {
           console.log(message);
           router.push('/signin?error=로그인 실패');
