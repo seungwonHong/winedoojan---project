@@ -6,7 +6,7 @@ import {
   fetchDeleteReviewId,
   fetchDeleteWineId,
 } from '../../services/myProfileApi';
-import { Wine, Review } from '@/types/myprofileTypes';
+import { Wine, Review } from '@/types/schema';
 import MyProfile from '@/components/myProfile/MyProfile';
 import { useEffect, useState } from 'react';
 import images from '../../../public/images/images';
@@ -150,7 +150,7 @@ export default function ProfilePage() {
   //   }
   // }, [user, accessToken]);
 
-  if (!user || !accessToken || isAuthLoading) {
+  if (!user || !accessToken) {
     return (
       <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
         <Image
