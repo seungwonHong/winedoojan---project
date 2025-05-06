@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from "react";
 
+import { notFound, useRouter } from "next/navigation";
+
 import useFetchWine from "@/hooks/winedetail/useFetchWine";
 
+import ErrorBoundary from "../common/ErrorBoundary";
 import WineDetailCard from "./WineDetailCard";
 import WineDetailRatingCard from "./WineDetailRatingCard";
 import WineDetailReviewCardList from "./WineDetailReviewCardList";
@@ -16,6 +19,15 @@ import { Review } from "@/types/wineDetailTypes";
 const WineDetail = ({ wineId }: { wineId: string }) => {
   const { wine, loading, error, refetch } = useFetchWine(wineId);
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (error === "Access token이 없습니다.") {
+      router.push("/signin");
+    } else if (error === "와인 정보를 불러오는 데 실패했습니다.") {
+      notFound();
+    }
+  }, [error]);
 
   useEffect(() => {
     if (wine) {
@@ -26,16 +38,18 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
   if (loading)
     return (
       <>
-        <SkeletonWineDetailCard />
-        <SkeletonWineReviewCard />
+        <SkeletonWineDetailCard mode="skeleton" />
+        <SkeletonWineReviewCard mode="skeleton" />
       </>
     );
-  if (error) return <div>에러 발생: {error}</div>;
-  if (!wine) return null;
+
+  if (error || !wine) return null;
 
   return (
     <div>
-      <WineDetailCard wine={wine} />
+      <ErrorBoundary fallback={<SkeletonWineDetailCard mode="error" />}>
+        <WineDetailCard wine={wine} />
+      </ErrorBoundary>
       <div
         className={`${
           !wine || wine.reviews.length === 0 ? "" : "lg:w-[800px]"
@@ -52,13 +66,15 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
             />
           </div>
         </div>
-        <div className="lg:relative lg:w-[280px]">
-          <WineDetailRatingCard wine={wine} refetch={refetch} />
-        </div>
-        <WineDetailReviewCardList
-          wine={{ ...wine, reviews: filteredReviews }}
-          refetch={refetch}
-        />
+        <ErrorBoundary fallback={<SkeletonWineReviewCard mode="error" />}>
+          <div className="lg:relative lg:w-[280px]">
+            <WineDetailRatingCard wine={wine} refetch={refetch} />
+          </div>
+          <WineDetailReviewCardList
+            wine={{ ...wine, reviews: filteredReviews }}
+            refetch={refetch}
+          />
+        </ErrorBoundary>
       </div>
     </div>
   );
