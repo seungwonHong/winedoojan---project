@@ -1,7 +1,7 @@
 "use client";
 import { User } from "@/types/myprofileTypes";
-import images from "../../public/images/images";
-import icons from "../../public/icons/icons";
+import images from "../../../public/images/images";
+import icons from "../../../public/icons/icons";
 import { useEffect, useState } from "react";
 import {
   fetchUpdateNickname,
@@ -10,9 +10,9 @@ import {
 } from "@/services/myProfileApi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DropZoneImageUploader from "./common/DropZoneImgUploader";
+import DropZoneImageUploader from "../common/DropZoneImgUploader";
 import { Dialog } from "@headlessui/react";
-import ModalButton from "./common/ModalButton";
+import ModalButton from "../common/ModalButton";
 import clsx from "clsx";
 import { useAuthStore } from "@/store/authStore";
 

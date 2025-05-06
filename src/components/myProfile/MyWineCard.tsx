@@ -1,7 +1,7 @@
 import { Wine } from "@/types/myprofileTypes";
 import Image from "next/image";
-import images from "../../public/images/images";
-import HamburgerMenu from "./HamburgerMenu";
+import images from "../../../public/images/images";
+import HamburgerMenu from "../HamburgerMenu";
 import { MyProfileCard } from "./MyProfileCard";
 import { motion } from "framer-motion";
 
@@ -15,6 +15,8 @@ interface MyWineCardProps {
   setOpenId: (id: number | null) => void;
   onSuccess: () => void;
   onClick: () => void;
+  onEdit: (item: Wine) => void;
+  onDelete: (item: Wine) => void;
 }
 
 export default function MyWineCard({ ...props }: MyWineCardProps) {
@@ -58,7 +60,11 @@ export default function MyWineCard({ ...props }: MyWineCardProps) {
 
         {/* 햄버거 메뉴 */}
         <div className="h-full ml-auto">
-          <HamburgerMenu {...props} />
+          <HamburgerMenu
+            {...props}
+            onEdit={() => props.onEdit(props.wine)}
+            onDelete={() => props.onDelete(props.wine)}
+          />
         </div>
       </MyProfileCard>
     </motion.div>
