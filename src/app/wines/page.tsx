@@ -87,6 +87,15 @@ const Wines = () => {
                         | "RED"
                         | "WHITE"
                         | "SPARKLING",
+                      recentReview: allwine.recentReview
+                        ? {
+                            ...allwine.recentReview,
+                            user: {
+                              ...allwine.recentReview.user,
+                              image: allwine.recentReview.user.image ?? "",
+                            },
+                          }
+                        : allwine.recentReview,
                     }}
                   />
                 ))}
