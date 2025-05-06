@@ -42,7 +42,21 @@ const LandingWineRec = ({ winesRecommended }: Props) => {
         >
           {winesRecommended?.map((wine) => (
             <div className="mr-[10px]" key={wine.id}>
-              <WineCardSmall wine={wine} />
+              <WineCardSmall
+                wine={{
+                  ...wine,
+                  type: wine.type.toUpperCase() as "RED" | "WHITE" | "SPARKLING",
+                  recentReview: wine.recentReview
+                    ? {
+                        ...wine.recentReview,
+                        user: {
+                          ...wine.recentReview.user,
+                          image: wine.recentReview.user.image ?? "",
+                        },
+                      }
+                    : wine.recentReview,
+                }}
+              />
             </div>
           ))}
         </motion.div>
