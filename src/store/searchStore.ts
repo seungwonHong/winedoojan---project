@@ -13,7 +13,7 @@ interface Options {
   rating: number | undefined;
   setRating: (rating: number | undefined) => void;
   allWines: WineResponse["list"] | null;
-  setAllWines: (allWines: WineResponse["list"]) => void;
+  setAllWines: (allWines: WineResponse["list"] | null) => void;
   name: string | undefined;
   setName: (name: string | undefined) => void;
   nextCursor: number | undefined;
