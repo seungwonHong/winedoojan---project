@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState } from 'react';
+import Image from 'next/image';
 
-import { FaStar } from "react-icons/fa";
+import { FaStar } from 'react-icons/fa';
 
-import { getTimeAgo } from "@/utils/getTimeAgo";
+import { getTimeAgo } from '@/utils/getTimeAgo';
 
-import useFetchHeart from "@/hooks/winedetail/useFetchHeart";
-import ReviewModal from "../modals/ReviewModal";
-import DeleteModal from "../modals/DeleteModal";
-import { useAuthStore } from "@/store/authStore";
-import { AROMA_MAP } from "../modals/ReviewModal";
+import useFetchHeart from '@/hooks/winedetail/useFetchHeart';
+import ReviewModal from '../modals/ReviewModal';
+import DeleteModal from '../modals/DeleteModal';
+import { useAuthStore } from '@/store/authStore';
+import { AROMA_MAP } from '../modals/ReviewModal';
 
-import default_profile_img from "../../../public/images/default_profile_img.png";
-import ic_hamburger from "../../../public/icons/ic_hamburger.png";
-import ic_heart from "../../../public/icons/ic_heart.png";
-import ic_garnet_heart from "../../../public/icons/ic_garnet_heart.png";
+import default_profile_img from '../../../public/images/default_profile_img.png';
+import ic_hamburger from '../../../public/icons/ic_hamburger.png';
+import ic_heart from '../../../public/icons/ic_heart.png';
+import ic_garnet_heart from '../../../public/icons/ic_garnet_heart.png';
 
-import { Review } from "@/types/wineDetailTypes";
-import { Wine } from "@/types/wineDetailTypes";
+import { Review } from '@/types/wineDetailTypes';
+import { Wine } from '@/types/wineDetailTypes';
 
 const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
   const { isLike, handleClickLike } = useFetchHeart(item.id, item.isLiked);
@@ -97,7 +97,7 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
               accessToken={token as string}
               wineId={wine.id}
               wineName={wine.name}
-              mode={"edit"}
+              mode={'edit'}
               existingReviewData={item}
             />
           )}
@@ -111,7 +111,7 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
             }}
             accessToken={token as string}
             id={item.id.toString()}
-            type={"review"}
+            type={'review'}
           />
         )}
       </div>

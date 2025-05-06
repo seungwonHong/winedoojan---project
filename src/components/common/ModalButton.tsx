@@ -16,14 +16,14 @@ type Props = {
 export default function ModalButton({
   children,
   onClick,
-  width = "w-[154px]",
-  height = "h-[54px]",
-  bgColor = "bg-[#800020]",
-  textColor = "text-white",
-  fontSize = "text-base",
-  fontWeight = "font-bold",
-  rounded = "rounded-xl",
-  className = "",
+  width = 'w-[154px]',
+  height = 'h-[54px]',
+  bgColor = 'bg-[#800020]',
+  textColor = 'text-white',
+  fontSize = 'text-base',
+  fontWeight = 'font-bold',
+  rounded = 'rounded-xl',
+  className = '',
 }: Props) {
   const buttonClass = [
     width,
@@ -33,9 +33,9 @@ export default function ModalButton({
     fontSize,
     fontWeight,
     rounded,
-    "px-4 py-2",
+    'px-4 py-2',
     className,
-  ].join(" ");
+  ].join(' ');
 
   return (
     <button onClick={onClick} className={buttonClass}>

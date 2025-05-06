@@ -1,8 +1,8 @@
-import React from "react";
-import { FaStar } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
-import { motion } from "framer-motion";
-import Link from "next/link";
+import React from 'react';
+import { FaStar } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 interface Props {
   wine: {
@@ -11,7 +11,7 @@ interface Props {
     region: string;
     image: string;
     price: number;
-    type: "RED" | "WHITE" | "SPARKLING";
+    type: 'RED' | 'WHITE' | 'SPARKLING';
     avgRating: number;
     reviewCount: number;
     recentReview: {
@@ -35,7 +35,7 @@ const WineCardBig = ({ wine }: Props) => {
   return (
     <motion.div
       whileHover={{ y: -10 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       className="flex flex-col rounded-2xl border-[1px] border-[#CFDBEA] lg:w-[800px] md:w-[600px] w-[300px] lg:mt-[42px] lg:pb-[19px] pt-[36.5px] md:mt-[36px] md:pb-[10px] pb-[15px] mt-[30px] shadow-lg"
     >
       <div className="flex flex-row">
@@ -45,7 +45,7 @@ const WineCardBig = ({ wine }: Props) => {
             alt="wineImage"
             className="lg:w-[60px] lg:h-[208px] md:w-[74px] md:h-[208px] w-[60px] h-[212px] lg:ml-[60px] md:ml-[20px] ml-[10px] cursor-pointer"
             whileHover={{ scale: 1.2, y: -20 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           />
         </Link>
 
@@ -59,9 +59,9 @@ const WineCardBig = ({ wine }: Props) => {
             <span className="lg:text-[16px] md:text-[16px] text-[12px] text-[#9FACBD] lg:mt-[20px] md:mt-[20px] font-normal">
               {wine.region}
             </span>
-            <div className="flex flex-row items-center justify-center lg:w-[114px] lg:h-[42px] md:w-[114px] md:h-[42px] w-[65px] h-[24px] lg:mt-[16px] md:mt-[14px] mt-[10px] rounded-xl bg-[#FFE1E1] lg:mb-[10px] md:mb-[15px]">
+            <div className="flex flex-row items-center justify-center lg:w-[124px] lg:h-[42px] md:w-[124px] md:h-[42px] w-[85px] h-[24px] lg:mt-[16px] md:mt-[14px] mt-[10px] rounded-xl bg-[#FFE1E1] lg:mb-[10px] md:mb-[15px]">
               <span className="lg:text-[18px] md:text-[18px] text-[12px] text-[#800020] font-bold">
-                ₩{wine.price}
+                ₩ {Number(wine.price).toLocaleString()}
               </span>
             </div>
           </div>
@@ -78,8 +78,8 @@ const WineCardBig = ({ wine }: Props) => {
                     className="lg:w-[20px] lg:h-[20px] md:w-[15px] md:h-[15px] w-[10px] h-[10px]"
                     color={
                       index < Math.floor(wine.avgRating) % 10
-                        ? "#FFD700"
-                        : "#E0E0E0"
+                        ? '#FFD700'
+                        : '#E0E0E0'
                     }
                   />
                 ))}
