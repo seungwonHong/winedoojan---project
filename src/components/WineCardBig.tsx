@@ -68,7 +68,7 @@ const WineCardBig = ({ wine }: Props) => {
 
           <div className="flex lg:flex-col md:flex-col flex-row lg:ml-auto md:ml-auto lg:mt-0 md:mt-0 mt-[20px]">
             <span className="lg:text-[34px] md:text-[28px] text-[22px] lg:text-[#2D3034] font-extrabold">
-              {wine.avgRating}
+              {Number(wine.avgRating).toFixed(1)}
             </span>
             <div className="lg:ml-0 md:ml-0 ml-[20px] mr-auto">
               <div className="flex gap-[2px] lg:mt-[8px] md:mt-[3px] ">
