@@ -9,8 +9,11 @@ import postSignup from '@/services/postSignup';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
+import { useAuthStore } from '@/store/authStore';
 
 function Signup() {
+  const { isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   const signupSchema = z
@@ -47,6 +50,7 @@ function Signup() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -65,9 +69,20 @@ function Signup() {
         router.push('/signin');
       }
     } catch (error) {
-      alert('아이디가 이미 존재합니다.');
+      setError('email', {
+        type: 'manual',
+        message: '이미 존재하는 이메일 입니다.',
+      });
+      console.log(error);
     }
   };
+
+  useEffect(() => {
+    // 이미 로그인 상태시 와인 목록으로 이동
+    if (isAuthenticated) {
+      router.push('/wines');
+    }
+  }, [isAuthenticated, router]);
 
   return (
     <div className="flex items-center w-full min-h-screen bg-gray-100">
