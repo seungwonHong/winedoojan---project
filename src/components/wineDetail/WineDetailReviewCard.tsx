@@ -34,7 +34,7 @@ const WineDetailReviewCard = ({
     <div>
       <div
         key={item.id}
-        className="border border-[#CFDBEA] mt-[20px] rounded-[12px] md:rounded-[16px] py-[16px] px-[20px] md:py-[32px] md:px-[40px] lg:py-[16px] "
+        className="shadow-md border border-[#CFDBEA] mt-[20px] rounded-[12px] md:rounded-[16px] py-[16px] px-[20px] md:py-[32px] md:px-[40px] lg:py-[16px] "
       >
         <WineDetailReviewHeader
           key={item.id}

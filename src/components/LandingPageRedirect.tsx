@@ -1,6 +1,5 @@
 "use client";
 import { useAuthStore } from "@/store/authStore";
-import handleResponseWithAuth from "@/utils/handleResponseWithAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 

@@ -37,7 +37,7 @@ const WineDetailRatingCard = ({
         <img
           src={emptyReview.src}
           alt="wineImage"
-          className="w-[180px] h-[180px] object-contain"
+          className="w-[120px] h-[120px] object-contain"
         />
         <div className="font-bold text-2xl text-[#2D3034]">
           등록된 리뷰가 없어요
