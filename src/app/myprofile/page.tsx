@@ -1,13 +1,15 @@
 "use client";
 
-import MyReviewCard from "@/components/MyReviewCard";
-import { fetchReviews, fetchWines } from "../../services/myProfileApi";
+import {
+  fetchReviews,
+  fetchWines,
+  fetchDeleteReviewId,
+  fetchDeleteWineId,
+} from "../../services/myProfileApi";
 import { Wine, Review } from "@/types/myprofileTypes";
-import MyProfile from "@/components/MyProfile";
+import MyProfile from "@/components/myProfile/MyProfile";
 import { useEffect, useState } from "react";
-import MyWineCard from "@/components/MyWineCard";
 import images from "../../../public/images/images";
-import BlobButton from "@/components/common/BlobButton";
 import Header from "@/components/common/Header";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
@@ -15,18 +17,10 @@ import { useInView } from "react-intersection-observer";
 import WineModal from "@/components/modals/WineModal";
 import Image from "next/image";
 import clsx from "clsx";
-
-const MyCardSkeleton = () => (
-  <div className="w-[343px] lg:w-[800px] md:w-[704px] flex flex-row gap-[16px] rounded-xl border border-gray-200 bg-white p-12 shadow-sm animate-pulse mb-2.5">
-    <div className="w-2/5 h-[160px] bg-gray-100 rounded-md mb-4" />
-    <div className="w-3/5">
-      <div className="w-1/3 h-[32px] bg-gray-200 rounded mb-2" />
-      <div className="h-[24px] bg-gray-100 rounded mb-1" />
-      <div className="h-[24px] bg-gray-100 rounded mb-1" />
-      <div className="h-[24px] bg-gray-100 rounded mb-1" />
-    </div>
-  </div>
-);
+import DeleteModal from "@/components/modals/DeleteModal";
+import ReviewModal from "@/components/modals/ReviewModal";
+import ProfileHeader from "@/components/myProfile/ProfileHeader";
+import ProfileList from "@/components/myProfile/ProfileList";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -44,6 +38,15 @@ export default function ProfilePage() {
   });
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isWineModalOpen, setIsWineModalOpen] = useState(false);
+  // HamburgerMenu에 모달이 종속되는 문제 해결하기 위한 state
+  const [editModalData, setEditModalData] = useState<{
+    type: "review" | "wine";
+    item: Review | Wine;
+  } | null>(null);
+  const [deleteModalData, setDeleteModalData] = useState<{
+    type: "review" | "wine";
+    item: Review | Wine;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { ref, inView } = useInView();
   const limit = 3;
@@ -101,6 +104,14 @@ export default function ProfilePage() {
     }
   };
 
+  const handleEdit = (type: "review" | "wine", item: Review | Wine) => {
+    setEditModalData({ type, item });
+  };
+
+  const handleDelete = (type: "review" | "wine", item: Review | Wine) => {
+    setDeleteModalData({ type, item });
+  };
+
   // 초기 로딩
   useEffect(() => {
     if (user && accessToken) {
@@ -132,6 +143,12 @@ export default function ProfilePage() {
     loadData(tab);
   }, [myProfileData.updatedAt]);
 
+  // useEffect(() => {
+  //   if (!user || !accessToken) {
+  //     router.push("/signin");
+  //   }
+  // }, [user, accessToken]);
+
   if (!user || !accessToken) {
     return (
       <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
@@ -155,6 +172,10 @@ export default function ProfilePage() {
     tab,
     openId,
     setOpenId,
+    onEdit: (item: Review | Wine) =>
+      handleEdit(tab === "reviews" ? "review" : "wine", item),
+    onDelete: (item: Review | Wine) =>
+      handleDelete(tab === "reviews" ? "review" : "wine", item),
   };
 
   return (
@@ -172,107 +193,83 @@ export default function ProfilePage() {
 
         <div>
           {/* 탭 */}
-          <div
-            className={`flex gap-[32px] items-center ${
-              tab === "reviews" ? "mb-[22px]" : "mb-[64px]"
-            }`}
-          >
-            <button
-              onClick={() => setTab("reviews")}
-              className={`w-max h-[32px] font-bold text-lg md:text-xl  ${
-                tab === "reviews" ? "text-[#2D3034]" : "text-[#9FACBD]"
-              }`}
-            >
-              내가 쓴 후기
-            </button>
-            <button
-              onClick={() => setTab("wines")}
-              className={`w-max h-[32px] font-bold text-lg md:text-xl ${
-                tab === "wines" ? "text-[#2D3034]" : "text-[#9FACBD]"
-              }`}
-            >
-              내가 등록한 와인
-            </button>
-
-            <div className="ml-auto text-sm text-burgundy">
-              총&nbsp;{myProfileData.totalCount}개
-            </div>
-          </div>
+          <ProfileHeader
+            tab={tab}
+            setTab={setTab}
+            totalCount={myProfileData.totalCount}
+          />
 
           {/* 목록 */}
-          <div>
-            {/* 로딩중 : skeleton UI 표시 */}
-            {isLoading ? (
-              <>
-                <MyCardSkeleton />
-                <MyCardSkeleton />
-                <MyCardSkeleton />
-              </>
-            ) : (tab === "reviews" && myProfileData.reviews.length === 0) ||
-              (tab === "wines" && myProfileData.wines.length === 0) ? (
-              // {/* 데이터 없을 때 : 이미지 + 버튼 */}
-              <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center">
-                <img
-                  src={images.empty}
-                  alt="등록된 목록 없음"
-                  className="size-[180px]"
-                />
-                <div className="font-bold text-2xl text-[#2D3034]">
-                  등록된 {tab === "reviews" ? "리뷰가" : "와인이"} 없어요
-                </div>
-                <BlobButton
-                  children={
-                    tab === "reviews" ? "리뷰등록하러가기" : "와인등록하러가기"
-                  }
-                  onClick={() => {
-                    if (tab === "reviews") {
-                      setIsReviewModalOpen(true);
-                    } else {
-                      setIsWineModalOpen(true);
-                    }
-                  }}
-                />
-              </div>
-            ) : (
-              //{/* 데이터 있을 때 : 와인/리뷰 카드 */}
-              <>
-                {tab === "reviews"
-                  ? myProfileData.reviews.map((review) => (
-                      <MyReviewCard
-                        key={review.id}
-                        id={review.id}
-                        review={review}
-                        onClick={() => {
-                          router.push(`/wines/${review.wine.id}`);
-                        }}
-                        {...commonCardProps}
-                      />
-                    ))
-                  : myProfileData.wines.map((wine) => (
-                      <MyWineCard
-                        key={wine.id}
-                        id={wine.id}
-                        wine={wine}
-                        onClick={() => {
-                          router.push(`/wines/${wine.id}`);
-                        }}
-                        {...commonCardProps}
-                      />
-                    ))}
-
-                {/* 스크롤 감지용 */}
-                <div ref={ref} className="h-[1px]" />
-              </>
-            )}
-          </div>
+          <ProfileList
+            tab={tab}
+            isLoading={isLoading}
+            reviews={myProfileData.reviews}
+            wines={myProfileData.wines}
+            onClickReview={(review) => router.push(`/wines/${review.wine.id}`)}
+            onClickWine={(wine) => router.push(`/wines/${wine.id}`)}
+            commonCardProps={commonCardProps}
+            ref={ref}
+          />
         </div>
       </div>
       {/* 등록된 와인이 없을 경우 */}
       {isWineModalOpen && (
         <WineModal
-          onClose={() => setIsWineModalOpen(false)}
+          onClose={async () => {
+            setEditModalData(null);
+            await loadData(tab);
+          }}
           accessToken={accessToken}
           mode="create"
+        />
+      )}
+      {/* 수정 모달 */}
+      {editModalData &&
+        (editModalData.type === "review" ? (
+          <ReviewModal
+            onClose={async () => {
+              setEditModalData(null);
+              await loadData(tab);
+            }}
+            accessToken={accessToken}
+            wineName={(editModalData.item as Review).wine.name}
+            wineId={editModalData.item.id}
+            mode="edit"
+            existingReviewData={editModalData.item as Review}
+          />
+        ) : (
+          <WineModal
+            onClose={() => setEditModalData(null)}
+            accessToken={accessToken}
+            mode="edit"
+            wineData={editModalData.item as Wine}
+          />
+        ))}
+
+      {/* 삭제 모달 */}
+      {deleteModalData && (
+        <DeleteModal
+          onClose={() => setDeleteModalData(null)}
+          onConfirm={async () => {
+            if (deleteModalData.type === "review") {
+              await fetchDeleteReviewId({
+                teamId: user.teamId,
+                id: deleteModalData.item.id,
+                token: accessToken,
+              });
+            } else {
+              await fetchDeleteWineId({
+                teamId: user.teamId,
+                id: deleteModalData.item.id,
+                token: accessToken,
+              });
+            }
+            await loadData(tab);
+            setDeleteModalData(null);
+          }}
+          accessToken={accessToken}
+          id={deleteModalData.item.id.toString()}
+          type={deleteModalData.type}
         />
       )}
     </div>
