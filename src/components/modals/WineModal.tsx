@@ -1,29 +1,29 @@
 // 와인 등록(수정)하기 모달
 
-'use client';
+"use client";
 
-import React, { useRef, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import imageCompression from 'browser-image-compression';
-import ModalButton from '@/components/common/ModalButton';
-import DropdownSelect from '@/components/common/DropdownSelect';
-import type { Wine } from '@/types/schema';
-import { uploadWineImage, submitWineData } from '@/services/wineApi';
+import React, { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import imageCompression from "browser-image-compression";
+import ModalButton from "@/components/common/ModalButton";
+import DropdownSelect from "@/components/common/DropdownSelect";
+import type { Wine } from "@/types/schema";
+import { uploadWineImage, submitWineData } from "@/services/wineApi";
 
 type WineWithType = Wine & {
-  type: 'Red' | 'White' | 'Sparkling';
+  type: "Red" | "White" | "Sparkling";
 };
 
 type Props = {
   onClose: () => void;
   accessToken: string | null;
-  mode: 'create' | 'edit'; // post | patch
+  mode: "create" | "edit"; // post | patch
   wineData?: WineWithType;
 };
 
-const WINE_TYPES = ['Red', 'White', 'Sparkling'] as const;
+const WINE_TYPES = ["Red", "White", "Sparkling"] as const;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const COMPRESSION_OPTIONS = {
   maxSizeMB: 0.5,
@@ -41,17 +41,17 @@ export default function WineModal({
 
   // 상태를 하나로 묶기
   const [formData, setFormData] = useState({
-    name: '',
-    region: '',
-    price: '',
-    selectedOption: 'Red' as (typeof WINE_TYPES)[number],
+    name: "",
+    region: "",
+    price: "",
+    selectedOption: "Red" as (typeof WINE_TYPES)[number],
     imagePreview: null as string | null,
     compressedImageFile: null as File | null,
   });
 
   // 수정 모드일 때 초기값 세팅
   useEffect(() => {
-    if (mode === 'edit' && wineData) {
+    if (mode === "edit" && wineData) {
       setFormData({
         name: wineData.name,
         region: wineData.region,
@@ -62,10 +62,10 @@ export default function WineModal({
       });
     } else {
       setFormData({
-        name: '',
-        region: '',
-        price: '',
-        selectedOption: 'Red',
+        name: "",
+        region: "",
+        price: "",
+        selectedOption: "Red",
         imagePreview: null,
         compressedImageFile: null,
       });
@@ -94,7 +94,7 @@ export default function WineModal({
     if (!file) return; // 파일이 없으면 함수 종료
 
     if (file.size > MAX_FILE_SIZE) {
-      toast.warning('파일 크기가 너무 큽니다. 5MB 이하의 파일을 업로드하세요.');
+      toast.warning("파일 크기가 너무 큽니다. 5MB 이하의 파일을 업로드하세요.");
       return;
     }
 
@@ -110,7 +110,7 @@ export default function WineModal({
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
+        if (typeof reader.result === "string") {
           setFormData(
             (prev) =>
               ({
@@ -122,14 +122,14 @@ export default function WineModal({
       };
       reader.readAsDataURL(compressedFile);
     } catch (error) {
-      console.error('이미지 압축 실패:', error);
-      toast.warning('이미지 압축 중 오류가 발생했습니다.');
+      console.error("이미지 압축 실패:", error);
+      toast.warning("이미지 압축 중 오류가 발생했습니다.");
     }
   };
 
   const handleSubmit = async () => {
     if (!accessToken) {
-      toast.warning('로그인해주세요.');
+      toast.warning("로그인해주세요.");
       return;
     }
 
@@ -142,7 +142,7 @@ export default function WineModal({
       isNaN(parseFloat(price)) ||
       parseFloat(price) <= 0
     ) {
-      toast.warning('모든 항목을 입력해주세요.');
+      toast.warning("모든 항목을 입력해주세요.");
       return;
     }
 
@@ -168,26 +168,27 @@ export default function WineModal({
       });
 
       toast.success(
-        mode === 'create'
-          ? '와인이 성공적으로 등록되었습니다.'
-          : '와인이 성공적으로 수정되었습니다.'
+        mode === "create"
+          ? "와인이 성공적으로 등록되었습니다."
+          : "와인이 성공적으로 수정되었습니다."
       );
-      if (mode === 'create' && result.id) {
+      if (mode === "create" && result.id) {
         router.push(`/wines/${result.id}`);
       }
+      onClose();
     } catch (error) {
       console.error(error);
       toast.warning(
-        mode === 'create'
-          ? '와인 등록 중 오류가 발생했습니다.'
-          : '와인 수정 중 오류가 발생했습니다.'
+        mode === "create"
+          ? "와인 등록 중 오류가 발생했습니다."
+          : "와인 수정 중 오류가 발생했습니다."
       );
     }
   };
 
-  const labelClass = 'block text-base font-medium mb-4';
+  const labelClass = "block text-base font-medium mb-4";
   const inputClass =
-    'w-full h-12 border border-gray-300 rounded-2xl px-5 py-2 mb-8 placeholder-gray-500';
+    "w-full h-12 border border-gray-300 rounded-2xl px-5 py-2 mb-8 placeholder-gray-500";
 
   return (
     <div
@@ -205,7 +206,7 @@ export default function WineModal({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-2xl text-gray-800 font-bold mb-10">
-          {mode === 'create' ? '와인 등록' : '와인 수정'}
+          {mode === "create" ? "와인 등록" : "와인 수정"}
         </h2>
 
         <label className={labelClass}>와인 이름</label>
@@ -213,7 +214,7 @@ export default function WineModal({
           className={inputClass}
           placeholder="와인 이름 입력"
           value={formData.name}
-          onChange={handleInputChange('name')}
+          onChange={handleInputChange("name")}
         />
 
         <label className={labelClass}>가격</label>
@@ -222,7 +223,7 @@ export default function WineModal({
           className={`${inputClass} placeholder:text-base [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
           placeholder="가격 입력"
           value={formData.price}
-          onChange={handleInputChange('price')}
+          onChange={handleInputChange("price")}
         />
 
         <label className={labelClass}>원산지</label>
@@ -230,7 +231,7 @@ export default function WineModal({
           className={inputClass}
           placeholder="원산지 입력"
           value={formData.region}
-          onChange={handleInputChange('region')}
+          onChange={handleInputChange("region")}
         />
 
         <label className={labelClass}>타입</label>
@@ -280,7 +281,7 @@ export default function WineModal({
             취소
           </ModalButton>
           <ModalButton width="w-[294px]" onClick={handleSubmit}>
-            {mode === 'create' ? '와인 등록하기' : '와인 수정하기'}
+            {mode === "create" ? "와인 등록하기" : "와인 수정하기"}
           </ModalButton>
         </div>
       </div>
