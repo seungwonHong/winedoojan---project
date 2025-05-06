@@ -21,6 +21,7 @@ import DeleteModal from '@/components/modals/DeleteModal';
 import ReviewModal from '@/components/modals/ReviewModal';
 import ProfileHeader from '@/components/myProfile/ProfileHeader';
 import ProfileList from '@/components/myProfile/ProfileList';
+import { useAuthProtection } from '@/hooks/useAuthProtection';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -150,7 +151,7 @@ export default function ProfilePage() {
   //   }
   // }, [user, accessToken]);
 
-  if (!user || !accessToken) {
+  if (!user || !accessToken || isAuthLoading) {
     return (
       <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
         <Image

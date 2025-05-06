@@ -7,7 +7,7 @@ import WineListRecWine from '@/components/WineListRecWine';
 import useWineListWines from '@/hooks/useWineListWines';
 import useWineRecommended from '@/hooks/useWineRecommended';
 import { IoOptions } from 'react-icons/io5';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import WineCardBigSkeleton from '@/components/WineCardBigSkeleton';
 import LoadingAnimation from '@/components/common/LoadingAnimation';
 import ModalButton from '@/components/common/ModalButton';

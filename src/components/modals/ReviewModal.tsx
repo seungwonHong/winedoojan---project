@@ -8,14 +8,6 @@ import ModalButton from '@/components/common/ModalButton';
 import ReviewSlider from '@/components/common/ReviewSlider';
 import handleResponseWithAuth from '@/utils/handleResponseWithAuth';
 import type { Review } from '@/types/wineDetailTypes';
-import React, { useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "@/styles/rangeSlider.css";
-import ModalButton from "@/components/common/ModalButton";
-import ReviewSlider from "@/components/common/ReviewSlider";
-import handleResponseWithAuth from "@/utils/handleResponseWithAuth";
-import type { Review } from "@/types/wineDetailTypes";
 
 type Props = {
   onClose: () => void;
@@ -107,7 +99,7 @@ export default function ReviewModal({
       reviewData.content.trim() === '' ||
       reviewData.aroma.length === 0
     ) {
-      toast.warning("별점, 후기, 향을 모두 입력해주세요.");
+      toast.warning('별점, 후기, 향을 모두 입력해주세요.');
       return;
     }
 
@@ -118,7 +110,7 @@ export default function ReviewModal({
 
     // Make sure we have at least one valid aroma code
     if (aromaEnglishCodes.length === 0) {
-      toast.warning("유효한 향이 선택되지 않았습니다.");
+      toast.warning('유효한 향이 선택되지 않았습니다.');
       return;
     }
 
@@ -149,34 +141,17 @@ export default function ReviewModal({
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(dataToSend),
-    const dataToSend = mode === "create" ? { ...baseData, wineId } : baseData;
-
-    const url =
-      mode === "create"
-        ? "https://winereview-api.vercel.app/14-2/reviews"
-        : `https://winereview-api.vercel.app/14-2/reviews/${existingReviewData?.id}`;
-
-    const method = mode === "create" ? "POST" : "PATCH";
-
-    try {
-      const response = await handleResponseWithAuth(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => response.text());
         console.error(
-          `${mode === "create" ? "리뷰 등록" : "리뷰 수정"} 실패:`,
+          `${mode === 'create' ? '리뷰 등록' : '리뷰 수정'} 실패:`,
           errorData
         );
         toast.warning(
           `${
-            mode === "create" ? "리뷰 등록" : "리뷰 수정"
+            mode === 'create' ? '리뷰 등록' : '리뷰 수정'
           } 중 오류가 발생했습니다.`
         );
         return;
@@ -189,13 +164,6 @@ export default function ReviewModal({
     } catch (error) {
       console.error('리뷰 제출 중 오류', error);
       toast.warning('리뷰 등록 중 네트워크 오류가 발생했습니다.');
-      toast.success(
-        `${mode === "create" ? "리뷰가 등록" : "리뷰가 수정"}되었습니다!`
-      );
-      onClose();
-    } catch (error) {
-      console.error("리뷰 제출 중 오류", error);
-      toast.warning("리뷰 등록 중 네트워크 오류가 발생했습니다.");
     }
   };
 
@@ -211,11 +179,6 @@ export default function ReviewModal({
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl text-gray-800 font-bold">
             {mode === 'create' ? '리뷰 등록' : '리뷰 수정'}
-          </h2>
-        </div>
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl text-gray-800 font-bold">
-            {mode === "create" ? "리뷰 등록" : "리뷰 수정"}
           </h2>
         </div>
 
@@ -300,9 +263,6 @@ export default function ReviewModal({
             onChange={(val) => handleSliderChange('softAcidic', val)}
             leftLabel="안셔요"
             rightLabel="많이셔요"
-            onChange={(val) => handleSliderChange("softAcidic", val)}
-            leftLabel="안셔요"
-            rightLabel="많이셔요"
           />
         </div>
 
@@ -323,13 +283,6 @@ export default function ReviewModal({
                   : length === 3
                   ? 'w-[78px]'
                   : 'w-[92px]';
-                length === 1
-                  ? "w-[50px]"
-                  : length === 2
-                  ? "w-[64px]"
-                  : length === 3
-                  ? "w-[78px]"
-                  : "w-[92px]";
 
               return (
                 <button
@@ -338,10 +291,6 @@ export default function ReviewModal({
                   className={`h-[46px] py-[10px] border border-gray-300 rounded-3xl text-base text-gray-800 
                     ${widthClass} ${
                     isSelected ? 'bg-garnet text-white' : 'bg-white'
-                  }`}
-                  className={`h-[46px] py-[10px] border border-gray-300 rounded-3xl text-base text-gray-800 
-                    ${widthClass} ${
-                    isSelected ? "bg-garnet text-white" : "bg-white"
                   }`}
                 >
                   {aroma}

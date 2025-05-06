@@ -15,10 +15,12 @@ import SkeletonWineDetailCard from './skeleton/SkeletonWineDetailCard';
 import SkeletonWineReviewCard from './skeleton/SkeletonWineReviewCard';
 
 import { Review } from '@/types/wineDetailTypes';
+import { useAuthProtection } from '@/hooks/useAuthProtection';
 
 const WineDetail = ({ wineId }: { wineId: string }) => {
   const { wine, loading, error, refetch } = useFetchWine(wineId);
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
+  const isAuthLoading = useAuthProtection();
   const router = useRouter();
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const WineDetail = ({ wineId }: { wineId: string }) => {
     }
   }, [wine]);
 
-  if (loading)
+  if (loading || isAuthLoading)
     return (
       <>
         <SkeletonWineDetailCard mode="skeleton" />
