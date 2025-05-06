@@ -54,7 +54,21 @@ const WineListRecWine = ({ wines }: Props) => {
                   className="flex flex-row items-center p-0 "
                 >
                   <div className="mr-[15px]">
-                    <WineCardSmall wine={wine} />
+                    <WineCardSmall
+                      wine={{
+                        ...wine,
+                        type: wine.type.toUpperCase() as "RED" | "WHITE" | "SPARKLING",
+                        recentReview: wine.recentReview
+                          ? {
+                              ...wine.recentReview,
+                              user: {
+                                ...wine.recentReview.user,
+                                image: wine.recentReview.user.image ?? "",
+                              },
+                            }
+                          : wine.recentReview,
+                      }}
+                    />
                   </div>
                 </motion.div>
               ))
