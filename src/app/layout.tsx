@@ -19,6 +19,8 @@ export const metadata: Metadata = {
     "와인두잔",
     "와인 두잔",
     "winedoojan",
+    "와인 두잔 커뮤니티",
+    "와인두잔 커뮤니티",
   ],
   openGraph: {
     title: "와인두잔",

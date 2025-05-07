@@ -1,20 +1,26 @@
-'use client';
-import Header from '@/components/common/Header';
-import SearchOptions from '@/components/SearchOptions';
-import SearchWine from '@/components/SearchWine';
-import WineCardBig from '@/components/WineCardBig';
-import WineListRecWine from '@/components/WineListRecWine';
-import useWineListWines from '@/hooks/useWineListWines';
-import useWineRecommended from '@/hooks/useWineRecommended';
-import { IoOptions } from 'react-icons/io5';
-import React, { useState } from 'react';
-import WineCardBigSkeleton from '@/components/WineCardBigSkeleton';
-import LoadingAnimation from '@/components/common/LoadingAnimation';
-import ModalButton from '@/components/common/ModalButton';
-import FilterModal from '@/components/modals/FilterModal';
-import WineModal from '@/components/modals/WineModal';
-import { useAuthStore } from '@/store/authStore';
-import Image from 'next/image';
+"use client";
+import Header from "@/components/common/Header";
+import SearchOptions from "@/components/SearchOptions";
+import SearchWine from "@/components/SearchWine";
+import WineCardBig from "@/components/WineCardBig";
+import WineListRecWine from "@/components/WineListRecWine";
+import useWineListWines from "@/hooks/useWineListWines";
+import useWineRecommended from "@/hooks/useWineRecommended";
+import { IoOptions } from "react-icons/io5";
+import React, { useState } from "react";
+import WineCardBigSkeleton from "@/components/WineCardBigSkeleton";
+import LoadingAnimation from "@/components/common/LoadingAnimation";
+import ModalButton from "@/components/common/ModalButton";
+import FilterModal from "@/components/modals/FilterModal";
+import WineModal from "@/components/modals/WineModal";
+import { useAuthStore } from "@/store/authStore";
+import Image from "next/image";
+
+export const metadata = {
+  title: "와인두잔 | 와인 목록 페이지",
+  description:
+    "와인두잔 페이지에 등록된 다양한 와인들을 만나볼 수 있는 와인 목록 페이지입니다. 다양한 와인의 자세한 정보들을 살펴보고 와인을 등록해보세요!",
+};
 
 const Wines = () => {
   const [isClose, setIsClose] = useState(true);
