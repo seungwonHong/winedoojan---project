@@ -1,24 +1,25 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState } from "react";
+import Image from "next/image";
 
-import { FaStar } from 'react-icons/fa';
+import { FaStar } from "react-icons/fa";
 
-import { getTimeAgo } from '@/utils/getTimeAgo';
+import { getTimeAgo } from "@/utils/getTimeAgo";
 
-import useFetchHeart from '@/hooks/winedetail/useFetchHeart';
-import ReviewModal from '../modals/ReviewModal';
-import DeleteModal from '../modals/DeleteModal';
-import { useAuthStore } from '@/store/authStore';
-import { AROMA_MAP } from '../modals/ReviewModal';
+import useFetchHeart from "@/hooks/winedetail/useFetchHeart";
+import ReviewModal from "../modals/ReviewModal";
+import DeleteModal from "../modals/DeleteModal";
+import { useAuthStore } from "@/store/authStore";
+import { AROMA_MAP } from "../modals/ReviewModal";
+import DropdownItems from "../common/DropdownItems";
 
-import default_profile_img from '../../../public/images/default_profile_img.png';
-import ic_hamburger from '../../../public/icons/ic_hamburger.png';
-import ic_heart from '../../../public/icons/ic_heart.png';
-import ic_garnet_heart from '../../../public/icons/ic_garnet_heart.png';
+import default_profile_img from "../../../public/images/default_profile_img.png";
+import ic_hamburger from "../../../public/icons/ic_hamburger.png";
+import ic_heart from "../../../public/icons/ic_heart.png";
+import ic_garnet_heart from "../../../public/icons/ic_garnet_heart.png";
 
-import { Review, Wine } from '@/types/schema';
+import { Review, Wine } from "@/types/schema";
 
 const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
   const { isLike, handleClickLike } = useFetchHeart(item.id, item.isLiked);
@@ -32,6 +33,20 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
   const handleClose = async () => {
     await refetch();
     setIsReviewEditModalOpen(false);
+  };
+
+  const handleDropdownOpen = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const actions = {
+    수정하기: () => {
+      setIsReviewEditModalOpen(true);
+    },
+
+    삭제하기: () => {
+      setIsReviewDeleteModalOpen(true);
+    },
   };
 
   return (
@@ -72,20 +87,13 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
             >
               <Image src={ic_hamburger} alt="ic_hamburger" fill sizes="30px" />
               {isMenuOpen && (
-                <div className="z-20 absolute right-0 top-[35px] bg-white border border-gray-300 rounded-[16px] w-[126px] h-[104px] flex flex-col items-center justify-center">
-                  <div
-                    className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
-                    onClick={() => setIsReviewEditModalOpen(true)}
-                  >
-                    수정하기
-                  </div>
-                  <div
-                    className="w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-palepink hover:text-garnet cursor-pointer"
-                    onClick={() => setIsReviewDeleteModalOpen(true)}
-                  >
-                    삭제하기
-                  </div>
-                </div>
+                <DropdownItems
+                  isOpen={isMenuOpen}
+                  labels={["수정하기", "삭제하기"]}
+                  actions={actions}
+                  setIsOpen={handleDropdownOpen}
+                  positionTop="20px"
+                />
               )}
             </div>
           )}
@@ -96,7 +104,7 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
               accessToken={token as string}
               wineId={wine.id}
               wineName={wine.name}
-              mode={'edit'}
+              mode={"edit"}
               existingReviewData={item}
             />
           )}
@@ -110,7 +118,7 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
             }}
             accessToken={token as string}
             id={item.id.toString()}
-            type={'review'}
+            type={"review"}
           />
         )}
       </div>
@@ -147,3 +155,5 @@ interface Props {
 const REVERSE_AROMA_MAP: Record<string, string> = Object.fromEntries(
   Object.entries(AROMA_MAP).map(([kor, eng]) => [eng, kor])
 );
+
+const labels: string[] = ["수정하기", "삭제하기"];
