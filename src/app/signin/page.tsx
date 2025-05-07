@@ -12,12 +12,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 
-export const metadata = {
-  title: "와인두잔 | 로그인",
-  description:
-    "전세계의 다양한 와인들이 있는 와인두잔 플랫폼을 본격적으로 즐기기 위해 로그인을 해보세요! 로그인 후 다양한 와인들의 정보들을 살펴보고 와인을 직접 등록해보세요!",
-};
-
 function Signin() {
   const { login, kakaoLogin, isAuthenticated } = useAuthStore();
   const router = useRouter();
