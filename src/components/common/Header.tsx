@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import images from '../../../public/images/images';
 import { useAuthStore } from '@/store/authStore';
 import DropdownItems from './DropdownItems';
@@ -79,7 +79,7 @@ const Header = () => {
               />
             </div>
           </div>
-          <DropdownItems isOpen={isOpen} labels={labels} actions={actions} />
+          <DropdownItems setIsOpen={handleDropdownOpen} isOpen={isOpen} labels={labels} actions={actions} />
         </div>
       ) : (
         <div className="flex items-center">
