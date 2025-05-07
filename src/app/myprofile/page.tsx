@@ -22,6 +22,7 @@ import ReviewModal from "@/components/modals/ReviewModal";
 import ProfileHeader from "@/components/myProfile/ProfileHeader";
 import ProfileList from "@/components/myProfile/ProfileList";
 import { useAuthProtection } from "@/hooks/useAuthProtection";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -205,15 +206,16 @@ export default function ProfilePage() {
             onClickWine={(wine) => router.push(`/wines/${wine.id}`)}
             commonCardProps={commonCardProps}
             ref={ref}
+            onOpenReviewModal={() => setIsReviewModalOpen(true)}
+            onOpenWineModal={() => setIsWineModalOpen(true)}
           />
         </div>
       </div>
       {/* 등록된 와인이 없을 경우 */}
       {isWineModalOpen && (
         <WineModal
-          onClose={async () => {
-            setEditModalData(null);
-            await loadData(tab);
+          onClose={() => {
+            setIsWineModalOpen(false);
           }}
           accessToken={accessToken}
           mode="create"
@@ -235,7 +237,12 @@ export default function ProfilePage() {
           />
         ) : (
           <WineModal
-            onClose={() => setEditModalData(null)}
+            onClose={() => {
+              setTimeout(async () => {
+                setEditModalData(null);
+                await loadData(tab);
+              }, 1000);
+            }}
             accessToken={accessToken}
             mode="edit"
             wineData={editModalData.item as Wine}

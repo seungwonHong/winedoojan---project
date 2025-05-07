@@ -1,10 +1,10 @@
-// "use client";
-import icons from '../../public/icons/icons';
-import clsx from 'clsx';
-import { Review, Wine } from '@/types/schema';
+"use client";
+import icons from "../../public/icons/icons";
+import clsx from "clsx";
+import { Review, Wine } from "@/types/schema";
 
 const HamburgerMenuDiv = clsx(
-  'w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-mistyrose hover:text-burgundy cursor-pointer'
+  "w-[118px] px-[22px] py-[12px] text-center hover:rounded-[12px] hover:bg-mistyrose hover:text-burgundy cursor-pointer"
 );
 
 interface HamburgerMenuProps {
