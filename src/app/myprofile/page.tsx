@@ -151,12 +151,6 @@ export default function ProfilePage() {
     loadData(tab);
   }, [myProfileData.updatedAt]);
 
-  // useEffect(() => {
-  //   if (!user || !accessToken) {
-  //     router.push("/signin");
-  //   }
-  // }, [user, accessToken]);
-
   if (!user || !accessToken || isAuthLoading) {
     return (
       <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
