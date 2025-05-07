@@ -208,6 +208,8 @@ export default function ProfilePage() {
             ref={ref}
             onOpenReviewModal={() => setIsReviewModalOpen(true)}
             onOpenWineModal={() => setIsWineModalOpen(true)}
+            onOpenReviewModal={() => setIsReviewModalOpen(true)}
+            onOpenWineModal={() => setIsWineModalOpen(true)}
           />
         </div>
       </div>

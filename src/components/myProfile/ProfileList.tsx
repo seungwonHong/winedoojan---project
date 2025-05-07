@@ -29,6 +29,8 @@ export default function ProfileList({
   ref,
   onOpenReviewModal,
   onOpenWineModal,
+  onOpenReviewModal,
+  onOpenWineModal,
 }: ProfileListProps) {
   if (isLoading) {
     return (
@@ -45,7 +47,7 @@ export default function ProfileList({
     (tab === "wines" && wines.length === 0)
   ) {
     return (
-      <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center">
+      <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center shadow-lg">
         <img
           src={images.empty}
           alt="등록된 목록 없음"

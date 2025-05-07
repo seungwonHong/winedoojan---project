@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 const SkeletonMyProfile = () => {
   return (
     <div className="w-[343px] lg:w-[800px] md:w-[704px] flex flex-row gap-[16px] rounded-xl border border-[#CFDBEA] p-12 shadow-sm mb-2.5 relative overflow-hidden">
