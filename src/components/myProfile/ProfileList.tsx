@@ -29,8 +29,6 @@ export default function ProfileList({
   ref,
   onOpenReviewModal,
   onOpenWineModal,
-  onOpenReviewModal,
-  onOpenWineModal,
 }: ProfileListProps) {
   if (isLoading) {
     return (
