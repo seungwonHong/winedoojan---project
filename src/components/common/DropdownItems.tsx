@@ -8,7 +8,7 @@ interface DropdownProps {
   positionTop?: string;
 }
 
-function DropdownItems({ isOpen, labels, actions, setIsOpen, positionTop = "0px" }: DropdownProps) {
+function DropdownItems({ isOpen, labels, actions, setIsOpen, positionTop = "top-[40px]" }: DropdownProps) {
   const dropdownRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function DropdownItems({ isOpen, labels, actions, setIsOpen, positionTop = "0px"
   return (
     <>
       {isOpen && (
-        <ul ref={dropdownRef} className={`absolute right-0 flex flex-col mt-2 bg-white border border-gray-300 rounded-2xl z-10  top-[${positionTop}]`}>
+        <ul ref={dropdownRef} className={`absolute right-0 flex flex-col mt-2 bg-white border border-gray-300 rounded-2xl z-10  ${positionTop}`}>
           {labels.map((label) => (
             <li
               key={label}

@@ -92,7 +92,7 @@ const WineDetailReviewHeader = ({ item, wine, refetch }: Props) => {
                   labels={["수정하기", "삭제하기"]}
                   actions={actions}
                   setIsOpen={handleDropdownOpen}
-                  positionTop="20px"
+                  positionTop="top-[20px]"
                 />
               )}
             </div>
