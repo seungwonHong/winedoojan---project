@@ -38,7 +38,7 @@ const LandingWineRec = ({ winesRecommended }: Props) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.9 }}
           transition={{ duration: 0.5 }}
-          className="absolute flex flex-row lg:bottom-[30px] md:bottom-[80px] bottom-[20px]"
+          className="flex flex-row lg:bottom-[30px] md:bottom-[60px]  bottom-[20px]"
         >
           {winesRecommended?.map((wine) => (
             <div className="mr-[10px]" key={wine.id}>
