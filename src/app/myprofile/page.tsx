@@ -23,12 +23,6 @@ import ProfileHeader from "@/components/myProfile/ProfileHeader";
 import ProfileList from "@/components/myProfile/ProfileList";
 import { useAuthProtection } from "@/hooks/useAuthProtection";
 
-export const metadata = {
-  title: "와인두잔 | 내 프로필",
-  description:
-    "전세계의 다양한 와인들이 모두 있는 최고의 와인 공유 플랫폼인 와인두잔 커뮤니티의 사용자 프로필 페이지입니다. 직접 자신의 프로필 사진도 꾸미고 직접 등록한 리뷰와 와인들을 만나보세요!",
-};
-
 export default function ProfilePage() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);

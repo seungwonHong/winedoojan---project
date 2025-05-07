@@ -12,12 +12,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
 
-export const metadata = {
-  title: "와인두잔 | 회원가입",
-  description:
-    "전세계의 다양한 와인들이 있는 와인두잔 플랫폼을 본격적으로 즐기기 위해 회원가입을 해보세요! 회원가입 후 로그인해서 다양한 와인들의 정보들을 살펴보고 와인을 직접 등록해보세요!",
-};
-
 function Signup() {
   const { isAuthenticated } = useAuthStore();
   const router = useRouter();
