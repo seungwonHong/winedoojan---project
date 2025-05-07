@@ -27,11 +27,15 @@ const LandingReviewSys = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.9 }}
+        viewport={{ once: true, amount: 0.7 }}
         transition={{ duration: 0.5 }}
         className="lg:ml-auto md:ml-auto lg:mt-[15px] lg:mr-[30px] md:mr-[30px] md:mt-auto mt-[25px] ml-auto"
       >
-        <img src="/images/review.png" alt="review" />
+        <img
+          src="/images/review.png"
+          alt="review"
+          className="lg:h-[320px] lg:w-[272px] w-[272px] h-[320px]"
+        />
       </motion.div>
     </motion.div>
   );
