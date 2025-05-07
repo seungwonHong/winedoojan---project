@@ -79,7 +79,25 @@ const Wines = () => {
             {allWines !== null && allWines?.length > 0 ? (
               <>
                 {allWines.map((allwine) => (
-                  <WineCardBig key={allwine.id} wine={allwine} />
+                  <WineCardBig
+                    key={allwine.id}
+                    wine={{
+                      ...allwine,
+                      type: allwine.type.toUpperCase() as
+                        | "RED"
+                        | "WHITE"
+                        | "SPARKLING",
+                      recentReview: allwine.recentReview
+                        ? {
+                            ...allwine.recentReview,
+                            user: {
+                              ...allwine.recentReview.user,
+                              image: allwine.recentReview?.user?.image ?? "",
+                            },
+                          }
+                        : allwine.recentReview,
+                    }}
+                  />
                 ))}
                 {loading && <LoadingAnimation />}
               </>
