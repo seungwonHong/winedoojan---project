@@ -1,3 +1,5 @@
+'use client'
+
 import { Wine, Review } from '@/types/schema';
 import SkeletonMyProfile from '@/components/myProfile/skeleton/SkeletonMyProfile';
 import images from '../../../public/images/images';
@@ -14,6 +16,8 @@ interface ProfileListProps {
   onClickWine: (wine: Wine) => void;
   commonCardProps: any;
   ref: (node?: Element | null) => void;
+  onOpenReviewModal: () => void;
+onOpenWineModal: () => void;
 }
 
 export default function ProfileList({
@@ -25,6 +29,8 @@ export default function ProfileList({
   onClickWine,
   commonCardProps,
   ref,
+  onOpenReviewModal,
+  onOpenWineModal,
 }: ProfileListProps) {
   if (isLoading) {
     return (
@@ -41,7 +47,7 @@ export default function ProfileList({
     (tab === 'wines' && wines.length === 0)
   ) {
     return (
-      <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center">
+      <div className="lg:w-[800px] lg:h-[530px] flex flex-col gap-[30px] items-center justify-center shadow-lg">
         <img
           src={images.empty}
           alt="등록된 목록 없음"
@@ -52,7 +58,13 @@ export default function ProfileList({
         </div>
         <BlobButton
           children={tab === 'reviews' ? '리뷰등록하러가기' : '와인등록하러가기'}
-          onClick={() => {}}
+          onClick={() => {
+            if (tab === "reviews") {
+              onOpenReviewModal();
+            } else {
+              onOpenWineModal();
+            }
+          }}
         />
       </div>
     );

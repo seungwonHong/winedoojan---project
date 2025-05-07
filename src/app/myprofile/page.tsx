@@ -145,12 +145,6 @@ export default function ProfilePage() {
     loadData(tab);
   }, [myProfileData.updatedAt]);
 
-  // useEffect(() => {
-  //   if (!user || !accessToken) {
-  //     router.push("/signin");
-  //   }
-  // }, [user, accessToken]);
-
   if (!user || !accessToken || isAuthLoading) {
     return (
       <div className="flex flex-col gap-[8px] justify-center items-center h-screen text-lg font-bold text-burgundy">
@@ -211,16 +205,15 @@ export default function ProfilePage() {
             onClickWine={(wine) => router.push(`/wines/${wine.id}`)}
             commonCardProps={commonCardProps}
             ref={ref}
+            onOpenReviewModal={() => setIsReviewModalOpen(true)}
+            onOpenWineModal={() => setIsWineModalOpen(true)}
           />
         </div>
       </div>
       {/* 등록된 와인이 없을 경우 */}
       {isWineModalOpen && (
         <WineModal
-          onClose={async () => {
-            setEditModalData(null);
-            await loadData(tab);
-          }}
+          onClose={()=>setIsWineModalOpen(false)}
           accessToken={accessToken}
           mode="create"
         />
@@ -241,7 +234,7 @@ export default function ProfilePage() {
           />
         ) : (
           <WineModal
-            onClose={() => setEditModalData(null)}
+            onClose={async() => {setEditModalData(null); await loadData(tab)}}
             accessToken={accessToken}
             mode="edit"
             wineData={editModalData.item as Wine}
