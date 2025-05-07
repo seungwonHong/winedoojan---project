@@ -9,6 +9,12 @@ import LandingReviewSys from "@/components/LandingReviewSys";
 import ExploreWineButton from "@/components/ExploreWineButton";
 import LandingPageRedirect from "@/components/LandingPageRedirect";
 
+export const metadata = {
+  title: "와인두잔 | 랜딩 페이지",
+  description:
+    "전세계의 다양한 와인들이 모두 있는 최고의 와인 공유 플랫폼입니다. 와인두잔과 함께하며 다양한 와인들을 만나보세요!",
+};
+
 export default async function Home() {
   const wines = await getWine({ limit: 5 });
   const { wines: winesRecommended } = await getWineRecommended({
@@ -17,7 +23,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center lg:px-[390px] lg:pt-[24px] lg:pb-[109px] md:px-[20px] md:pt-[24px] md:pb-[72px] px-[16px] pt-[16px] pb-[62px]">
-      <LandingPageRedirect/>
+      <LandingPageRedirect />
 
       <Header />
 

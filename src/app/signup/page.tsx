@@ -1,16 +1,22 @@
-'use client';
-import Image from 'next/image';
-import images from '../../../public/images/images';
-import Input from '@/components/common/Input';
-import Link from 'next/link';
-import BlobButton from '@/components/common/BlobButton';
-import { useRouter } from 'next/navigation';
-import postSignup from '@/services/postSignup';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
-import { useAuthStore } from '@/store/authStore';
+"use client";
+import Image from "next/image";
+import images from "../../../public/images/images";
+import Input from "@/components/common/Input";
+import Link from "next/link";
+import BlobButton from "@/components/common/BlobButton";
+import { useRouter } from "next/navigation";
+import postSignup from "@/services/postSignup";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useAuthStore } from "@/store/authStore";
+
+export const metadata = {
+  title: "와인두잔 | 회원가입",
+  description:
+    "전세계의 다양한 와인들이 있는 와인두잔 플랫폼을 본격적으로 즐기기 위해 회원가입을 해보세요! 회원가입 후 로그인해서 다양한 와인들의 정보들을 살펴보고 와인을 직접 등록해보세요!",
+};
 
 function Signup() {
   const { isAuthenticated } = useAuthStore();
@@ -20,29 +26,29 @@ function Signup() {
     .object({
       email: z
         .string()
-        .nonempty({ message: '이메일은 필수 입력입니다.' })
-        .email({ message: '이메일 형식으로 작성해 주세요.' }),
+        .nonempty({ message: "이메일은 필수 입력입니다." })
+        .email({ message: "이메일 형식으로 작성해 주세요." }),
       nickName: z
         .string()
-        .nonempty({ message: '닉네임은 필수 입력입니다.' })
-        .max(20, { message: '닉네임은 최대 20자까지 가능합니다.' }),
+        .nonempty({ message: "닉네임은 필수 입력입니다." })
+        .max(20, { message: "닉네임은 최대 20자까지 가능합니다." }),
       password: z
         .string()
-        .nonempty({ message: '비밀번호는 필수 입력입니다.' })
-        .min(8, { message: '비밀번호는 최소 8자 이상입니다.' })
+        .nonempty({ message: "비밀번호는 필수 입력입니다." })
+        .min(8, { message: "비밀번호는 최소 8자 이상입니다." })
         .regex(/^[A-Za-z0-9!@#$%^&*]+$/, {
-          message: '비밀번호는 숫자, 영문, 특수문자로만 가능합니다.',
+          message: "비밀번호는 숫자, 영문, 특수문자로만 가능합니다.",
         }),
       passwordConfirm: z
         .string()
-        .nonempty({ message: '비밀번호 확인은 필수 입력입니다.' }),
+        .nonempty({ message: "비밀번호 확인은 필수 입력입니다." }),
     })
     .superRefine((data, context) => {
       if (data.password !== data.passwordConfirm) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
-          message: '비밀번호가 일치하지 않습니다',
-          path: ['passwordConfirm'],
+          message: "비밀번호가 일치하지 않습니다",
+          path: ["passwordConfirm"],
         });
       }
     });
@@ -66,12 +72,12 @@ function Signup() {
       });
 
       if (response) {
-        router.push('/signin');
+        router.push("/signin");
       }
     } catch (error) {
-      setError('email', {
-        type: 'manual',
-        message: '이미 존재하는 이메일 입니다.',
+      setError("email", {
+        type: "manual",
+        message: "이미 존재하는 이메일 입니다.",
       });
       console.log(error);
     }
@@ -80,7 +86,7 @@ function Signup() {
   useEffect(() => {
     // 이미 로그인 상태시 와인 목록으로 이동
     if (isAuthenticated) {
-      router.push('/wines');
+      router.push("/wines");
     }
   }, [isAuthenticated, router]);
 
@@ -108,42 +114,42 @@ function Signup() {
                 type="email"
                 label="이메일"
                 placeholder="이메일 입력"
-                {...register('email')}
+                {...register("email")}
                 error={errors.email?.message}
               />
               <Input
                 type="text"
                 label="닉네임"
                 placeholder="닉네임 입력"
-                {...register('nickName')}
+                {...register("nickName")}
                 error={errors.nickName?.message}
               />
               <Input
                 type="password"
                 label="비밀번호"
                 placeholder="비밀번호 입력"
-                {...register('password')}
+                {...register("password")}
                 error={errors.password?.message}
               />
               <Input
                 type="password"
                 label="비밀번호 확인"
                 placeholder="비밀번호 확인"
-                {...register('passwordConfirm')}
+                {...register("passwordConfirm")}
                 error={errors.passwordConfirm?.message}
               />
             </div>
 
             <div className="mt-[32px]">
               <BlobButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? '가입 중...' : '가입하기'}
+                {isSubmitting ? "가입 중..." : "가입하기"}
               </BlobButton>
             </div>
           </form>
 
           <div className="flex items-center justify-center mt-8 text-base">
             <span className="text-gray-500">
-              계정이 이미 있으신가요?{' '}
+              계정이 이미 있으신가요?{" "}
               <Link
                 className="text-garnet underline font-medium"
                 href="/signin"
