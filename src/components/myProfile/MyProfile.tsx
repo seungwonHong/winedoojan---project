@@ -1,21 +1,22 @@
-'use client';
-import { User } from '@/types/schema';
-import images from '../../../public/images/images';
-import icons from '../../../public/icons/icons';
-import { useEffect, useState } from 'react';
+"use client";
+import { User } from "@/types/schema";
+import images from "../../../public/images/images";
+import icons from "../../../public/icons/icons";
+import { useEffect, useState } from "react";
 
 import {
   fetchUpdateNickname,
   fetchUpdateImg,
   fetchUploadImage,
-} from '@/services/myProfileApi';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import DropZoneImageUploader from '../common/DropZoneImgUploader';
-import { Dialog } from '@headlessui/react';
-import ModalButton from '../common/ModalButton';
-import clsx from 'clsx';
-import { useAuthStore } from '@/store/authStore';
+} from "@/services/myProfileApi";
+import { toast } from "react-toastify";
+import DropZoneImageUploader from "../common/DropZoneImgUploader";
+import { Dialog } from "@headlessui/react";
+import ModalButton from "../common/ModalButton";
+import clsx from "clsx";
+import { useAuthStore } from "@/store/authStore";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface MyProfileProps {
   user: User;
@@ -34,7 +35,11 @@ export default function MyProfile({ user, token }: MyProfileProps) {
   // 닉네임 수정
   const handleNicknameUpdate = async () => {
     if (nickname.trim().length < 1) {
-      toast.warning('닉네임을 입력해주세요!');
+      toast.warning("닉네임을 입력해주세요!");
+      setNickname(user.nickname);
+      return;
+    } else if (nickname.length > 20) {
+      toast.warning("닉네임 최대 길이는 20자 입니다.");
       setNickname(user.nickname);
       return;
     }
@@ -45,11 +50,11 @@ export default function MyProfile({ user, token }: MyProfileProps) {
         token,
       });
 
-      toast.success('닉네임이 변경되었습니다!');
+      toast.success("닉네임이 변경되었습니다!");
       setIsEditNick(false);
       await getMe();
     } catch (err) {
-      console.error('닉네임 업데이트 실패:', err);
+      console.error("닉네임 업데이트 실패:", err);
     }
   };
 
@@ -65,14 +70,14 @@ export default function MyProfile({ user, token }: MyProfileProps) {
       const data = await fetchUpdateImg({
         teamId: user.teamId,
         image:
-          'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1/1745594933907/default_profile_img.png',
+          "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1/1745594933907/default_profile_img.png",
         token,
       });
       setImg(data.image);
       setIsModalOpen(false);
       await getMe();
     } catch (err) {
-      console.error('기본 이미지로 변경 실패:', err);
+      console.error("기본 이미지로 변경 실패:", err);
     }
   };
 
@@ -86,8 +91,6 @@ export default function MyProfile({ user, token }: MyProfileProps) {
         token,
         file: imgFile,
       });
-      console.log('업로드된 이미지 URL:', uploaded.url);
-      console.log('닉네임:', nickname);
       const data = await fetchUpdateImg({
         teamId: user.teamId,
         image: uploaded.url,
@@ -96,7 +99,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
       setImg(data.image);
       setIsModalOpen(false);
       await getMe();
-      toast.success('프로필 이미지가 변경되었습니다!');
+      toast.success("프로필 이미지가 변경되었습니다!");
     } catch (err) {
       console.error(err);
     }
@@ -114,7 +117,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
       try {
         await getMe();
       } catch (error) {
-        console.error('사용자 정보 로딩 실패:', error);
+        console.error("사용자 정보 로딩 실패:", error);
       }
     };
     fetchUserData();
@@ -124,16 +127,25 @@ export default function MyProfile({ user, token }: MyProfileProps) {
   return (
     <div
       className={clsx(
-        'border border-[#cfdbea] mx-auto rounded-[16px] shadow-[0_2px_20px_0_rgba(0_0_0_/_0.04)] w-full h-[190px]',
-        'md:w-full md:h-[200px]',
-        'lg:w-[280px] lg:h-[530px] lg:mx-0'
+        "border border-[#cfdbea] mx-auto rounded-[16px] shadow-[0_2px_20px_0_rgba(0_0_0_/_0.04)] w-full h-[190px]",
+        "md:w-full md:h-[200px]",
+        "lg:w-[280px] lg:h-[530px] lg:mx-0"
       )}
     >
+      <ToastContainer
+        position="top-center"
+        autoClose={500}
+        hideProgressBar
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
       <div
         className={clsx(
-          'py-[39px] flex flex-row gap-[16px] p-[20px]',
-          'lg:flex-col lg:px-[20px] lg:items-center',
-          'md:px-[40px] md:items-start'
+          "py-[39px] flex flex-row gap-[16px] p-[20px]",
+          "lg:flex-col lg:px-[20px] lg:items-center",
+          "md:px-[40px] md:items-start"
         )}
       >
         {/* 프로필 이미지 */}
@@ -142,17 +154,17 @@ export default function MyProfile({ user, token }: MyProfileProps) {
             src={img ?? images.defaultProfile}
             alt="유저 프로필 이미지"
             className={clsx(
-              'rounded-full border border-[#cfdbea] object-cover size-[60px]',
-              'lg:size-[164px]',
-              'md:size-[80px]'
+              "rounded-full border border-[#cfdbea] object-cover size-[60px]",
+              "lg:size-[164px]",
+              "md:size-[80px]"
             )}
           />
           <div
             onClick={() => setIsModalOpen(true)}
             className={clsx(
-              'absolute inset-0 bg-burgundy bg-opacity-40 rounded-full flex items-center justify-center opacity-0',
-              'group-hover:opacity-100 cursor-pointer',
-              'sm:size-[60px] lg:size-[164px] md:size-[80px]'
+              "absolute inset-0 bg-burgundy bg-opacity-40 rounded-full flex items-center justify-center opacity-0",
+              "group-hover:opacity-100 cursor-pointer",
+              "sm:size-[60px] lg:size-[164px] md:size-[80px]"
             )}
           >
             <img src={icons.editProfile} className="size-[48px]" />
@@ -160,7 +172,7 @@ export default function MyProfile({ user, token }: MyProfileProps) {
         </div>
         {/* 프로필 수정 모달 */}
         <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-[9999]">
             <div className="bg-white p-6 rounded-lg max-w-md w-full">
               <h2 className="text-lg font-semibold mb-4">이미지 업로드</h2>
               <DropZoneImageUploader onFileSelected={handleDropImg} />
@@ -207,9 +219,9 @@ export default function MyProfile({ user, token }: MyProfileProps) {
         {isEditNick ? (
           <div
             className={clsx(
-              'flex flex-col gap-[12px] w-[205px]',
-              'lg:w-[240px] lg:flex-col lg:items-end',
-              'md:flex-row md:w-max md:items-center'
+              "flex flex-col gap-[12px] w-[205px]",
+              "lg:w-[240px] lg:flex-col lg:items-end",
+              "md:flex-row md:w-max md:items-center"
             )}
           >
             <input
