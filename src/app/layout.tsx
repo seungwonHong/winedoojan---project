@@ -56,6 +56,21 @@ export default function RootLayout({
         <meta name="author" content="winedoojan" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/favicon.svg" />
+
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-CND6YD9L71"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-CND6YD9L71');
+      `,
+          }}
+        />
       </head>
       <body className="antialiased">
         {children}

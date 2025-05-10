@@ -1,7 +1,7 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-import { motion, useAnimationControls } from "framer-motion";
 import { WineRecommended } from "@/services/getWineRecommended";
+import { motion, useAnimationControls } from "framer-motion";
+import { useEffect, useRef } from "react";
 import WineCardSmall from "./common/WineCardSmall";
 import WineCardSmallSkeleton from "./common/WineCardSmallSkeleton";
 
@@ -18,7 +18,7 @@ const WineListRecWine = ({ wines }: Props) => {
     const totalWidth = listRef.current
       ? listRef.current.scrollWidth / 2
       : itemWidth * wines.length;
-    
+
     controls.start({
       x: [0, -totalWidth],
       transition: {
@@ -57,7 +57,10 @@ const WineListRecWine = ({ wines }: Props) => {
                     <WineCardSmall
                       wine={{
                         ...wine,
-                        type: wine.type.toUpperCase() as "RED" | "WHITE" | "SPARKLING",
+                        type: wine.type.toUpperCase() as
+                          | "RED"
+                          | "WHITE"
+                          | "SPARKLING",
                         recentReview: wine.recentReview
                           ? {
                               ...wine.recentReview,
